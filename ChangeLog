@@ -1,3 +1,9 @@
+2014-08-xx Felix Nagel  <info@felixnagel.com>
+
+	released version 0.3.0
+	* updated: compatible with TYPO3 6.x
+	* improved: CGL
+
 2014-01-03 Felix Nagel  <info@felixnagel.com>
 
 	released version 0.2.0
@@ -9,23 +15,23 @@
 	* improved: added doc header for all methods
 	* improved: CGL
 	* improved: documentation
-	
+
 2013-08-11 Felix Nagel  <info@felixnagel.com>
 
 	released version 0.1.2
 	* fixed: switched from extRelPath to siteRelPath, thx to Stephan L.
 	* fixed: some code / comment clean up and improvements in pi1
-	
+
 2013-06-04 Felix Nagel  <info@felixnagel.com>
 
 	released version 0.1.1
 	* updated: plupload to version 1.5.7
-	
+
 2013-03-15 Felix Nagel  <info@felixnagel.com>
 
 	* fixed: changelog (wrong version number in last release)
 	* todo: fix documentation TOC
-	
+
 2013-03-09 Felix Nagel  <info@felixnagel.com>
 
 	released version 0.1.0
@@ -34,18 +40,18 @@
 	* added: requirements as needed for planned TYPO3 TER cleanup
 	* improved: default template plupload runtimes config
 	* improved: default template jQuery version update to 1.9.0
-	
+
 2012-11-05 Felix Nagel  <info@felixnagel.com>
 
 	* changed: typo in extension description
 	* changed: clean up res directory
 	* improved: small changes to template file (CGL)
-	
+
 2012-09-06 Felix Nagel  <info@felixnagel.com>
 
 	released version 0.0.5
 	* removed: deprecated function, should be TYPO3 6.0 ready
-	
+
 2012-06-04 Felix Nagel  <info@felixnagel.com>
 
 	* fixed: problems due to search changes in TYPO3 4.6, for livesearch use pluploadfe shortcut

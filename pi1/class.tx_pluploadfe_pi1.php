@@ -1,48 +1,48 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2011-2013 Felix Nagel <info@felixnagel.com>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2011-2013 Felix Nagel <info@felixnagel.com>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
-require_once(PATH_tslib.'class.tslib_pibase.php');
+require_once(PATH_tslib . 'class.tslib_pibase.php');
 
 /**
  * Plugin 'pluploadfe' for the 'pluploadfe' extension.
  *
- * @author	Felix Nagel <info@felixnagel.com>
- * @package	TYPO3
- * @subpackage	tx_pluploadfe
+ * @author    Felix Nagel <info@felixnagel.com>
+ * @package    TYPO3
+ * @subpackage    tx_pluploadfe
  */
 class tx_pluploadfe_pi1 extends tslib_pibase {
-	var $prefixId      = 'tx_pluploadfe_pi1';		// Same as class name
-	var $scriptRelPath = 'pi1/class.tx_pluploadfe_pi1.php';	// Path to this script relative to the extension dir.
-	var $extKey        = 'pluploadfe';	// The extension key.
+	var $prefixId = 'tx_pluploadfe_pi1'; // Same as class name
+	var $scriptRelPath = 'pi1/class.tx_pluploadfe_pi1.php'; // Path to this script relative to the extension dir.
+	var $extKey = 'pluploadfe'; // The extension key.
 	var $pi_checkCHash = true;
 
 	/**
 	 * The main method of the PlugIn
 	 *
-	 * @param string	$content: The plugin content
-	 * @param array		$conf: The plugin configuration
-	 * @return string	The content that is displayed on the website
+	 * @param string $content : The plugin content
+	 * @param array $conf : The plugin configuration
+	 * @return string    The content that is displayed on the website
 	 */
 	public function main($content, $conf) {
 		$this->conf = $conf;
@@ -88,8 +88,8 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 		$config = array();
 		$select = 'extensions';
 		$table = 'tx_pluploadfe_config';
-		$where = 'uid = '. $this->configUid;
-		$where  .= $GLOBALS['TSFE']->sys_page->enableFields($table);
+		$where = 'uid = ' . $this->configUid;
+		$where .= $GLOBALS['TSFE']->sys_page->enableFields($table);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where, '', '', '');
 
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -202,7 +202,7 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 	 * @return void
 	 */
 	protected function getTemplateFile() {
-		$templateFile = (strlen(trim($this->conf['templateFile']))>0) ? trim($this->conf['templateFile']) : 'EXT:pluploadfe/res/template.html';
+		$templateFile = (strlen(trim($this->conf['templateFile'])) > 0) ? trim($this->conf['templateFile']) : 'EXT:pluploadfe/res/template.html';
 
 		// Get the template
 		$this->templateHtml = $this->cObj->fileResource($templateFile);
@@ -215,10 +215,10 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 	/**
 	 * Handles error output for frontend and TYPO3 logging
 	 *
-	 * @param	string	Message to output
-	 * @return	void
-	 * @see	t3lib::devLog()
-	 * @see	t3lib_div::sysLog()
+	 * @param    string    Message to output
+	 * @return    void
+	 * @see    t3lib::devLog()
+	 * @see    t3lib_div::sysLog()
 	 */
 	protected function handleError($msg) {
 		t3lib_div::sysLog($msg, $this->extKey, 3); // error
@@ -230,7 +230,7 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/pi1/class.tx_pluploadfe_pi1.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/pi1/class.tx_pluploadfe_pi1.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/pi1/class.tx_pluploadfe_pi1.php']);
 }
 

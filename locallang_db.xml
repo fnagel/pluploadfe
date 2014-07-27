@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>database</type>
-		<description>Language labels for database tables/fields belonging to extension 'pluploadfe'</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="tt_content.list_type_pi1">Plupload FE</label>
-			<label index="tx_pluploadfe_config">Plupload Configuration</label>
-			<label index="tx_pluploadfe_config.upload_path">Upload path</label>
-			<label index="tx_pluploadfe_config.extensions">Allowed file extensions</label>
-			<label index="tx_pluploadfe_config.feuser_required">Logged-in users only</label>
-			<label index="tx_pluploadfe_config.save_session">Save filepaths in user session</label>
-			<label index="tx_pluploadfe_config.obscure_dir">Obscure path (random directory)</label>
-			<label index="tx_pluploadfe_config.check_mime">Check MIME type</label>
-			<label index="tt_content.tx_pluploadfe_config">Configuration</label>
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="tt_content.list_type_pi1">Plupload FE</label>
-			<label index="tx_pluploadfe_config">Plupload Konfiguration</label>
-			<label index="tx_pluploadfe_config.upload_path">Upload Pfad</label>
-			<label index="tx_pluploadfe_config.extensions">Erlaubte Dateierweiterungen</label>
-			<label index="tx_pluploadfe_config.feuser_required">Nur angemeldete Benutzer erlauben</label>
-			<label index="tx_pluploadfe_config.save_session">Dateipfade in Session speichern</label>
-			<label index="tx_pluploadfe_config.obscure_dir">Pfad verschleiern (zufälliger Ordner)</label>
-			<label index="tx_pluploadfe_config.check_mime">MIME-Typ prüfen</label>
-			<label index="tt_content.tx_pluploadfe_config">Konfiguration</label>
-		</languageKey>
-	</data>
+    <meta type="array">
+        <type>database</type>
+        <description>Language labels for database tables/fields belonging to extension 'pluploadfe'</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="tt_content.list_type_pi1">Plupload FE</label>
+            <label index="tx_pluploadfe_config">Plupload Configuration</label>
+            <label index="tx_pluploadfe_config.upload_path">Upload path</label>
+            <label index="tx_pluploadfe_config.extensions">Allowed file extensions</label>
+            <label index="tx_pluploadfe_config.feuser_required">Logged-in users only</label>
+            <label index="tx_pluploadfe_config.save_session">Save filepaths in user session</label>
+            <label index="tx_pluploadfe_config.obscure_dir">Obscure path (random directory)</label>
+            <label index="tx_pluploadfe_config.check_mime">Check MIME type</label>
+            <label index="tt_content.tx_pluploadfe_config">Configuration</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="tt_content.list_type_pi1">Plupload FE</label>
+            <label index="tx_pluploadfe_config">Plupload Konfiguration</label>
+            <label index="tx_pluploadfe_config.upload_path">Upload Pfad</label>
+            <label index="tx_pluploadfe_config.extensions">Erlaubte Dateierweiterungen</label>
+            <label index="tx_pluploadfe_config.feuser_required">Nur angemeldete Benutzer erlauben</label>
+            <label index="tx_pluploadfe_config.save_session">Dateipfade in Session speichern</label>
+            <label index="tx_pluploadfe_config.obscure_dir">Pfad verschleiern (zufälliger Ordner)</label>
+            <label index="tx_pluploadfe_config.check_mime">MIME-Typ prüfen</label>
+            <label index="tt_content.tx_pluploadfe_config">Konfiguration</label>
+        </languageKey>
+    </data>
 </T3locallang>
