@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for plugin &quot;tx_pluploadfe_pi1&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="info_1">Please enable JavaScript!</label>
+			<label index="info_2">Your browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="info_1">Bitte aktivieren Sie Java-Script in Ihrem Browser!</label>
+			<label index="info_2">Ihr Browser scheint weder Flash, Silverlight, Gears, BrowserPlus noch HTML5 zu unterstützen.</label>
+		</languageKey>
+	</data>
+</T3locallang>

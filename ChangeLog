@@ -1,0 +1,83 @@
+2014-01-03 Felix Nagel  <info@felixnagel.com>
+
+	released version 0.2.0
+	* updated: to plupload version 2.0, see: http://www.plupload.com/punbb/viewtopic.php?id=3960
+	* updated: template to match plupload version 2.0.0
+	* updated: upload routine according to new version
+	* improved: rework upload routine
+	* improved: upload routine error codes
+	* improved: added doc header for all methods
+	* improved: CGL
+	* improved: documentation
+	
+2013-08-11 Felix Nagel  <info@felixnagel.com>
+
+	released version 0.1.2
+	* fixed: switched from extRelPath to siteRelPath, thx to Stephan L.
+	* fixed: some code / comment clean up and improvements in pi1
+	
+2013-06-04 Felix Nagel  <info@felixnagel.com>
+
+	released version 0.1.1
+	* updated: plupload to version 1.5.7
+	
+2013-03-15 Felix Nagel  <info@felixnagel.com>
+
+	* fixed: changelog (wrong version number in last release)
+	* todo: fix documentation TOC
+	
+2013-03-09 Felix Nagel  <info@felixnagel.com>
+
+	released version 0.1.0
+	* updated: plupload to version 1.5.6
+	* improved: small refactoring of upload file
+	* added: requirements as needed for planned TYPO3 TER cleanup
+	* improved: default template plupload runtimes config
+	* improved: default template jQuery version update to 1.9.0
+	
+2012-11-05 Felix Nagel  <info@felixnagel.com>
+
+	* changed: typo in extension description
+	* changed: clean up res directory
+	* improved: small changes to template file (CGL)
+	
+2012-09-06 Felix Nagel  <info@felixnagel.com>
+
+	released version 0.0.5
+	* removed: deprecated function, should be TYPO3 6.0 ready
+	
+2012-06-04 Felix Nagel  <info@felixnagel.com>
+
+	* fixed: problems due to search changes in TYPO3 4.6, for livesearch use pluploadfe shortcut
+
+2012-04-27 Felix Nagel  <info@felixnagel.com>
+
+	released version 0.0.4
+	* TYPO3 4.7.0 tested
+	* updated: plupload to version 1.5.4
+
+2012-02-28 Felix Nagel  <info@felixnagel.com>
+
+	* added: jQuery noConflict compatibility for default template
+	* improved: documentation
+
+2012-02-25 Felix Nagel  <info@felixnagel.com>
+
+	released version 0.0.3
+	* forge account: http://forge.typo3.org/projects/extension-pluploadfe
+	* fixed: problem when uploading same file in same directory (renaming), THX to Peter E.
+	* improved: config record labels
+	* improved: documentation
+
+2012-02-07 Felix Nagel  <info@felixnagel.com>
+
+	released version 0.0.2
+	* improved: documentation
+
+2012-02-06 Felix Nagel  <info@felixnagel.com>
+
+	first release to TER
+
+2011-11-01 Felix Nagel  <info@felixnagel.com>
+
+	* initial code generated with kickstarter
