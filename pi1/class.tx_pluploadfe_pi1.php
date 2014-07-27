@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(PATH_tslib . 'class.tslib_pibase.php');
 
 /**
  * Plugin 'pluploadfe' for the 'pluploadfe' extension.
@@ -32,10 +31,26 @@ require_once(PATH_tslib . 'class.tslib_pibase.php');
  * @subpackage    tx_pluploadfe
  */
 class tx_pluploadfe_pi1 extends tslib_pibase {
-	var $prefixId = 'tx_pluploadfe_pi1'; // Same as class name
-	var $scriptRelPath = 'pi1/class.tx_pluploadfe_pi1.php'; // Path to this script relative to the extension dir.
-	var $extKey = 'pluploadfe'; // The extension key.
-	var $pi_checkCHash = true;
+
+	/**
+	 * @var string
+	 */
+	public $prefixId = 'tx_pluploadfe_pi1';
+
+	/**
+	 * @var string
+	 */
+	public $scriptRelPath = 'pi1/class.tx_pluploadfe_pi1.php';
+
+	/**
+	 * @var string
+	 */
+	public $extKey = 'pluploadfe';
+
+	/**
+	 * @var boolean
+	 */
+	public $pi_checkCHash = TRUE;
 
 	/**
 	 * The main method of the PlugIn
@@ -72,7 +87,8 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 			$this->renderCode();
 			$content = $this->getHTML();
 		} else {
-			$content = '<div style="border: 3px solid red; padding: 1em;"><strong>TYPO3 EXT:plupload Error</strong><br />Invalid configuration.</div>';
+			$content = '<div style="border: 3px solid red; padding: 1em;">
+			<strong>TYPO3 EXT:plupload Error</strong><br />Invalid configuration.</div>';
 		}
 
 		return $this->pi_wrapInBaseClass($content);
@@ -105,10 +121,10 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 	/**
 	 * Checks config
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	protected function checkConfig() {
-		$flag = false;
+		$flag = FALSE;
 
 		if (strlen($this->uid) > 0 &&
 			strlen($this->templateHtml) > 0 &&
@@ -116,7 +132,7 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 			is_array($this->config) &&
 			strlen($this->config['extensions']) > 0
 		) {
-			$flag = true;
+			$flag = TRUE;
 		} else {
 			$this->handleError('Invalid configuration');
 		}
@@ -134,8 +150,11 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 		$subpartArray = $this->getDefaultMarker();
 
 		// TODO wont work
-		// $GLOBALS['TSFE']->getPageRenderer()->addHeaderData($this->cObj->substituteMarkerArrayCached($template_files, $subpartArray));
-		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .= $this->cObj->substituteMarkerArrayCached($template_files, $subpartArray);
+//		 $GLOBALS['TSFE']->getPageRenderer()->addHeaderData(
+//			$this->cObj->substituteMarkerArrayCached($template_files, $subpartArray)
+//		);
+		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .=
+			$this->cObj->substituteMarkerArrayCached($template_files, $subpartArray);
 	}
 
 	/**
@@ -149,20 +168,23 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 
 		// fill marker array
 		$markerArray = $this->getDefaultMarker();
-		$markerArray['###UPLOAD_FILE###'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'index.php?eID=pluploadfe&configUid=' . $this->configUid;
+		$markerArray['###UPLOAD_FILE###'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') .
+			'index.php?eID=pluploadfe&configUid=' . $this->configUid;
 
 		// replace markers in the template
 		$content = $this->cObj->substituteMarkerArray($templateMain, $markerArray);
 
 		// TODO wont work
-		// $GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode($this->prefixId . '_' . $this->uid, $content);
+//		 $GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode(
+//			$this->prefixId . '_' . $this->uid, $content
+//		);
 		$GLOBALS['TSFE']->setJS($this->prefixId . '_' . $this->uid, $content);
 	}
 
 	/**
 	 * Function to parse the template
 	 *
-	 * @return void
+	 * @return string
 	 */
 	protected function getHTML() {
 		// Extract subparts from the template
@@ -182,11 +204,11 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 	/**
 	 * Function to render the default marker
 	 *
-	 * @return void
+	 * @return array
 	 */
 	protected function getDefaultMarker() {
 		$markerArray = array();
-		$extensionsArray = t3lib_div::trimExplode(',', $this->config['extensions'], true);
+		$extensionsArray = t3lib_div::trimExplode(',', $this->config['extensions'], TRUE);
 
 		$markerArray['###UID###'] = $this->uid;
 		$markerArray['###LANGUAGE###'] = $GLOBALS['TSFE']->config['config']['language'];
@@ -202,7 +224,8 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 	 * @return void
 	 */
 	protected function getTemplateFile() {
-		$templateFile = (strlen(trim($this->conf['templateFile'])) > 0) ? trim($this->conf['templateFile']) : 'EXT:pluploadfe/res/template.html';
+		$templateFile = (strlen(trim($this->conf['templateFile'])) > 0) ?
+			trim($this->conf['templateFile']) : 'EXT:pluploadfe/res/template.html';
 
 		// Get the template
 		$this->templateHtml = $this->cObj->fileResource($templateFile);
@@ -221,11 +244,13 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 	 * @see    t3lib_div::sysLog()
 	 */
 	protected function handleError($msg) {
-		t3lib_div::sysLog($msg, $this->extKey, 3); // error
+		// error
+		t3lib_div::sysLog($msg, $this->extKey, 3);
 
 		// write dev log if enabled
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
-			t3lib_div::devLog($msg, $this->extKey, 3); // fatal error
+			// fatal error
+			t3lib_div::devLog($msg, $this->extKey, 3);
 		}
 	}
 }

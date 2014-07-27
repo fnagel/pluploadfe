@@ -22,9 +22,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-if (!defined('PATH_typo3conf')) die ();
+if (!defined('PATH_typo3conf')) {
+	die ();
+}
 
-require_once(PATH_tslib . 'class.tslib_eidtools.php');
 
 /**
  * This class uploads files
@@ -174,7 +175,7 @@ class tx_pluploadfe_upload {
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 		header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header('Cache-Control: no-store, no-cache, must-revalidate');
-		header('Cache-Control: post-check=0, pre-check=0', false);
+		header('Cache-Control: post-check=0, pre-check=0', FALSE);
 		header('Pragma: no-cache');
 
 		$this->config = $this->getUploadConfig();
@@ -254,7 +255,7 @@ class tx_pluploadfe_upload {
 
 		$fileName = $this->getFileName();
 		$this->fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-		$extensions = t3lib_div::trimExplode(",", $this->config['extensions'], true);
+		$extensions = t3lib_div::trimExplode(',', $this->config['extensions'], true);
 
 		// check if file extension is allowed (configuration record)
 		if (in_array($this->fileExtension, $extensions)) {
@@ -273,24 +274,23 @@ class tx_pluploadfe_upload {
 	 * @return string
 	 */
 	protected function getFileName() {
-		if (isset($_REQUEST["name"])) {
-			return $_REQUEST["name"];
+		if (isset($_REQUEST['name'])) {
+			return $_REQUEST['name'];
 		} elseif (!empty($_FILES)) {
-			return $_FILES["file"]["name"];
-		} else {
-			return uniqid("file_");
+			return $_FILES['file']['name'];
 		}
+
+		return uniqid('file_');
 	}
 
 	/**
 	 * Checks and creates the upload directory
 	 *
-	 * @params string $path
-	 * @params boolean $obscure
-	 *
+	 * @param $path
+	 * @param bool $obscure
 	 * @return string
 	 */
-	protected function getUploadDir($path, $obscure = false) {
+	protected function getUploadDir($path, $obscure = FALSE) {
 		// check if path is allowed and valid
 		if (strlen($path) > 0 && t3lib_div::isAllowedAbsPath(PATH_site . $path) && t3lib_div::validPathStr($path)) {
 			// make sure we have no trailing slash
@@ -329,8 +329,8 @@ class tx_pluploadfe_upload {
 	 */
 	protected function uploadFile() {
 		// Get additional parameters
-		$chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
-		$chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
+		$chunk = isset($_REQUEST['chunk']) ? intval($_REQUEST['chunk']) : 0;
+		$chunks = isset($_REQUEST['chunks']) ? intval($_REQUEST['chunks']) : 0;
 
 		// Clean the fileName for security reasons
 		$fileName = preg_replace('/[^\w\._]+/', '_', $this->getFileName());
@@ -379,6 +379,7 @@ class tx_pluploadfe_upload {
 	 *
 	 * @params string $filepath
 	 *
+	 * @param $filepath
 	 * @return void
 	 */
 	protected function processFile($filepath) {
@@ -399,9 +400,8 @@ class tx_pluploadfe_upload {
 	/**
 	 * Store session data
 	 *
-	 * @params string $filepath
-	 * @params string $key
-	 *
+	 * @param $filepath
+	 * @param string $key
 	 * @return void
 	 */
 	protected function updateSession($filepath, $key = 'tx_pluploadfe_files') {
@@ -420,12 +420,12 @@ class tx_pluploadfe_upload {
 	/**
 	 * Generate random string
 	 *
-	 * @params integer $length
+	 * @param int $length
 	 * @return string
 	 */
 	protected function getRandomDirName($length = 10) {
-		$set = "abcdefghijklmnopqrstuvwxyzABCDEFGHIKLMNPQRSTUVWXYZ0123456789";
-		$string = "";
+		$set = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIKLMNPQRSTUVWXYZ0123456789';
+		$string = '';
 
 		for ($i = 1; $i <= $length; $i++) {
 			$string .= $set[mt_rand(0, (strlen($set) - 1))];
@@ -439,9 +439,8 @@ class tx_pluploadfe_upload {
 	 *
 	 * @todo Make EM check for mime type getters
 	 *
-	 * @params string $filepath
-	 *
-	 * @return void
+	 * @param string $filepath
+	 * @return string
 	 */
 	protected function getMimeType($filepath) {
 		// set default which is totally insecure
@@ -479,23 +478,23 @@ class tx_pluploadfe_upload {
 	 * we alredy checked if the file extension is allowed,
 	 * so we need to check if the mime type is adequate
 	 *
-	 * @params string $sentExt
-	 * @params string $filepath
+	 * @param string $sentExt
+	 * @param string $filepath
 	 *
 	 * @return boolean
 	 */
 	protected function checkMimeType($sentExt, $filepath) {
-		$flag = false;
+		$flag = FALSE;
 
 		if (array_key_exists($sentExt, $this->mimeTypes)) {
-			$mimeType = explode(";", $this->getMimeType($filepath));
+			$mimeType = explode(';', $this->getMimeType($filepath));
 			// check if mime type fits the given file extension
 			if (in_array($mimeType[0], $this->mimeTypes[$sentExt])) {
-				$flag = true;
+				$flag = TRUE;
 			}
 		} else {
 			// fallback for unusual file types
-			$flag = true;
+			$flag = TRUE;
 		}
 
 		return $flag;
