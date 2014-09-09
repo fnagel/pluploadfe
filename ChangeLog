@@ -1,8 +1,13 @@
-2014-08-xx Felix Nagel  <info@felixnagel.com>
+2014-09-09 Felix Nagel  <info@felixnagel.com>
 
-	released version 0.3.0
+	released version 1.0.0 (changes required, see documentation)
 	* updated: compatible with TYPO3 6.x
 	* improved: CGL
+	* updated: to plupload version 2.1.2
+	* changed: default template to use non jQuery UI Queue Widget
+	* changed: Use Typoscript for adding asset files
+	* fixed: suggested extensions
+	* updated: documentation
 
 2014-01-03 Felix Nagel  <info@felixnagel.com>
 
@@ -30,7 +35,7 @@
 2013-03-15 Felix Nagel  <info@felixnagel.com>
 
 	* fixed: changelog (wrong version number in last release)
-	* todo: fix documentation TOC
+	* fixed: documentation TOC
 
 2013-03-09 Felix Nagel  <info@felixnagel.com>
 
