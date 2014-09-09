@@ -3,6 +3,9 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
+// Add static TS
+t3lib_extMgm::addStaticFile($_EXTKEY, 'pi1/static/', 'Plupload FE: default config');
+
 
 // BE
 t3lib_extMgm::addPlugin(array(

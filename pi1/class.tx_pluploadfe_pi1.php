@@ -63,13 +63,13 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		$content = '';
 
 		// set (localized) UID
+		$localizedUid = $this->cObj->data['_LOCALIZED_UID'];
 		if (strlen($this->conf['uid']) > 0) {
 			$this->uid = $this->conf['uid'];
 		} else {
-			$this->uid = ($this->cObj->data['_LOCALIZED_UID']) ? intval($this->cObj->data['_LOCALIZED_UID']) : intval($this->cObj->data['uid']);
+			$this->uid = intval(($localizedUid) ? $localizedUid : $this->cObj->data['uid']);
 		}
 
 		// set config record uid
@@ -83,7 +83,6 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 		$this->getTemplateFile();
 
 		if ($this->checkConfig()) {
-			$this->renderFiles();
 			$this->renderCode();
 			$content = $this->getHTML();
 		} else {
@@ -101,7 +100,6 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 	 * @return void
 	 */
 	protected function getUploadConfig() {
-		$config = array();
 		$select = 'extensions';
 		$table = 'tx_pluploadfe_config';
 		$where = 'uid = ' . $this->configUid;
@@ -145,23 +143,6 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 	 *
 	 * @return void
 	 */
-	protected function renderFiles() {
-		$template_files = $this->cObj->getSubpart($this->templateHtml, '###TEMPLATE_FILES###');
-		$subpartArray = $this->getDefaultMarker();
-
-		// TODO wont work
-//		 $GLOBALS['TSFE']->getPageRenderer()->addHeaderData(
-//			$this->cObj->substituteMarkerArrayCached($template_files, $subpartArray)
-//		);
-		$GLOBALS['TSFE']->additionalHeaderData[$this->prefixId] .=
-			$this->cObj->substituteMarkerArrayCached($template_files, $subpartArray);
-	}
-
-	/**
-	 * Function to parse the template
-	 *
-	 * @return void
-	 */
 	protected function renderCode() {
 		// Extract subparts from the template
 		$templateMain = $this->cObj->getSubpart($this->templateHtml, '###TEMPLATE_CODE###');
@@ -174,11 +155,9 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 		// replace markers in the template
 		$content = $this->cObj->substituteMarkerArray($templateMain, $markerArray);
 
-		// TODO wont work
-//		 $GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode(
-//			$this->prefixId . '_' . $this->uid, $content
-//		);
-		$GLOBALS['TSFE']->setJS($this->prefixId . '_' . $this->uid, $content);
+		 $GLOBALS['TSFE']->getPageRenderer()->addJsFooterInlineCode(
+			$this->prefixId . '_' . $this->uid, $content
+		);
 	}
 
 	/**

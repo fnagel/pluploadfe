@@ -1,78 +1,53 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>plupload template file</title>
 
-	<!-- ###TEMPLATE_FILES### begin -->
-		<!-- Load Queue widget CSS -->
-		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" />
-		<link rel="stylesheet" href="###EXTDIR_PATH###res/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css" type="text/css" />
-				
-		<!-- Load jQuery and jQuery UI -->
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
-		
-		<!-- Load plupload and all it's runtimes and finally the jQuery UI queue widget -->
-		<script type="text/javascript" src="###EXTDIR_PATH###res/plupload/js/plupload.full.min.js"></script>
-		<script type="text/javascript" src="###EXTDIR_PATH###res/plupload/js/jquery.ui.plupload/jquery.ui.plupload.min.js"></script>
-		<script type="text/javascript" src="###EXTDIR_PATH###res/plupload/js/i18n/###LANGUAGE###.js"></script>
-	<!-- ###TEMPLATE_FILES### end -->
-
-		<script type="text/javascript">
-	<!-- ###TEMPLATE_CODE### begin -->
+	<script type="text/javascript">
+	  	// ###TEMPLATE_CODE###
 		(function($) {
 			$(function() {
-				var uploader = $('#uploader_###UID###').plupload({
-					// General settings
-					runtimes : 'html5,flash,silverlight,html4',
-					url : '###UPLOAD_FILE###',
-					// chunk_size : '10mb',
-					unique_names : false,
-					rename: true,
-					sortable: true,
-					dragdrop: true,
-					multiple_queues: true,
-					// needed for user auth in flash
-					urlstream_upload: true,
+				var errorMsg = "Error: ", json,
+					uploader = $('#uploader_###UID###').pluploadQueue({
+						// General settings
+						runtimes : 'html5,flash,silverlight,html4',
+						url : '###UPLOAD_FILE###',
+						// chunk_size : '10mb',
+						unique_names : false,
+						rename: true,
+						dragdrop: true,
+						multiple_queues: true,
+						quality: 100,
 
-					// Specify what files to browse for
-					filters : {
-						max_file_size : '5mb',
-						mime_types: [
-							{title : "Allowed files", extensions : "###FILE_EXTENSIONS###"}
-						]
-					},
+						// Specify what files to browse for
+						filters : {
+							max_file_size : '5mb',
+							mime_types: [
+								{title : "Allowed files", extensions : "###FILE_EXTENSIONS###"}
+							]
+						},
 
-					// Views to activate
-					views: {
-						list: true,
-						thumbs: false
-					},
+						// Flash settings
+						flash_swf_url : '###EXTDIR_PATH###res/plupload/js/Moxie.swf',
 
-					// Flash settings
-					flash_swf_url : '###EXTDIR_PATH###res/plupload/js/Moxie.swf',
+						// Silverlight settings
+						silverlight_xap_url : '###EXTDIR_PATH###res/plupload/js/Moxie.xap',
 
-					// Silverlight settings
-					silverlight_xap_url : '###EXTDIR_PATH###res/plupload/js/Moxie.xap'
-				});
-
-				// add server side error notification
-				var uploaderApi = uploader.plupload('getUploader'),
-					errorMsg = "Fehler: ",
-					json;
-				uploaderApi.bind('FileUploaded', function(up, file, info) {
-					json = $.parseJSON(info.response);
-					if (json.error) {
-						file.status = plupload.FAILED;
-						errorMsg += json.error.message;
-						uploader.plupload('notify', 'error', errorMsg);
-						up.trigger('QueueChanged');
-					}
-				});
+						// Post init events, bound after the internal events
+						init : {
+							FileUploaded: function(up, file, info) {
+								json = $.parseJSON(info.response);
+								if (json.error) {
+									file.status = plupload.FAILED;
+									errorMsg += json.error.message;
+									alert(errorMsg);
+								}
+							}
+						}
+					});
 			});
 		})(jQuery);
-	<!-- ###TEMPLATE_CODE### end -->
+		// ###TEMPLATE_CODE###
 	</script>
 </head>
 <body>
@@ -82,7 +57,6 @@
 
 	<noscript><p>###INFO_1###</p></noscript>
 	<p>###INFO_2###</p>
-
 </div>
 <!-- ###TEMPLATE_CONTENT### end -->
 
