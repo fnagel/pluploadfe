@@ -1,7 +1,7 @@
-2014-09-xx Felix Nagel  <info@felixnagel.com>
+2014-11-27 Felix Nagel  <info@felixnagel.com>
 
-	released version 1.0.1 (no required)
-	* removed: documentation duplicate
+	released version 1.0.1 (no changes required)
+	* updated: documentation to reStructuredText format
 
 2014-09-09 Felix Nagel  <info@felixnagel.com>
 
