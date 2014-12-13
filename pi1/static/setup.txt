@@ -3,7 +3,7 @@
 plugin.tx_pluploadfe_pi1 {
 
 	# Template file
-	templateFile = EXT:plupload/res/template.html
+	templateFile = EXT:pluploadfe/res/template.html
 
 	## When using FE plugin via TypoScript you will need to pass the  following options.
 
