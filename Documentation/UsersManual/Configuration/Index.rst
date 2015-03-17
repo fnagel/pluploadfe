@@ -88,7 +88,7 @@ Configuration
          boolean
 
    Description
-         If the uploaded files should be available in the FE user sessuin (key:
+         If the uploaded files should be available in the FE user session (key:
          'tx\_pluploadfe\_files')
 
    Default
@@ -121,7 +121,7 @@ Configuration
 
    Description
          Checks (real) MIME type after uploading file. Safety level depends on
-         PHP version / server configuration. Does not work when using chunked
+         PHP version / server configuration.
          uploads (see
 
    Default
