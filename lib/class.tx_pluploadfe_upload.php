@@ -440,37 +440,40 @@ class tx_pluploadfe_upload {
 	 * @todo Make EM check for mime type getters
 	 *
 	 * @param string $filepath
-	 * @return string
+	 * @return array
 	 */
 	protected function getMimeType($filepath) {
-		// set default which is totally insecure
-		$mimeType = $_FILES['file']['type'];
-
 		if (function_exists('finfo_open')) {
 			$finfo = @finfo_open(FILEINFO_MIME);
 			if ($finfo) {
-				if ($tempMime = @finfo_file($finfo, $filepath)) {
-					$mimeType = $tempMime;
-				}
+				$tempMime = @finfo_file($finfo, $filepath);
 				finfo_close($finfo);
-			}
-		} elseif (function_exists('mime_content_type')) {
-			$mimeType = mime_content_type($filepath);
-			die($mimeType);
-		} elseif (function_exists('exec') && function_exists('escapeshellarg')) {
-			if ($tempMime = trim(@exec('file -bi ' . @escapeshellarg($filepath)))) {
-				$mimeType = $tempMime;
-			}
-		} elseif (function_exists('pathinfo')) {
-			if ($pathinfo = @pathinfo($filepath)) {
-				if (in_array($pathinfo['extension'], $this->imageTypes) && getimagesize($file)) {
-					$size = getimagesize($filepath);
-					$mimeType = $size['mime'];
+				if ($tempMime) {
+					return $tempMime;
 				}
 			}
 		}
 
-		return $mimeType;
+		if (function_exists('mime_content_type')) {
+			return mime_content_type($filepath);
+		}
+
+		if (function_exists('exec') && function_exists('escapeshellarg')) {
+			if (($tempMime = trim(@exec('file -bi ' . @escapeshellarg($filepath))))) {
+				return $tempMime;
+			}
+		}
+
+		if (function_exists('pathinfo')) {
+			if (($pathinfo = @pathinfo($filepath))) {
+				if (in_array($pathinfo['extension'], $this->imageTypes) && $size = getimagesize($filepath)) {
+					return $size['mime'];
+				}
+			}
+		}
+
+		// return default which is totally insecure
+		return $_FILES['file']['type'];
 	}
 
 	/**
@@ -488,6 +491,7 @@ class tx_pluploadfe_upload {
 
 		if (array_key_exists($sentExt, $this->mimeTypes)) {
 			$mimeType = explode(';', $this->getMimeType($filepath));
+
 			// check if mime type fits the given file extension
 			if (in_array($mimeType[0], $this->mimeTypes[$sentExt])) {
 				$flag = TRUE;
