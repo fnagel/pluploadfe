@@ -211,7 +211,7 @@ class tx_pluploadfe_upload {
 		// check for valid FE user
 		if ($this->config['feuser_required']) {
 			if ($this->getFeUser()->user['username'] == '') {
-				die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "TYPO3 user session expired."}, "id" : ""}');
+				$this->sendErrorResponse('TYPO3 user session expired.');
 			}
 		}
 
@@ -245,23 +245,33 @@ class tx_pluploadfe_upload {
 	}
 
 	/**
+	 * Set HTTP headers for no cache etc
+	 *
+	 * @param $message
+	 * @param int $code
+	 */
+	protected function sendErrorResponse($message, $code = 100) {
+		die('{"jsonrpc" : "2.0", "error" : {"code": ' . $code . ', "message": ' . $message . '}, "id" : ""}');
+	}
+
+	/**
 	 * Gets the plugin configuration
 	 *
 	 * @return void
 	 */
 	protected function checkUploadConfig() {
 		if (!count($this->config)) {
-			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Configuration record not found or invalid."}, "id" : ""}');
+			$this->sendErrorResponse('Configuration record not found or invalid.');
 		}
 
 		if (!strlen($this->config['extensions'])) {
-			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Missing allowed file extension configuration."}, "id" : ""}');
+			$this->sendErrorResponse('Missing allowed file extension configuration.');
 		}
 
 		// check if path is allowed and valid
 		$path = $this->config['upload_path'];
 		if (!(strlen($path) > 0 && t3lib_div::isAllowedAbsPath(PATH_site . $path) && t3lib_div::validPathStr($path))) {
-			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Upload directory not valid."}, "id" : ""}');
+			$this->sendErrorResponse('Upload directory not valid.');
 		}
 	}
 
@@ -275,7 +285,7 @@ class tx_pluploadfe_upload {
 
 		// config id given?
 		if (!$configUid) {
-			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "No config record ID given."}, "id" : ""}');
+			$this->sendErrorResponse('No config record ID given.');
 		}
 
 		tslib_eidtools::connectDB();
@@ -316,12 +326,12 @@ class tx_pluploadfe_upload {
 
 		// check if file extension is allowed (configuration record)
 		if (!in_array($this->fileExtension, $extensions)) {
-			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "File extension is not allowed."}, "id" : ""}');
+			$this->sendErrorResponse('File extension is not allowed.');
 		}
 
 		// check if file extension is allowed on this TYPO3 installation
 		if (!t3lib_div::verifyFilenameAgainstDenyPattern($fileName)) {
-			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "File extension is not allowed on this TYPO3 installation."}, "id" : ""}');
+			$this->sendErrorResponse('File extension is not allowed on this TYPO3 installation.');
 		}
 	}
 
@@ -381,7 +391,7 @@ class tx_pluploadfe_upload {
 		// create target dir
 		if (t3lib_div::mkdir_deep(PATH_site, $this->upload_path)) {
 			// mkdir_deep: If error, returns error string.
-			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to create upload directory."}, "id" : ""}');
+			$this->sendErrorResponse('Failed to create upload directory.');
 		}
 	}
 
@@ -406,21 +416,21 @@ class tx_pluploadfe_upload {
 
 		// Open temp file
 		if (!$out = @fopen("{$filePath}.part", $chunks ? "ab" : "wb")) {
-			die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+			$this->sendErrorResponse('Failed to open output stream.', 102);
 		}
 
 		if (!empty($_FILES)) {
 			if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES["file"]["tmp_name"])) {
-				die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+				$this->sendErrorResponse('Failed to move uploaded file.', 103);
 			}
 
 			// Read binary input stream and append it to temp file
 			if (!$in = @fopen($_FILES["file"]["tmp_name"], "rb")) {
-				die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+				$this->sendErrorResponse('Failed to open input stream.', 101);
 			}
 		} else {
 			if (!$in = @fopen("php://input", "rb")) {
-				die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+				$this->sendErrorResponse('Failed to open input stream.', 101);
 			}
 		}
 
@@ -460,7 +470,7 @@ class tx_pluploadfe_upload {
 			// if mime type is not allowed: remove file
 			if (!$this->checkMimeType($this->fileExtension, $filepath)) {
 				@unlink($filepath);
-				die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "File mime type is not allowed."}, "id" : ""}');
+				$this->sendErrorResponse('File mime type is not allowed.');
 			}
 		}
 
