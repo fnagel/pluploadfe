@@ -215,7 +215,7 @@ class tx_pluploadfe_upload {
 		$this->checkFileExtension();
 
 		// get upload path
-		$this->uploadPath = $this->getUploadDir($this->config['uploadPath'], $this->config['obscure_dir']);
+		$this->uploadPath = $this->getUploadDir($this->config['upload_path'], $this->config['obscure_dir']);
 		$this->makeSureUploadTargetExists();
 
 		// check for valid FE user
@@ -279,7 +279,7 @@ class tx_pluploadfe_upload {
 		}
 
 		// check if path is allowed and valid
-		$path = $this->config['uploadPath'];
+		$path = $this->config['upload_path'];
 		if (!(strlen($path) > 0 && t3lib_div::isAllowedAbsPath(PATH_site . $path) && t3lib_div::validPathStr($path))) {
 			$this->sendErrorResponse('Upload directory not valid.');
 		}
@@ -301,7 +301,7 @@ class tx_pluploadfe_upload {
 		tslib_eidtools::connectDB();
 
 		$config = array();
-		$select = 'uploadPath, extensions, feuser_required, save_session, obscure_dir, check_mime';
+		$select = 'upload_path, extensions, feuser_required, save_session, obscure_dir, check_mime';
 		$table = 'tx_pluploadfe_config';
 		$where = 'uid = ' . $configUid;
 		$where .= ' AND deleted = 0';
@@ -374,6 +374,9 @@ class tx_pluploadfe_upload {
 			$chunkedPath = $this->getSessionData('chunk_path');
 			if ($chunkedPath && file_exists($chunkedPath . DIRECTORY_SEPARATOR . $this->getFileName() . '.part')) {
 				return $chunkedPath;
+			} else {
+				// reset session
+				$this->saveDatainSession(NULL, 'chunk_path');
 			}
 		}
 
