@@ -37,6 +37,9 @@ if (!defined('PATH_typo3conf')) {
  */
 class tx_pluploadfe_upload {
 
+	/**
+	 * @var array
+	 */
 	private $imageTypes = array(
 		'gif',
 		'jpeg',
@@ -58,6 +61,9 @@ class tx_pluploadfe_upload {
 		'ico'
 	);
 
+	/**
+	 * @var array
+	 */
 	private $mimeTypes = array(
 		'3dmf' => array('x-world/x-3dmf'),
 		'3dm' => array('x-world/x-3dmf'),
@@ -166,42 +172,97 @@ class tx_pluploadfe_upload {
 	);
 
 	/**
+	 * @var boolean
+	 */
+	private $chunkedUpload = FALSE;
+
+	/**
+	 * @var string
+	 */
+	private $fileExtension = '';
+
+	/**
+	 * @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
+	 */
+	private $feUserObj = NULL;
+
+	/**
 	 * Handles incoming upload requests
 	 *
 	 * @return    void
 	 */
 	public function main() {
-		// HTTP headers for no cache etc
-		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-		header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-		header('Cache-Control: no-store, no-cache, must-revalidate');
-		header('Cache-Control: post-check=0, pre-check=0', FALSE);
-		header('Pragma: no-cache');
+		$this->setHeaderData();
 
+		// get configuration record
 		$this->config = $this->getUploadConfig();
-		if (!count($this->config)) {
-			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Configuration record not found or invalid."}, "id" : ""}');
-		}
+		$this->checkUploadConfig();
+
+		// One file or chunked?
+		$this->chunkedUpload = (isset($_REQUEST['chunks']) && intval($_REQUEST['chunks']) > 1);
 
 		// check file extension
 		$this->checkFileExtension();
 
-		// check, create and set upload path
+		// get upload path
 		$this->upload_path = $this->getUploadDir($this->config['upload_path'], $this->config['obscure_dir']);
-
-		// init fe user if needed
-		if ($this->config['feuser_required'] || $this->config['save_session']) {
-			$this->feUserObj = tslib_eidtools::initFeUser();
-		}
+		$this->makeSureUploadTargetExists();
 
 		// check for valid FE user
 		if ($this->config['feuser_required']) {
-			if ($this->feUserObj->user['username'] == '') {
+			if ($this->getFeUser()->user['username'] == '') {
 				die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "TYPO3 user session expired."}, "id" : ""}');
 			}
 		}
 
 		$this->uploadFile();
+	}
+
+	/**
+	 * Get FE user object
+	 *
+	 * @return \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
+	 */
+	protected function getFeUser() {
+		if ($this->feUserObj === NULL) {
+			$this->feUserObj = tslib_eidtools::initFeUser();
+		}
+
+		return $this->feUserObj;
+	}
+
+	/**
+	 * Set HTTP headers for no cache etc
+	 *
+	 * @return void
+	 */
+	protected function setHeaderData() {
+		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+		header('Cache-Control: no-store, no-cache, must-revalidate');
+		header('Cache-Control: post-check=0, pre-check=0', FALSE);
+		header('Pragma: no-cache');
+	}
+
+	/**
+	 * Gets the plugin configuration
+	 *
+	 * @return void
+	 */
+	protected function checkUploadConfig() {
+		if (!count($this->config)) {
+			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Configuration record not found or invalid."}, "id" : ""}');
+		}
+
+		if (!strlen($this->config['extensions'])) {
+			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Missing allowed file extension configuration."}, "id" : ""}');
+		}
+
+		// check if path is allowed and valid
+		$path = $this->config['upload_path'];
+		if (!(strlen($path) > 0 && t3lib_div::isAllowedAbsPath(PATH_site . $path) && t3lib_div::validPathStr($path))) {
+			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Upload directory not valid."}, "id" : ""}');
+		}
 	}
 
 	/**
@@ -249,22 +310,18 @@ class tx_pluploadfe_upload {
 	 * @return void
 	 */
 	protected function checkFileExtension() {
-		if (!strlen($this->config['extensions'])) {
-			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Missing allowed file extension configuration."}, "id" : ""}');
-		}
-
 		$fileName = $this->getFileName();
 		$this->fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 		$extensions = t3lib_div::trimExplode(',', $this->config['extensions'], true);
 
 		// check if file extension is allowed (configuration record)
-		if (in_array($this->fileExtension, $extensions)) {
-			// check if file extension is allowed on this TYPO3 installation
-			if (!t3lib_div::verifyFilenameAgainstDenyPattern($fileName)) {
-				die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "File extension is not allowed on this TYPO3 installation."}, "id" : ""}');
-			}
-		} else {
+		if (!in_array($this->fileExtension, $extensions)) {
 			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "File extension is not allowed."}, "id" : ""}');
+		}
+
+		// check if file extension is allowed on this TYPO3 installation
+		if (!t3lib_div::verifyFilenameAgainstDenyPattern($fileName)) {
+			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "File extension is not allowed on this TYPO3 installation."}, "id" : ""}');
 		}
 	}
 
@@ -274,13 +331,15 @@ class tx_pluploadfe_upload {
 	 * @return string
 	 */
 	protected function getFileName() {
+		$filename = uniqid('file_');
+
 		if (isset($_REQUEST['name'])) {
-			return $_REQUEST['name'];
+			$filename = $_REQUEST['name'];
 		} elseif (!empty($_FILES)) {
-			return $_FILES['file']['name'];
+			$filename = $_FILES['file']['name'];
 		}
 
-		return uniqid('file_');
+		return preg_replace('/[^\w\._]+/', '_', $filename);
 	}
 
 	/**
@@ -291,29 +350,39 @@ class tx_pluploadfe_upload {
 	 * @return string
 	 */
 	protected function getUploadDir($path, $obscure = FALSE) {
-		// check if path is allowed and valid
-		if (strlen($path) > 0 && t3lib_div::isAllowedAbsPath(PATH_site . $path) && t3lib_div::validPathStr($path)) {
-			// make sure we have no trailing slash
-			$path = t3lib_div::dirname($path);
-
-			// obscure directory
-			if ($obscure) {
-				$path = $path . DIRECTORY_SEPARATOR . $this->getRandomDirName(20);
+		if ($this->chunkedUpload) {
+			$chunkedPath = $this->getSessionData('chunk_path');
+			if ($chunkedPath && file_exists($chunkedPath . DIRECTORY_SEPARATOR . $this->getFileName() . '.part')) {
+				return $chunkedPath;
 			}
+		}
 
-			// check if upload path exists
-			if (!file_exists($path)) {
-				// create target dir
-				if (t3lib_div::mkdir_deep(PATH_site, $path)) {
-					// mkdir_deep: If error, returns error string.
-					die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to create upload directory."}, "id" : ""}');
-				}
-			}
-		} else {
-			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Upload directory not valid."}, "id" : ""}');
+		// make sure we have no trailing slash
+		$path = t3lib_div::dirname($path);
+
+		// obscure directory
+		if ($obscure) {
+			$path = $path . DIRECTORY_SEPARATOR . $this->getRandomDirName(20);
 		}
 
 		return $path;
+	}
+
+	/**
+	 * Checks if upload path exists
+	 *
+	 * @return void
+	 */
+	protected function makeSureUploadTargetExists() {
+		if (file_exists($this->upload_path)) {
+			return;
+		}
+
+		// create target dir
+		if (t3lib_div::mkdir_deep(PATH_site, $this->upload_path)) {
+			// mkdir_deep: If error, returns error string.
+			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to create upload directory."}, "id" : ""}');
+		}
 	}
 
 	/**
@@ -333,8 +402,7 @@ class tx_pluploadfe_upload {
 		$chunks = isset($_REQUEST['chunks']) ? intval($_REQUEST['chunks']) : 0;
 
 		// Clean the fileName for security reasons
-		$fileName = preg_replace('/[^\w\._]+/', '_', $this->getFileName());
-		$filePath = $this->upload_path . DIRECTORY_SEPARATOR . $fileName;
+		$filePath = $this->upload_path . DIRECTORY_SEPARATOR . $this->getFileName();
 
 		// Open temp file
 		if (!$out = @fopen("{$filePath}.part", $chunks ? "ab" : "wb")) {
@@ -370,6 +438,11 @@ class tx_pluploadfe_upload {
 			$this->processFile($filePath);
 		}
 
+		// save chunked upload dir
+		if ($this->chunkedUpload) {
+			$this->saveDatainSession($this->upload_path, 'chunk_path');
+		}
+
 		// Return JSON-RPC response if upload process is successfully finished
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 	}
@@ -392,20 +465,22 @@ class tx_pluploadfe_upload {
 		}
 
 		t3lib_div::fixPermissions($filepath);
-		if ($this->config['save_session'] && $this->feUserObj) {
-			$this->updateSession($filepath);
+
+		if ($this->config['save_session']) {
+			$this->saveFileInSession($filepath);
 		}
 	}
 
 	/**
-	 * Store session data
+	 * Store file in session
 	 *
-	 * @param $filepath
+	 * @param string $filepath
 	 * @param string $key
+	 *
 	 * @return void
 	 */
-	protected function updateSession($filepath, $key = 'tx_pluploadfe_files') {
-		$currentData = $this->feUserObj->getKey('ses', $key);
+	protected function saveFileInSession($filepath, $key = 'files') {
+		$currentData = $this->getSessionData($key);
 
 		if (!is_array($currentData)) {
 			$currentData = array();
@@ -413,8 +488,30 @@ class tx_pluploadfe_upload {
 
 		$currentData[] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $filepath;
 
-		$this->feUserObj->setKey('ses', $key, $currentData);
-		$this->feUserObj->storeSessionData();
+		$this->saveDatainSession($currentData, $key);
+	}
+
+	/**
+	 * Store session data
+	 *
+	 * @param mixed $data
+	 * @param string $key
+	 *
+	 * @return void
+	 */
+	protected function saveDatainSession($data, $key = 'data') {
+		$this->getFeUser()->setAndSaveSessionData('tx_pluploadfe_' . $key, $data);
+	}
+
+	/**
+	 * Get session data
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed
+	 */
+	protected function getSessionData($key = 'data') {
+		return $this->getFeUser()->getSessionData('tx_pluploadfe_' . $key);
 	}
 
 	/**

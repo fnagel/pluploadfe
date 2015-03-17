@@ -18,13 +18,9 @@
 Plupload's chunked upload feature
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-It should be possible to use this feature but its not fully tested
-yet. I recommend not to use too small chunks as each upload operation
-is performance hungry (DB request, FE user check, etc.).
+Since version 1.1.0 the chunked upload feature of plupload is officially supported.
 
-Please give feedback if you test this feature of Plupload with this
-TYPO3 extension.
+See plupload documentation for more information: http://plupload.com/docs/Chunking
 
-Please note: MIME type check is not available when using chunked
-uploads because MIME type is always “application/octet-stream”.
-
+It's recommended not to use too small chunks as each upload operation
+is expensive regarding performance (DB request, FE user check, etc.).
