@@ -1,3 +1,9 @@
+2015-03-18 Felix Nagel  <info@felixnagel.com>
+
+	released version 1.1.0 (no changes required)
+	* improved: Upload class refactored
+	* improved: Support for chunked upload feature
+
 2014-12-13 Felix Nagel  <info@felixnagel.com>
 
 	released version 1.0.2 (no changes required)
