@@ -16,19 +16,11 @@ $EM_CONF[$_EXTKEY] = array(
 	'category' => 'plugin',
 	'author' => 'Felix Nagel',
 	'author_email' => 'info@felixnagel.com',
-	'shy' => '',
-	'dependencies' => '',
-	'conflicts' => '',
-	'priority' => '',
-	'module' => '',
 	'state' => 'stable',
 	'internal' => '',
-	'uploadfolder' => 1,
+	'uploadfolder' => '1',
 	'createDirs' => '',
-	'modify_tables' => '',
-	'clearCacheOnLoad' => 0,
-	'lockType' => '',
-	'author_company' => '',
+	'clearCacheOnLoad' => 1,
 	'version' => '1.0.2',
 	'constraints' => array(
 		'depends' => array(
@@ -39,7 +31,6 @@ $EM_CONF[$_EXTKEY] = array(
 			'mailfiles' => '',
 		),
 	),
-	'suggests' => array(),
 );
 
 ?>
