@@ -206,6 +206,7 @@ class tx_pluploadfe_upload {
 
 		// get configuration record
 		$this->config = $this->getUploadConfig();
+		$this->processConfig();
 		$this->checkUploadConfig();
 
 		// One file or chunked?
@@ -319,6 +320,20 @@ class tx_pluploadfe_upload {
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 		return $config;
+	}
+
+
+	/**
+	 * Process the configuration
+	 *
+	 * @return array
+	 */
+	protected function processConfig() {
+		if (version_compare(TYPO3_branch, '6.0', '>')) {
+			// Make sure FAL references work
+			$resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+			$this->config['upload_path'] = $resourceFactory->retrieveFileOrFolderObject($this->config['upload_path'])->getPublicUrl();
+		}
 	}
 
 	/**
