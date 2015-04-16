@@ -1,3 +1,9 @@
+2015-04-16 Felix Nagel  <info@felixnagel.com>
+
+	released version 1.1.1 (changes required)
+	* fixed: processing of FAL references (upload path)
+	* changed: Use relative file links instead of absolute
+
 2015-03-18 Felix Nagel  <info@felixnagel.com>
 
 	released version 1.1.0 (no changes required)
