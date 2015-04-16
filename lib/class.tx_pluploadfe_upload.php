@@ -524,7 +524,7 @@ class tx_pluploadfe_upload {
 			$currentData = array();
 		}
 
-		$currentData[] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $filepath;
+		$currentData[] = $filepath;
 
 		$this->saveDatainSession($currentData, $key);
 	}
