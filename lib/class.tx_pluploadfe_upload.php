@@ -262,7 +262,16 @@ class tx_pluploadfe_upload {
 	 * @param int $code
 	 */
 	protected function sendErrorResponse($message, $code = 100) {
-		die('{"jsonrpc" : "2.0", "error" : {"code": ' . $code . ', "message": ' . $message . '}, "id" : ""}');
+		$output = array(
+			'jsonrpc' => '2.0',
+			'error' => array(
+				'code' => $code,
+				'message' => $message
+			),
+			'id' => ''
+		);
+
+		die(json_encode($output));
 	}
 
 	/**
