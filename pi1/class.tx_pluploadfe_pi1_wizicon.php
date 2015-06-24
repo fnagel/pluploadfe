@@ -41,7 +41,7 @@ class tx_pluploadfe_pi1_wizicon {
 	 * @param    array $wizardItems : The wizard items
 	 * @return   array Modified array with wizard items
 	 */
-	function proc($wizardItems) {
+	public function proc($wizardItems) {
 		$localization = $this->includeLocalLang();
 
 		$wizardItems['plugins_tx_pluploadfe_pi1'] = array(
@@ -59,14 +59,13 @@ class tx_pluploadfe_pi1_wizicon {
 	 *
 	 * @return   array The array with language labels
 	 */
-	function includeLocalLang() {
+	protected function includeLocalLang() {
 		$llFile = ExtensionManagementUtility::extPath('pluploadfe') . 'locallang.xml';
 		$localization = GeneralUtility::readLLfile($llFile, $GLOBALS['LANG']->lang);
 
 		return $localization;
 	}
 }
-
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/pi1/class.tx_pluploadfe_pi1_wizicon.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/pi1/class.tx_pluploadfe_pi1_wizicon.php']);

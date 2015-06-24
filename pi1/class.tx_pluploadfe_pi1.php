@@ -97,7 +97,6 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 		return $this->pi_wrapInBaseClass($content);
 	}
 
-
 	/**
 	 * Checks config
 	 *
@@ -111,7 +110,6 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 
 		$this->config = $this->getDatabase()->exec_SELECTgetSingleRow($select, $table, $where);
 	}
-
 
 	/**
 	 * Checks config
