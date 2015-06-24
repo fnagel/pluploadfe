@@ -1,8 +1,9 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2014 Felix Nagel <info@felixnagel.com>
+ *  (c) 2011-2015 Felix Nagel <info@felixnagel.com>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,6 +23,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Plugin 'pluploadfe' for the 'pluploadfe' extension.
@@ -30,7 +34,7 @@
  * @package    TYPO3
  * @subpackage    tx_pluploadfe
  */
-class tx_pluploadfe_pi1 extends tslib_pibase {
+class tx_pluploadfe_pi1 extends AbstractPlugin {
 
 	/**
 	 * @var string
@@ -104,15 +108,8 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 		$table = 'tx_pluploadfe_config';
 		$where = 'uid = ' . $this->configUid;
 		$where .= $GLOBALS['TSFE']->sys_page->enableFields($table);
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where, '', '', '');
 
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			if (is_array($row)) {
-				$this->config = $row;
-			}
-		}
-
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$this->config = $this->getDatabase()->exec_SELECTgetSingleRow($select, $table, $where);
 	}
 
 
@@ -149,7 +146,7 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 
 		// fill marker array
 		$markerArray = $this->getDefaultMarker();
-		$markerArray['###UPLOAD_FILE###'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') .
+		$markerArray['###UPLOAD_FILE###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') .
 			'index.php?eID=pluploadfe&configUid=' . $this->configUid;
 
 		// replace markers in the template
@@ -187,11 +184,11 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 	 */
 	protected function getDefaultMarker() {
 		$markerArray = array();
-		$extensionsArray = t3lib_div::trimExplode(',', $this->config['extensions'], TRUE);
+		$extensionsArray = GeneralUtility::trimExplode(',', $this->config['extensions'], TRUE);
 
 		$markerArray['###UID###'] = $this->uid;
 		$markerArray['###LANGUAGE###'] = $GLOBALS['TSFE']->config['config']['language'];
-		$markerArray['###EXTDIR_PATH###'] = t3lib_extMgm::siteRelPath($this->extKey);
+		$markerArray['###EXTDIR_PATH###'] = ExtensionManagementUtility::siteRelPath($this->extKey);
 		$markerArray['###FILE_EXTENSIONS###'] = implode(',', $extensionsArray);
 
 		return $markerArray;
@@ -224,13 +221,22 @@ class tx_pluploadfe_pi1 extends tslib_pibase {
 	 */
 	protected function handleError($msg) {
 		// error
-		t3lib_div::sysLog($msg, $this->extKey, 3);
+		GeneralUtility::sysLog($msg, $this->extKey, 3);
 
 		// write dev log if enabled
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
 			// fatal error
-			t3lib_div::devLog($msg, $this->extKey, 3);
+			GeneralUtility::devLog($msg, $this->extKey, 3);
 		}
+	}
+
+	/**
+	 * Get database connection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabase() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 }
 

@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,6 +23,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Class that adds the wizard icon.
@@ -39,14 +42,12 @@ class tx_pluploadfe_pi1_wizicon {
 	 * @return   array Modified array with wizard items
 	 */
 	function proc($wizardItems) {
-		global $LANG;
-
-		$LL = $this->includeLocalLang();
+		$localization = $this->includeLocalLang();
 
 		$wizardItems['plugins_tx_pluploadfe_pi1'] = array(
-			'icon' => t3lib_extMgm::extRelPath('pluploadfe') . 'pi1/ce_wiz.gif',
-			'title' => $LANG->getLLL('pi1_title', $LL),
-			'description' => $LANG->getLLL('pi1_plus_wiz_description', $LL),
+			'icon' => ExtensionManagementUtility::extRelPath('pluploadfe') . 'pi1/ce_wiz.gif',
+			'title' => $GLOBALS['LANG']->getLLL('pi1_title', $localization),
+			'description' => $GLOBALS['LANG']->getLLL('pi1_plus_wiz_description', $localization),
 			'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=pluploadfe_pi1'
 		);
 
@@ -59,10 +60,10 @@ class tx_pluploadfe_pi1_wizicon {
 	 * @return   array The array with language labels
 	 */
 	function includeLocalLang() {
-		$llFile = t3lib_extMgm::extPath('pluploadfe') . 'locallang.xml';
-		$LOCAL_LANG = t3lib_div::readLLfile($llFile, $GLOBALS['LANG']->lang);
+		$llFile = ExtensionManagementUtility::extPath('pluploadfe') . 'locallang.xml';
+		$localization = GeneralUtility::readLLfile($llFile, $GLOBALS['LANG']->lang);
 
-		return $LOCAL_LANG;
+		return $localization;
 	}
 }
 

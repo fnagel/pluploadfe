@@ -26,6 +26,8 @@ if (!defined('PATH_typo3conf')) {
 	die ();
 }
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Utility\EidUtility;
 
 /**
  * This class uploads files
@@ -236,7 +238,7 @@ class tx_pluploadfe_upload {
 	 */
 	protected function getFeUser() {
 		if ($this->feUserObj === NULL) {
-			$this->feUserObj = tslib_eidtools::initFeUser();
+			$this->feUserObj = EidUtility::initFeUser();
 		}
 
 		return $this->feUserObj;
@@ -290,7 +292,11 @@ class tx_pluploadfe_upload {
 
 		// check if path is allowed and valid
 		$path = $this->config['upload_path'];
-		if (!(strlen($path) > 0 && t3lib_div::isAllowedAbsPath(PATH_site . $path) && t3lib_div::validPathStr($path))) {
+		if (!(
+			strlen($path) > 0 &&
+			GeneralUtility::isAllowedAbsPath(PATH_site . $path) &&
+			GeneralUtility::validPathStr($path)
+		)) {
 			$this->sendErrorResponse('Upload directory not valid.');
 		}
 	}
@@ -301,16 +307,13 @@ class tx_pluploadfe_upload {
 	 * @return array
 	 */
 	protected function getUploadConfig() {
-		$configUid = intval(t3lib_div::_GP('configUid'));
+		$configUid = intval(GeneralUtility::_GP('configUid'));
 
 		// config id given?
 		if (!$configUid) {
 			$this->sendErrorResponse('No config record ID given.');
 		}
 
-		tslib_eidtools::connectDB();
-
-		$config = array();
 		$select = 'upload_path, extensions, feuser_required, save_session, obscure_dir, check_mime';
 		$table = 'tx_pluploadfe_config';
 		$where = 'uid = ' . $configUid;
@@ -318,15 +321,8 @@ class tx_pluploadfe_upload {
 		$where .= ' AND hidden = 0';
 		$where .= ' AND starttime <= ' . $GLOBALS['SIM_ACCESS_TIME'];
 		$where .= ' AND ( endtime = 0 OR endtime > ' . $GLOBALS['SIM_ACCESS_TIME'] . ')';
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $table, $where, '', '', '');
 
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			if (is_array($row)) {
-				$config = $row;
-			}
-		}
-
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		$config = $this->getDatabase()->exec_SELECTgetSingleRow($select, $table, $where);
 
 		return $config;
 	}
@@ -338,11 +334,9 @@ class tx_pluploadfe_upload {
 	 * @return array
 	 */
 	protected function processConfig() {
-		if (version_compare(TYPO3_branch, '6.0', '>')) {
-			// Make sure FAL references work
-			$resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
-			$this->config['upload_path'] = $resourceFactory->retrieveFileOrFolderObject($this->config['upload_path'])->getPublicUrl();
-		}
+		// Make sure FAL references work
+		$resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+		$this->config['upload_path'] = $resourceFactory->retrieveFileOrFolderObject($this->config['upload_path'])->getPublicUrl();
 	}
 
 	/**
@@ -356,7 +350,7 @@ class tx_pluploadfe_upload {
 	protected function checkFileExtension() {
 		$fileName = $this->getFileName();
 		$this->fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-		$extensions = t3lib_div::trimExplode(',', $this->config['extensions'], TRUE);
+		$extensions = GeneralUtility::trimExplode(',', $this->config['extensions'], TRUE);
 
 		// check if file extension is allowed (configuration record)
 		if (!in_array($this->fileExtension, $extensions)) {
@@ -364,7 +358,7 @@ class tx_pluploadfe_upload {
 		}
 
 		// check if file extension is allowed on this TYPO3 installation
-		if (!t3lib_div::verifyFilenameAgainstDenyPattern($fileName)) {
+		if (!GeneralUtility::verifyFilenameAgainstDenyPattern($fileName)) {
 			$this->sendErrorResponse('File extension is not allowed on this TYPO3 installation.');
 		}
 	}
@@ -405,7 +399,7 @@ class tx_pluploadfe_upload {
 		}
 
 		// make sure we have no trailing slash
-		$path = t3lib_div::dirname($path);
+		$path = GeneralUtility::dirname($path);
 
 		// obscure directory
 		if ($obscure) {
@@ -426,8 +420,9 @@ class tx_pluploadfe_upload {
 		}
 
 		// create target dir
-		if (t3lib_div::mkdir_deep(PATH_site, $this->uploadPath)) {
-			// mkdir_deep: If error, returns error string.
+		try {
+			GeneralUtility::mkdir_deep(PATH_site, $this->uploadPath);
+		} catch (\Exception $e) {
 			$this->sendErrorResponse('Failed to create upload directory.');
 		}
 	}
@@ -511,7 +506,7 @@ class tx_pluploadfe_upload {
 			}
 		}
 
-		t3lib_div::fixPermissions($filepath);
+		GeneralUtility::fixPermissions($filepath);
 
 		if ($this->config['save_session']) {
 			$this->saveFileInSession($filepath);
@@ -647,6 +642,16 @@ class tx_pluploadfe_upload {
 
 		return $flag;
 	}
+
+	/**
+	 * Get database connection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabase() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/lib/class.tx_plupload_upload.php']) {
@@ -656,7 +661,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploa
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE)) {
 	die ();
 } else {
-	$upload = t3lib_div::makeInstance('tx_pluploadfe_upload');
+	$upload = GeneralUtility::makeInstance('tx_pluploadfe_upload');
 	$upload->main();
 }
 
