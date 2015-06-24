@@ -61,19 +61,10 @@ $TCA['tx_pluploadfe_config'] = array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.upload_path',
 			'config' => array(
-				'type' => 'input',
-				'size' => '48',
-				'max' => '200',
-				'wizards' => array(
-					'_PADDING' => 2,
-					'link' => array(
-						'type' => 'popup',
-						'title' => 'Link',
-						'icon' => 'link_popup.gif',
-						'script' => 'browse_links.php?mode=wizard&act=folder',
-						'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
-					),
-				),
+				'type' => 'group',
+				'internal_type' => 'folder',
+				'size' => '1',
+				'maxitems' => '1',
 				'eval' => 'required,nospace',
 				'default' => 'fileadmin',
 			)
