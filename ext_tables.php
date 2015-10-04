@@ -40,10 +40,18 @@ $TCA['tx_pluploadfe_config'] = array(
 			'endtime' => 'endtime',
 		),
 		'dynamicConfigFile' => TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'tca.php',
-		'iconfile' => TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'icon_tx_pluploadfe_config.gif',
+		'iconfile' => 'EXT:pluploadfe/icon_tx_pluploadfe_config.gif',
 		'searchFields' => 'title,upload_path',
 	),
 );
+
+// Use old icon path for TYPO3 6.2
+// @todo Remove this when 6.2 is no longer relevant
+if (version_compare(TYPO3_branch, '7.0', '<')) {
+	$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
+	$GLOBALS['TCA']['tx_pluploadfe_config']['ctrl']['iconfile'] = $extensionPath . 'icon_tx_pluploadfe_config.gif';
+}
+
 
 // ADD CONFIG FIELD TO TT_CONTENT
 $tempColumns = array(
@@ -70,4 +78,3 @@ $tempColumns = array(
 TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY . '_pi1'] = 'tx_pluploadfe_config';
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY . '_pi1'] = 'layout,select_key,pages,recursive';
-?>
