@@ -8,8 +8,8 @@ a highly usable and advanced upload handler.
 ToDo
 ----
 
-* Refactor documentation
-* Update Plupload?
+* Reintroduce folder type for upload path
+* Update Plupload to 2.1.8
 
 
 
