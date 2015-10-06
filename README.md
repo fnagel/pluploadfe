@@ -4,12 +4,13 @@ TYPO3 pluploadfe
 A TYPO3 CMS extension providing an API and a FE plugin for using plupload, 
 a highly usable and advanced upload handler.
 
+http://www.plupload.com/
+
 
 ToDo
 ----
 
-* Reintroduce folder type for upload path
-* Update Plupload to 2.1.8
+* Reintroduce folder type for upload path for TYPO3 > 7.5
 
 
 
