@@ -27,10 +27,24 @@ Updade Guide
 
 
 
-Upgrade to 1.1.0
+Upgrade to 1.3.0
+^^^^^^^^^^^^^^^^
+
+Extension is now compatible with TYPO3 CMS 7.5.
+
+Plupload plugin has been updated, make sure everything works as expected.
+
+You need to clear the cache in backend after upgrading.
+
+
+
+Upgrade to 1.2.0
 ^^^^^^^^^^^^^^^^
 
 Extension is now compatible with TYPO3 CMS 7.x.
+
+Plupload plugin has been updated, make sure everything works as expected.
+
 You need to clear the cache in backend after upgrading.
 
 
