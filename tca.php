@@ -8,7 +8,6 @@ $TCA['tx_pluploadfe_config'] = array(
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,fe_group,upload_path,feuser_required'
 	),
-	'feInterface' => $TCA['tx_pluploadfe_config']['feInterface'],
 	'columns' => array(
 		'hidden' => array(
 			'exclude' => 1,
