@@ -3,8 +3,8 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-$TCA['tx_pluploadfe_config'] = array(
-	'ctrl' => $TCA['tx_pluploadfe_config']['ctrl'],
+$GLOBALS['TCA']['tx_pluploadfe_config'] = array(
+	'ctrl' => $GLOBALS['TCA']['tx_pluploadfe_config']['ctrl'],
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,fe_group,upload_path,feuser_required'
 	),
