@@ -52,7 +52,9 @@ $GLOBALS['TCA']['tx_pluploadfe_config'] = array(
 // @todo Remove this when 6.2 is no longer relevant
 if (version_compare(TYPO3_branch, '7.0', '<')) {
 	$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
-	$GLOBALS['TCA']['tx_pluploadfe_config']['ctrl']['iconfile'] = $extensionPath . 'icon_tx_pluploadfe_config.gif';
+	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(array(
+		'config' => $extensionPath . 'icon_tx_pluploadfe_config.gif',
+	), 'pluploadfe');
 } else {
 	/* @var $iconRegistry \TYPO3\CMS\Core\Imaging\IconRegistry */
 	$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
