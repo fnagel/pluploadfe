@@ -30,7 +30,7 @@ Updade Guide
 Upgrade to 1.3.x
 ^^^^^^^^^^^^^^^^
 
-Extension is now compatible with TYPO3 CMS 7.5.
+Extension is now compatible with TYPO3 CMS 7.5 and 7.6.
 
 Plupload plugin has been updated, make sure everything works as expected.
 
