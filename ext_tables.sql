@@ -15,12 +15,13 @@ CREATE TABLE tx_pluploadfe_config (
 	upload_path text,
 	extensions text,
 	feuser_required tinyint(3) DEFAULT '1' NOT NULL,
+	feuser_field tinytext NOT NULL,
 	save_session tinyint(3) DEFAULT '0' NOT NULL,
 	obscure_dir tinyint(3) DEFAULT '1' NOT NULL,
 	check_mime tinyint(3) DEFAULT '1' NOT NULL,
 	
 	PRIMARY KEY (uid),
-	KEY parent (pid),
+	KEY parent (pid)
 );
 
 

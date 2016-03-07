@@ -11,6 +11,13 @@
             <label index="tx_pluploadfe_config.upload_path">Upload path</label>
             <label index="tx_pluploadfe_config.extensions">Allowed file extensions</label>
             <label index="tx_pluploadfe_config.feuser_required">Logged-in users only</label>
+            <label index="tx_pluploadfe_config.feuser_field">Save in subfolders</label>
+            <label index="tx_pluploadfe_config.feuser_field.default"></label>
+            <label index="tx_pluploadfe_config.feuser_field.username">FE-Username</label>
+            <label index="tx_pluploadfe_config.feuser_field.uid">FE-User uid</label>
+            <label index="tx_pluploadfe_config.feuser_field.realname">FE-User realname</label>
+            <label index="tx_pluploadfe_config.feuser_field.pid">FE-User storagefolder</label>
+            <label index="tx_pluploadfe_config.feuser_field.lastlogin">FE-User logindate</label>
             <label index="tx_pluploadfe_config.save_session">Save filepaths in user session</label>
             <label index="tx_pluploadfe_config.obscure_dir">Obscure path (random directory)</label>
             <label index="tx_pluploadfe_config.check_mime">Check MIME type</label>
@@ -22,6 +29,11 @@
             <label index="tx_pluploadfe_config.upload_path">Upload Pfad</label>
             <label index="tx_pluploadfe_config.extensions">Erlaubte Dateierweiterungen</label>
             <label index="tx_pluploadfe_config.feuser_required">Nur angemeldete Benutzer erlauben</label>
+            <label index="tx_pluploadfe_config.feuser_field.username">FE-Username</label>
+            <label index="tx_pluploadfe_config.feuser_field.uid">FE-User uid</label>
+            <label index="tx_pluploadfe_config.feuser_field.realname">FE-User realname</label>
+            <label index="tx_pluploadfe_config.feuser_field.pid">FE-User storagefolder</label>
+            <label index="tx_pluploadfe_config.feuser_field.lastlogin">FE-User logindate</label>
             <label index="tx_pluploadfe_config.save_session">Dateipfade in Session speichern</label>
             <label index="tx_pluploadfe_config.obscure_dir">Pfad verschleiern (zufälliger Ordner)</label>
             <label index="tx_pluploadfe_config.check_mime">MIME-Typ prüfen</label>
