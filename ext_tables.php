@@ -44,6 +44,7 @@ $GLOBALS['TCA']['tx_pluploadfe_config'] = array(
 		'typeicon_classes' => [
 			'default' => 'extensions-pluploadfe-config',
 		],
+		'requestUpdate' => 'feuser_required',
 		'searchFields' => 'title,upload_path',
 	),
 );

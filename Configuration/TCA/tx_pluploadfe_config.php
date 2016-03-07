@@ -87,6 +87,25 @@ $GLOBALS['TCA']['tx_pluploadfe_config'] = array(
 				'default' => 1,
 			)
 		),
+		'feuser_field' => array(
+			'exclude' => 1,
+			'displayCond' => 'FIELD:feuser_required:REQ:true',
+			'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field.default', ''),
+					array('LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field.username', 'username'),
+					array('LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field.uid', 'uid'),
+					array('LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field.realname', 'realName'),
+					array('LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field.pid', 'pid'),
+					array('LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field.lastlogin', 'lastlogin'),
+				),
+				'size' => 1,
+				'minitems' => 0,
+				'maxitems' => 1,
+			)
+		),
 		'save_session' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.save_session',
@@ -100,7 +119,7 @@ $GLOBALS['TCA']['tx_pluploadfe_config'] = array(
 			'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.obscure_dir',
 			'config' => array(
 				'type' => 'check',
-				'default' => 1,
+				'default' => 0,
 			)
 		),
 		'check_mime' => array(
@@ -113,7 +132,7 @@ $GLOBALS['TCA']['tx_pluploadfe_config'] = array(
 		),
 	),
 	'types' => array(
-		'0' => array('showitem' => 'hidden;;1;;1-1-1, title, upload_path, extensions, feuser_required, save_session, obscure_dir, check_mime')
+		'0' => array('showitem' => 'hidden;;1;;1-1-1, title, upload_path, extensions, obscure_dir, feuser_required, feuser_field, save_session, check_mime')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'starttime, endtime')
