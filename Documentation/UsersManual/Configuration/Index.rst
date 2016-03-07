@@ -82,6 +82,21 @@ Configuration
 .. container:: table-row
 
    Property
+         feuser\_field
+
+   Data type
+         string
+
+   Description
+         If FE user is logged-in create a subdirectory by username or any of these: uid, pid, realname,logindate
+
+   Default
+         ''
+
+
+.. container:: table-row
+
+   Property
          save\_session
 
    Data type

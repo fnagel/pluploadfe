@@ -211,6 +211,13 @@ class tx_pluploadfe_upload {
 		$this->processConfig();
 		$this->checkUploadConfig();
 
+		// check for valid FE user
+		if ($this->config['feuser_required']) {
+			if ($this->getFeUser()->user['username'] == '') {
+				$this->sendErrorResponse('TYPO3 user session expired.');
+			}
+		}
+
 		// One file or chunked?
 		$this->chunkedUpload = (isset($_REQUEST['chunks']) && intval($_REQUEST['chunks']) > 1);
 
@@ -218,15 +225,12 @@ class tx_pluploadfe_upload {
 		$this->checkFileExtension();
 
 		// get upload path
-		$this->uploadPath = $this->getUploadDir($this->config['upload_path'], $this->config['obscure_dir']);
+		$this->uploadPath = $this->getUploadDir(
+			$this->config['upload_path'],
+			$this->getSubdirname(),
+			$this->config['obscure_dir']
+		);
 		$this->makeSureUploadTargetExists();
-
-		// check for valid FE user
-		if ($this->config['feuser_required']) {
-			if ($this->getFeUser()->user['username'] == '') {
-				$this->sendErrorResponse('TYPO3 user session expired.');
-			}
-		}
 
 		$this->uploadFile();
 	}
@@ -242,6 +246,41 @@ class tx_pluploadfe_upload {
 		}
 
 		return $this->feUserObj;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getSubdirname() {
+		$record = $this->getFeUser()->user;
+		$field = $this->config['feuser_field'];
+		switch ($field) {
+			case 'username':
+				$dir = $record[$field];
+				break;
+			case 'uid':
+				$dir = (string) $record[$field];
+				break;
+			case 'realName':
+				$dir = $record[$field];
+				break;
+			case 'pid':
+				$dir = (string) $record[$field];
+				break;
+			case 'lastlogin':
+				try {
+					$date = new \DateTime('@' . $record[$field]);
+					$date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+					$dir = strftime('%Y%m%d-%H', $date->format('U'));
+				} catch (\Exception $exception) {
+					$dir = 'checkTimezone';
+				}
+				break;
+			default:
+				$dir = '';
+		}
+
+		return preg_replace('/[^0-9a-zA-Z\-\.]/', '_', $dir);
 	}
 
 	/**
@@ -290,13 +329,7 @@ class tx_pluploadfe_upload {
 			$this->sendErrorResponse('Missing allowed file extension configuration.');
 		}
 
-		// check if path is allowed and valid
-		$path = $this->config['upload_path'];
-		if (!(
-			strlen($path) > 0 &&
-			GeneralUtility::isAllowedAbsPath(PATH_site . $path) &&
-			GeneralUtility::validPathStr($path)
-		)) {
+		if (!$this->checkPath($this->config['upload_path'])) {
 			$this->sendErrorResponse('Upload directory not valid.');
 		}
 	}
@@ -314,7 +347,7 @@ class tx_pluploadfe_upload {
 			$this->sendErrorResponse('No config record ID given.');
 		}
 
-		$select = 'upload_path, extensions, feuser_required, save_session, obscure_dir, check_mime';
+		$select = 'upload_path, extensions, feuser_required, feuser_field, save_session, obscure_dir, check_mime';
 		$table = 'tx_pluploadfe_config';
 		$where = 'uid = ' . $configUid;
 		$where .= ' AND deleted = 0';
@@ -337,6 +370,25 @@ class tx_pluploadfe_upload {
 		// Make sure FAL references work
 		$resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 		$this->config['upload_path'] = $resourceFactory->retrieveFileOrFolderObject($this->config['upload_path'])->getPublicUrl();
+
+		if (!$this->config['feuser_required']) {
+			$this->config['feuser_field'] = '';
+		}
+	}
+
+	/**
+	 * Check if path is allowed and valid
+	 *
+	 * @param $path
+	 * @return bool
+	 */
+	protected function checkPath($path) {
+		$allowedAndValid = (
+			strlen($path) > 0 &&
+			GeneralUtility::isAllowedAbsPath(PATH_site . $path) &&
+			GeneralUtility::validPathStr($path)
+		);
+		return $allowedAndValid;
 	}
 
 	/**
@@ -387,7 +439,7 @@ class tx_pluploadfe_upload {
 	 * @param bool $obscure
 	 * @return string
 	 */
-	protected function getUploadDir($path, $obscure = FALSE) {
+	protected function getUploadDir($path, $subdir = '', $obscure = FALSE) {
 		if ($this->chunkedUpload) {
 			$chunkedPath = $this->getSessionData('chunk_path');
 			if ($chunkedPath && file_exists($chunkedPath . DIRECTORY_SEPARATOR . $this->getFileName() . '.part')) {
@@ -400,6 +452,11 @@ class tx_pluploadfe_upload {
 
 		// make sure we have no trailing slash
 		$path = GeneralUtility::dirname($path);
+
+		// subdirectory
+		if ($subdir) {
+			$path = $path . DIRECTORY_SEPARATOR . $subdir;
+		}
 
 		// obscure directory
 		if ($obscure) {
