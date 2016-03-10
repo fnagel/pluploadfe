@@ -225,7 +225,7 @@ class tx_pluploadfe_upload {
 		// get upload path
 		$this->uploadPath = $this->getUploadDir(
 			$this->config['upload_path'],
-			$this->getSubdirname(),
+			$this->getUserDirectory(),
 			$this->config['obscure_dir']
 		);
 		$this->makeSureUploadTargetExists();
@@ -247,25 +247,21 @@ class tx_pluploadfe_upload {
 	}
 
 	/**
+	 * Get sub directory based upon user data
+	 *
 	 * @return string
 	 */
-	protected function getSubdirname() {
+	protected function getUserDirectory() {
 		$record = $this->getFeUser()->user;
 		$field = $this->config['feuser_field'];
 
 		switch ($field) {
+			case 'realName':
 			case 'username':
 				$directory = $record[$field];
 				break;
 
 			case 'uid':
-				$directory = (string) $record[$field];
-				break;
-
-			case 'realName':
-				$directory = $record[$field];
-				break;
-
 			case 'pid':
 				$directory = (string) $record[$field];
 				break;
@@ -375,6 +371,7 @@ class tx_pluploadfe_upload {
 		$resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
 		$this->config['upload_path'] = $resourceFactory->retrieveFileOrFolderObject($this->config['upload_path'])->getPublicUrl();
 
+		// Make sure no user based path is added when there is no user available
 		if (!$this->config['feuser_required']) {
 			$this->config['feuser_field'] = '';
 		}
