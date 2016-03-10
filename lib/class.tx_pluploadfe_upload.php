@@ -2,7 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2014 Felix Nagel <info@felixnagel.com>
+ *  (c) 2011-2016 Felix Nagel <info@felixnagel.com>
+ *  (c) 2016 Daniel Wagner
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,9 +34,6 @@ use TYPO3\CMS\Frontend\Utility\EidUtility;
  * This class uploads files
  *
  * @todo translate error messages
- * @author    Felix Nagel <info@felixnagel.com>
- * @package    TYPO3
- * @subpackage    tx_plupload
  */
 class tx_pluploadfe_upload {
 
@@ -254,33 +252,39 @@ class tx_pluploadfe_upload {
 	protected function getSubdirname() {
 		$record = $this->getFeUser()->user;
 		$field = $this->config['feuser_field'];
+
 		switch ($field) {
 			case 'username':
-				$dir = $record[$field];
+				$directory = $record[$field];
 				break;
+
 			case 'uid':
-				$dir = (string) $record[$field];
+				$directory = (string) $record[$field];
 				break;
+
 			case 'realName':
-				$dir = $record[$field];
+				$directory = $record[$field];
 				break;
+
 			case 'pid':
-				$dir = (string) $record[$field];
+				$directory = (string) $record[$field];
 				break;
+
 			case 'lastlogin':
 				try {
 					$date = new \DateTime('@' . $record[$field]);
 					$date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-					$dir = strftime('%Y%m%d-%H', $date->format('U'));
+					$directory = strftime('%Y%m%d-%H', $date->format('U'));
 				} catch (\Exception $exception) {
-					$dir = 'checkTimezone';
+					$directory = 'checkTimezone';
 				}
 				break;
+
 			default:
-				$dir = '';
+				$directory = '';
 		}
 
-		return preg_replace('/[^0-9a-zA-Z\-\.]/', '_', $dir);
+		return preg_replace('/[^0-9a-zA-Z\-\.]/', '_', $directory);
 	}
 
 	/**
@@ -380,6 +384,7 @@ class tx_pluploadfe_upload {
 	 * Check if path is allowed and valid
 	 *
 	 * @param $path
+	 *
 	 * @return bool
 	 */
 	protected function checkPath($path) {
@@ -388,6 +393,7 @@ class tx_pluploadfe_upload {
 			GeneralUtility::isAllowedAbsPath(PATH_site . $path) &&
 			GeneralUtility::validPathStr($path)
 		);
+
 		return $allowedAndValid;
 	}
 
@@ -435,18 +441,20 @@ class tx_pluploadfe_upload {
 	/**
 	 * Checks and creates the upload directory
 	 *
-	 * @param $path
+	 * @param string $path
+	 * @param string $subDirectory
 	 * @param bool $obscure
+	 *
 	 * @return string
 	 */
-	protected function getUploadDir($path, $subdir = '', $obscure = FALSE) {
+	protected function getUploadDir($path, $subDirectory = '', $obscure = FALSE) {
 		if ($this->chunkedUpload) {
 			$chunkedPath = $this->getSessionData('chunk_path');
 			if ($chunkedPath && file_exists($chunkedPath . DIRECTORY_SEPARATOR . $this->getFileName() . '.part')) {
 				return $chunkedPath;
 			} else {
 				// reset session
-				$this->saveDatainSession(NULL, 'chunk_path');
+				$this->saveDataInSession(NULL, 'chunk_path');
 			}
 		}
 
@@ -454,8 +462,8 @@ class tx_pluploadfe_upload {
 		$path = GeneralUtility::dirname($path);
 
 		// subdirectory
-		if ($subdir) {
-			$path = $path . DIRECTORY_SEPARATOR . $subdir;
+		if ($subDirectory) {
+			$path = $path . DIRECTORY_SEPARATOR . $subDirectory;
 		}
 
 		// obscure directory
@@ -539,7 +547,7 @@ class tx_pluploadfe_upload {
 
 		// save chunked upload dir
 		if ($this->chunkedUpload) {
-			$this->saveDatainSession($this->uploadPath, 'chunk_path');
+			$this->saveDataInSession($this->uploadPath, 'chunk_path');
 		}
 
 		// Return JSON-RPC response if upload process is successfully finished
@@ -549,45 +557,44 @@ class tx_pluploadfe_upload {
 	/**
 	 * Process uploaded file
 	 *
-	 * @params string $filepath
+	 * @params string $filePath
 	 *
-	 * @param $filepath
 	 * @return void
 	 */
-	protected function processFile($filepath) {
+	protected function processFile($filePath) {
 		if ($this->config['check_mime']) {
 			// if mime type is not allowed: remove file
-			if (!$this->checkMimeType($this->fileExtension, $filepath)) {
-				@unlink($filepath);
+			if (!$this->checkMimeType($this->fileExtension, $filePath)) {
+				@unlink($filePath);
 				$this->sendErrorResponse('File mime type is not allowed.');
 			}
 		}
 
-		GeneralUtility::fixPermissions($filepath);
+		GeneralUtility::fixPermissions($filePath);
 
 		if ($this->config['save_session']) {
-			$this->saveFileInSession($filepath);
+			$this->saveFileInSession($filePath);
 		}
 	}
 
 	/**
 	 * Store file in session
 	 *
-	 * @param string $filepath
+	 * @param string $filePath
 	 * @param string $key
 	 *
 	 * @return void
 	 */
-	protected function saveFileInSession($filepath, $key = 'files') {
+	protected function saveFileInSession($filePath, $key = 'files') {
 		$currentData = $this->getSessionData($key);
 
 		if (!is_array($currentData)) {
 			$currentData = array();
 		}
 
-		$currentData[] = $filepath;
+		$currentData[] = $filePath;
 
-		$this->saveDatainSession($currentData, $key);
+		$this->saveDataInSession($currentData, $key);
 	}
 
 	/**
@@ -598,7 +605,7 @@ class tx_pluploadfe_upload {
 	 *
 	 * @return void
 	 */
-	protected function saveDatainSession($data, $key = 'data') {
+	protected function saveDataInSession($data, $key = 'data') {
 		$this->getFeUser()->setAndSaveSessionData('tx_pluploadfe_' . $key, $data);
 	}
 
@@ -617,6 +624,7 @@ class tx_pluploadfe_upload {
 	 * Generate random string
 	 *
 	 * @param int $length
+	 * 
 	 * @return string
 	 */
 	protected function getRandomDirName($length = 10) {
@@ -635,14 +643,15 @@ class tx_pluploadfe_upload {
 	 *
 	 * @todo Make EM check for mime type getters
 	 *
-	 * @param string $filepath
+	 * @param string $filePath
+	 * 
 	 * @return array
 	 */
-	protected function getMimeType($filepath) {
+	protected function getMimeType($filePath) {
 		if (function_exists('finfo_open')) {
 			$finfo = @finfo_open(FILEINFO_MIME);
 			if ($finfo) {
-				$tempMime = @finfo_file($finfo, $filepath);
+				$tempMime = @finfo_file($finfo, $filePath);
 				finfo_close($finfo);
 				if ($tempMime) {
 					return $tempMime;
@@ -651,18 +660,18 @@ class tx_pluploadfe_upload {
 		}
 
 		if (function_exists('mime_content_type')) {
-			return mime_content_type($filepath);
+			return mime_content_type($filePath);
 		}
 
 		if (function_exists('exec') && function_exists('escapeshellarg')) {
-			if (($tempMime = trim(@exec('file -bi ' . @escapeshellarg($filepath))))) {
+			if (($tempMime = trim(@exec('file -bi ' . @escapeshellarg($filePath))))) {
 				return $tempMime;
 			}
 		}
 
 		if (function_exists('pathinfo')) {
-			if (($pathinfo = @pathinfo($filepath))) {
-				if (in_array($pathinfo['extension'], $this->imageTypes) && $size = getimagesize($filepath)) {
+			if (($pathinfo = @pathinfo($filePath))) {
+				if (in_array($pathinfo['extension'], $this->imageTypes) && $size = getimagesize($filePath)) {
 					return $size['mime'];
 				}
 			}
@@ -678,15 +687,15 @@ class tx_pluploadfe_upload {
 	 * so we need to check if the mime type is adequate
 	 *
 	 * @param string $sentExt
-	 * @param string $filepath
+	 * @param string $filePath
 	 *
 	 * @return boolean
 	 */
-	protected function checkMimeType($sentExt, $filepath) {
+	protected function checkMimeType($sentExt, $filePath) {
 		$flag = FALSE;
 
 		if (array_key_exists($sentExt, $this->mimeTypes)) {
-			$mimeType = explode(';', $this->getMimeType($filepath));
+			$mimeType = explode(';', $this->getMimeType($filePath));
 
 			// check if mime type fits the given file extension
 			if (in_array($mimeType[0], $this->mimeTypes[$sentExt])) {
@@ -721,5 +730,3 @@ if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE)) {
 	$upload = GeneralUtility::makeInstance('tx_pluploadfe_upload');
 	$upload->main();
 }
-
-?>

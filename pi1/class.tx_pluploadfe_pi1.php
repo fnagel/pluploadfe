@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2015 Felix Nagel <info@felixnagel.com>
+ *  (c) 2011-2016 Felix Nagel <info@felixnagel.com>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -57,6 +57,26 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 	public $pi_checkCHash = TRUE;
 
 	/**
+	 * @var int
+	 */
+	protected $configUid;
+
+	/**
+	 * @var int
+	 */
+	protected $uid;
+
+	/**
+	 * @var string
+	 */
+	protected $templateHtml;
+
+	/**
+	 * @var array
+	 */
+	protected $config;
+
+	/**
 	 * The main method of the PlugIn
 	 *
 	 * @param string $content : The plugin content
@@ -88,7 +108,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 
 		if ($this->checkConfig()) {
 			$this->renderCode();
-			$content = $this->getHTML();
+			$content = $this->getHtml();
 		} else {
 			$content = '<div style="border: 3px solid red; padding: 1em;">
 			<strong>TYPO3 EXT:plupload Error</strong><br />Invalid configuration.</div>';
@@ -150,7 +170,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 		// replace markers in the template
 		$content = $this->cObj->substituteMarkerArray($templateMain, $markerArray);
 
-		 $GLOBALS['TSFE']->getPageRenderer()->addJsFooterInlineCode(
+		$GLOBALS['TSFE']->getPageRenderer()->addJsFooterInlineCode(
 			$this->prefixId . '_' . $this->uid, $content
 		);
 	}
@@ -160,7 +180,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 	 *
 	 * @return string
 	 */
-	protected function getHTML() {
+	protected function getHtml() {
 		// Extract subparts from the template
 		$templateMain = $this->cObj->getSubpart($this->templateHtml, '###TEMPLATE_CONTENT###');
 
@@ -212,10 +232,9 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 	/**
 	 * Handles error output for frontend and TYPO3 logging
 	 *
-	 * @param    string    Message to output
-	 * @return    void
-	 * @see    t3lib::devLog()
-	 * @see    t3lib_div::sysLog()
+	 * @param string$msg Message to output
+	 *
+	 * @return void
 	 */
 	protected function handleError($msg) {
 		// error
