@@ -73,8 +73,7 @@ $GLOBALS['TCA']['tx_pluploadfe_config'] = array(
 			'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.extensions',
 			'config' => array(
 				'type' => 'text',
-				'cols' => '50',
-				'rows' => '10',
+				'rows' => '2',
 				'eval' => 'required,trim',
 				'default' => 'jpeg,jpg,gif,png,zip,rar,7zip,gz',
 			)
@@ -133,10 +132,31 @@ $GLOBALS['TCA']['tx_pluploadfe_config'] = array(
 		),
 	),
 	'types' => array(
-		'0' => array('showitem' => 'hidden;;1;;1-1-1, title, upload_path, extensions, obscure_dir, feuser_required, feuser_field, save_session, check_mime')
+		'0' => array('showitem' => '
+			--div--;LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.tabs.general,
+				title, feuser_required, save_session,
+
+			--div--;LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.tabs.path,
+				upload_path, feuser_field, obscure_dir,
+
+			--div--;LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.tabs.security,
+				extensions, check_mime,
+
+			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
+				--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.visibility;visibility,
+				--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.access;access'
+		)
 	),
 	'palettes' => array(
-		'1' => array('showitem' => 'starttime, endtime')
+		'visibility' => array(
+			'showitem' => 'hidden',
+		),
+		'access' => array(
+			'showitem' => '
+				starttime;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.starttime_formlabel,
+				endtime;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.endtime_formlabel,
+				--linebreak--, fe_group;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.fe_group_formlabel'
+		),
 	)
 );
 
