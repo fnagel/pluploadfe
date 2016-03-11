@@ -12,7 +12,7 @@
 						// General settings
 						runtimes : 'html5,flash,silverlight,html4',
 						url : '###UPLOAD_FILE###',
-						// chunk_size : '10mb',
+						// chunk_size : '###FILE_MAX_SIZE###',
 						unique_names : false,
 						rename: true,
 						dragdrop: true,
@@ -21,9 +21,13 @@
 
 						// Specify what files to browse for
 						filters : {
-							max_file_size : '5mb',
+							// Remove this when using chunked uploads
+							max_file_size : '###FILE_MAX_SIZE###',
 							mime_types: [
-								{title : "Allowed files", extensions : "###FILE_EXTENSIONS###"}
+								{
+									title : "Allowed files",
+									extensions : "###FILE_EXTENSIONS###"
+								}
 							]
 						},
 

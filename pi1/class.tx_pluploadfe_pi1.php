@@ -203,11 +203,13 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 	protected function getDefaultMarker() {
 		$markerArray = array();
 		$extensionsArray = GeneralUtility::trimExplode(',', $this->config['extensions'], TRUE);
+		$maxFileSizeInBytes = GeneralUtility::getMaxUploadFileSize() * 1024;
 
 		$markerArray['###UID###'] = $this->uid;
 		$markerArray['###LANGUAGE###'] = $GLOBALS['TSFE']->config['config']['language'];
 		$markerArray['###EXTDIR_PATH###'] = ExtensionManagementUtility::siteRelPath($this->extKey);
 		$markerArray['###FILE_EXTENSIONS###'] = implode(',', $extensionsArray);
+		$markerArray['###FILE_MAX_SIZE###'] = $maxFileSizeInBytes;
 
 		return $markerArray;
 	}
