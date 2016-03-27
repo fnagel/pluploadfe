@@ -27,6 +27,27 @@ Updade Guide
 
 
 
+Upgrade to 1.4.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* New Feature: Using fe_user properties as upload folder!
+
+* Improve config record TCA (now using tabs, improved localization)
+
+* New template marker for max upload size (###FILE_MAX_SIZE###)
+
+
+How to upgrade
+""""""""""""""
+
+You need to clear the cache in backend after upgrading.
+Make sure your template match latest changes.
+
+
+
 Upgrade to 1.3.x
 ^^^^^^^^^^^^^^^^
 
