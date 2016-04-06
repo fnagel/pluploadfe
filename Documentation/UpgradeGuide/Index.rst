@@ -33,7 +33,7 @@ Upgrade to 1.4.0
 Changelog
 """""""""
 
-* New Feature: Using fe_user properties as upload folder!
+* New feature: Using fe_user properties as upload folder (thanks to Daniel Wagner)!
 
 * Improve config record TCA (now using tabs, improved localization)
 
@@ -43,7 +43,7 @@ Changelog
 How to upgrade
 """"""""""""""
 
-You need to clear the cache in backend after upgrading.
+You need to clear the cache and create the new DB field after upgrading.
 Make sure your template match latest changes.
 
 
