@@ -4,7 +4,14 @@ if (!defined('TYPO3_MODE')) {
 }
 
 // Add static TS
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'pi1/static/', 'Plupload FE: default config');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+    $_EXTKEY, 'Configuration/TypoScript/', 'Plupload FE: default config'
+);
+
+// Add page TS config
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/TypoScript/pageTsConfig.ts">'
+);
 
 // Add plugin
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
@@ -12,12 +19,6 @@ if (!defined('TYPO3_MODE')) {
 	$_EXTKEY . '_pi1',
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'ext_icon.gif'
 ), 'list_type');
-
-
-if (TYPO3_MODE == 'BE') {
-	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_pluploadfe_pi1_wizicon'] =
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'pi1/class.tx_pluploadfe_pi1_wizicon.php';
-}
 
 // Add config record
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_pluploadfe_config');
@@ -28,6 +29,9 @@ if (TYPO3_MODE == 'BE') {
 if (version_compare(TYPO3_branch, '7.0', '<')) {
 	$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
 	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(array(
+		'wizard' => $extensionPath . 'pi1/ce_wiz.gif',
+	), 'pluploadfe');
+	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(array(
 		'config' => $extensionPath . 'icon_tx_pluploadfe_config.gif',
 	), 'pluploadfe');
 } else {
@@ -37,6 +41,11 @@ if (version_compare(TYPO3_branch, '7.0', '<')) {
 		'extensions-pluploadfe-config',
 		\TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
 		['source' => 'EXT:pluploadfe/icon_tx_pluploadfe_config.gif']
+	);
+    $iconRegistry->registerIcon(
+		'extensions-pluploadfe-wizard',
+		\TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+		['source' => 'EXT:pluploadfe/pi1/ce_wiz.gif']
 	);
 }
 
