@@ -15,9 +15,8 @@ if (!defined('TYPO3_MODE')) {
 
 // Add plugin
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(array(
-	'LLL:EXT:pluploadfe/locallang_db.xml:tt_content.list_type_pi1',
-	$_EXTKEY . '_pi1',
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'ext_icon.gif'
+	'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tt_content.list_type_pi1',
+	$_EXTKEY . '_pi1'
 ), 'list_type');
 
 // Add config record
@@ -27,12 +26,14 @@ if (!defined('TYPO3_MODE')) {
 // Use old icon path for TYPO3 6.2
 // @todo Remove this when 6.2 is no longer relevant
 if (version_compare(TYPO3_branch, '7.0', '<')) {
-	$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
+    $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
+    $iconPath = $extensionPath . 'Resources/Public/Icons/';
+
 	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(array(
-		'wizard' => $extensionPath . 'pi1/ce_wiz.gif',
+		'wizard' => $iconPath . 'ce_wiz.gif',
 	), 'pluploadfe');
 	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(array(
-		'config' => $extensionPath . 'icon_tx_pluploadfe_config.gif',
+		'config' => $iconPath . 'icon_tx_pluploadfe_config.gif',
 	), 'pluploadfe');
 } else {
 	/* @var $iconRegistry \TYPO3\CMS\Core\Imaging\IconRegistry */
@@ -40,12 +41,12 @@ if (version_compare(TYPO3_branch, '7.0', '<')) {
 	$iconRegistry->registerIcon(
 		'extensions-pluploadfe-config',
 		\TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-		['source' => 'EXT:pluploadfe/icon_tx_pluploadfe_config.gif']
+		['source' => 'EXT:pluploadfe/Resources/Public/Icons/icon_tx_pluploadfe_config.gif']
 	);
     $iconRegistry->registerIcon(
 		'extensions-pluploadfe-wizard',
 		\TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-		['source' => 'EXT:pluploadfe/pi1/ce_wiz.gif']
+		['source' => 'EXT:pluploadfe/Resources/Public/Icons/ce_wiz.gif']
 	);
 }
 

@@ -11,7 +11,7 @@ call_user_func(function ($packageKey) {
     $tempColumns = array(
         'tx_pluploadfe_config' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tt_content.tx_pluploadfe_config',
+            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tt_content.tx_pluploadfe_config',
             'config' => array(
                 'type' => 'group',
                 'internal_type' => 'db',

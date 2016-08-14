@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 
 return array(
 	'ctrl' =>  array(
-        'title' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config',
+        'title' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config',
         'label' => 'title',
         'label_alt' => 'upload_path',
         'tstamp' => 'tstamp',
@@ -77,7 +77,7 @@ return array(
 		),
 		'upload_path' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.upload_path',
+			'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.upload_path',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'folder',
@@ -89,7 +89,7 @@ return array(
 		),
 		'extensions' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.extensions',
+			'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.extensions',
 			'config' => array(
 				'type' => 'text',
 				'rows' => '2',
@@ -99,7 +99,7 @@ return array(
 		),
 		'feuser_required' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_required',
+			'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_required',
 			'config' => array(
 				'type' => 'check',
 				'default' => 1,
@@ -108,17 +108,17 @@ return array(
 		'feuser_field' => array(
 			'exclude' => 1,
 			'displayCond' => 'FIELD:feuser_required:REQ:true',
-			'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field',
+			'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field',
 			'config' => array(
 				'type' => 'select',
 				'renderType' => 'selectSingle',
 				'items' => array(
-					array('LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field.default', ''),
-					array('LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field.username', 'username'),
-					array('LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field.uid', 'uid'),
-					array('LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field.realname', 'realName'),
-					array('LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field.pid', 'pid'),
-					array('LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.feuser_field.lastlogin', 'lastlogin'),
+					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.default', ''),
+					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.username', 'username'),
+					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.uid', 'uid'),
+					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.realname', 'realName'),
+					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.pid', 'pid'),
+					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.lastlogin', 'lastlogin'),
 				),
 				'size' => 1,
 				'minitems' => 0,
@@ -127,7 +127,7 @@ return array(
 		),
 		'save_session' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.save_session',
+			'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.save_session',
 			'config' => array(
 				'type' => 'check',
 				'default' => 0,
@@ -135,7 +135,7 @@ return array(
 		),
 		'obscure_dir' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.obscure_dir',
+			'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.obscure_dir',
 			'config' => array(
 				'type' => 'check',
 				'default' => 0,
@@ -143,7 +143,7 @@ return array(
 		),
 		'check_mime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.check_mime',
+			'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.check_mime',
 			'config' => array(
 				'type' => 'check',
 				'default' => 1,
@@ -152,13 +152,13 @@ return array(
 	),
 	'types' => array(
 		'0' => array('showitem' => '
-			--div--;LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.tabs.general,
+			--div--;LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.tabs.general,
 				title, feuser_required, save_session,
 
-			--div--;LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.tabs.path,
+			--div--;LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.tabs.path,
 				upload_path, feuser_field, obscure_dir,
 
-			--div--;LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config.tabs.security,
+			--div--;LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.tabs.security,
 				extensions, check_mime,
 
 			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
