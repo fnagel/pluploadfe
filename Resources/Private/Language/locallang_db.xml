@@ -9,10 +9,8 @@
             <label index="tt_content.list_type_pi1">Plupload FE</label>
             <label index="tt_content.tx_pluploadfe_config">Configuration</label>
 
-            <label index="pi1_title">plupload</label>
-            <label index="pi1_plus_wiz_description">Upload multiple files to directory via HTML4, HTML5, Flash,
-                Silverlight, Gears or Browser Plus.
-            </label>
+            <label index="pi1_title">Plupload FE</label>
+            <label index="pi1_plus_wiz_description">Upload files using Flash, Silverlight, Gears, BrowserPlus or HTML5.</label>
 
             <label index="tx_pluploadfe_config">Plupload Configuration</label>
             <label index="tx_pluploadfe_config.tabs.general">General</label>
@@ -37,10 +35,8 @@
             <label index="tt_content.list_type_pi1">Plupload FE</label>
             <label index="tt_content.tx_pluploadfe_config">Konfiguration</label>
 
-            <label index="pi1_title">plupload</label>
-            <label index="pi1_plus_wiz_description">Mehrere Datein in ein Verzeichnis hochladen mit HTML4, HTML5, Flash,
-                Silverlight, Gears or Browser Plus.
-            </label>
+            <label index="pi1_title">Plupload FE</label>
+            <label index="pi1_plus_wiz_description">Dateiupload mit Flash, Silverlight, Gears, BrowserPlus or HTML5</label>
 
             <label index="tx_pluploadfe_config">Plupload Konfiguration</label>
             <label index="tx_pluploadfe_config.tabs.general">Allgemein</label>
