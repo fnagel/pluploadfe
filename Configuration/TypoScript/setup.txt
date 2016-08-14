@@ -3,7 +3,7 @@
 plugin.tx_pluploadfe_pi1 {
 
 	# Template file
-	templateFile = EXT:pluploadfe/res/template.html
+	templateFile = EXT:pluploadfe/Resources/Private/Templates/template.html
 
 	## When using FE plugin via TypoScript you will need to pass the  following options.
 
@@ -20,16 +20,16 @@ page {
 	# Make sure jQuery is included!
 
 	includeJSFooter {
-		tx_pluploadfe_plupload = EXT:pluploadfe/res/plupload/js/plupload.full.min.js
+		tx_pluploadfe_plupload = EXT:pluploadfe/Resources/Public/JavaScript/plupload/js/plupload.full.min.js
 		tx_pluploadfe_plupload.disableCompression = 1
 		tx_pluploadfe_plupload.excludeFromConcatenation = 1
 
-		tx_pluploadfe_plupload_queue = EXT:pluploadfe/res/plupload/js/jquery.plupload.queue/jquery.plupload.queue.min.js
+		tx_pluploadfe_plupload_queue = EXT:pluploadfe/Resources/Public/JavaScript/plupload/js/jquery.plupload.queue/jquery.plupload.queue.min.js
 		tx_pluploadfe_plupload_queue.disableCompression = 1
 		tx_pluploadfe_plupload_queue.excludeFromConcatenation = 1
 	}
 
 	includeCSS {
-		tx_pluploadfe_css = EXT:pluploadfe/res/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css
+		tx_pluploadfe_css = EXT:pluploadfe/Resources/Public/JavaScript/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css
 	}
 }
