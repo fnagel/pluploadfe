@@ -44,7 +44,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 	/**
 	 * @var string
 	 */
-	public $scriptRelPath = 'pi1/class.tx_pluploadfe_pi1.php';
+	public $scriptRelPath = 'Classes/class.tx_pluploadfe_pi1.php';
 
 	/**
 	 * @var string
@@ -170,7 +170,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 		// replace markers in the template
 		$content = $this->cObj->substituteMarkerArray($templateMain, $markerArray);
 
-		$GLOBALS['TSFE']->getPageRenderer()->addJsFooterInlineCode(
+        $GLOBALS['TSFE']->getPageRenderer()->addJsFooterInlineCode(
 			$this->prefixId . '_' . $this->uid, $content
 		);
 	}
@@ -221,7 +221,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 	 */
 	protected function getTemplateFile() {
 		$templateFile = (strlen(trim($this->conf['templateFile'])) > 0) ?
-			trim($this->conf['templateFile']) : 'EXT:pluploadfe/res/template.html';
+			trim($this->conf['templateFile']) : 'EXT:pluploadfe/Resources/Private/Templates/template.html';
 
 		// Get the template
 		$this->templateHtml = $this->cObj->fileResource($templateFile);
@@ -259,6 +259,6 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/pi1/class.tx_pluploadfe_pi1.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/pi1/class.tx_pluploadfe_pi1.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/class.tx_pluploadfe_pi1.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/class.tx_pluploadfe_pi1.php']);
 }

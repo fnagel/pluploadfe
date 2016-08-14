@@ -717,8 +717,8 @@ class tx_pluploadfe_upload {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/lib/class.tx_plupload_upload.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/lib/class.tx_plupload_upload.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/class.tx_plupload_upload.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/class.tx_plupload_upload.php']);
 }
 
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE)) {
