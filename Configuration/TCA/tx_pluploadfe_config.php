@@ -3,8 +3,27 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-$GLOBALS['TCA']['tx_pluploadfe_config'] = array(
-	'ctrl' => $GLOBALS['TCA']['tx_pluploadfe_config']['ctrl'],
+return array(
+	'ctrl' =>  array(
+        'title' => 'LLL:EXT:pluploadfe/locallang_db.xml:tx_pluploadfe_config',
+        'label' => 'title',
+        'label_alt' => 'upload_path',
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'cruser_id' => 'cruser_id',
+        'default_sortby' => 'ORDER BY crdate',
+        'delete' => 'deleted',
+        'enablecolumns' => array(
+            'disabled' => 'hidden',
+            'starttime' => 'starttime',
+            'endtime' => 'endtime',
+        ),
+        'typeicon_classes' => [
+            'default' => 'extensions-pluploadfe-config',
+        ],
+        'requestUpdate' => 'feuser_required',
+        'searchFields' => 'title,upload_path',
+    ),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,fe_group,upload_path,feuser_required'
 	),
@@ -159,12 +178,3 @@ $GLOBALS['TCA']['tx_pluploadfe_config'] = array(
 		),
 	)
 );
-
-// Change to simple input for now
-// @todo type=group & internal_type=folder is not available in TYPO3 7.5 and above
-// see https://forge.typo3.org/issues/72369
-if (version_compare(TYPO3_version, '7.5.0', '>=')) {
-	$GLOBALS['TCA']['tx_pluploadfe_config']['columns']['upload_path']['config']['type'] = 'input';
-	$GLOBALS['TCA']['tx_pluploadfe_config']['columns']['upload_path']['config']['size'] = '30';
-	$GLOBALS['TCA']['tx_pluploadfe_config']['columns']['upload_path']['config']['max'] = '255';
-}
