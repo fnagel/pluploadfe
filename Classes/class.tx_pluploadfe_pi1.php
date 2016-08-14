@@ -170,7 +170,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 		// replace markers in the template
 		$content = $this->cObj->substituteMarkerArray($templateMain, $markerArray);
 
-        $GLOBALS['TSFE']->getPageRenderer()->addJsFooterInlineCode(
+		$this->getPageRenderer()->addJsFooterInlineCode(
 			$this->prefixId . '_' . $this->uid, $content
 		);
 	}
@@ -230,6 +230,20 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 			$this->handleError('Error while fetching the template file: ' . $templateFile);
 		}
 	}
+
+    /**
+     * Get page renderer
+     *
+     * @return \TYPO3\CMS\Core\Page\PageRenderer
+     */
+    public static function getPageRenderer() {
+        if (version_compare(TYPO3_branch, '8.0', '>=')) {
+            return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+        } else {
+            // @todo Remove this when 6.2 is no longer relevant
+            return $GLOBALS['TSFE']->getPageRenderer();
+        }
+    }
 
 	/**
 	 * Handles error output for frontend and TYPO3 logging
