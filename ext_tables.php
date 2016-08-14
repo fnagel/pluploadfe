@@ -27,13 +27,8 @@ if (!defined('TYPO3_MODE')) {
 // @todo Remove this when 6.2 is no longer relevant
 if (version_compare(TYPO3_branch, '7.0', '<')) {
     $extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
-    $iconPath = $extensionPath . 'Resources/Public/Icons/';
-
 	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(array(
-		'wizard' => $iconPath . 'ce_wiz.gif',
-	), 'pluploadfe');
-	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(array(
-		'config' => $iconPath . 'icon_tx_pluploadfe_config.gif',
+		'config' => $extensionPath . 'Resources/Public/Icons/icon_tx_pluploadfe_config.gif',
 	), 'pluploadfe');
 } else {
 	/* @var $iconRegistry \TYPO3\CMS\Core\Imaging\IconRegistry */
