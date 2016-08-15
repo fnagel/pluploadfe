@@ -27,6 +27,30 @@ Updade Guide
 
 
 
+Upgrade to 1.5.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* TYPO3 8.x support
+
+* Update Plupload to v2.1.9
+
+* Rework TCA to match latest TYPO3 API
+
+* Rework folder structure to match TYPO3 defaults
+
+* Fix TCA tab configuration for TYPO3 6.2
+
+
+How to upgrade
+""""""""""""""
+
+You need to clear the cache and make sure your TS configuration is up to date!
+
+
+
 Upgrade to 1.4.0
 ^^^^^^^^^^^^^^^^
 
