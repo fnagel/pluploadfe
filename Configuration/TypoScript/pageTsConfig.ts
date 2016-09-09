@@ -8,6 +8,4 @@ mod.wizards.newContentElement.wizardItems.plugins {
 		tt_content_defValues.CType = list
 		tt_content_defValues.list_type = pluploadfe_pi1
 	}
-
-	show := addToList(pluploadfe)
 }
