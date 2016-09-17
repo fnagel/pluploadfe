@@ -18,6 +18,5 @@
 ChangeLog
 ---------
 
-Please see ChangeLog file within the root directory of this extension.
-
+Please see: https://github.com/fnagel/pluploadfe/commits
 
