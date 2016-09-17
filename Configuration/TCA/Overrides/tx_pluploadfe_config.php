@@ -3,9 +3,12 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-// Change to simple input for buggy TYPO3 versions
-// see https://forge.typo3.org/issues/72369
-if (version_compare(TYPO3_version, '7.5.0', '>=')) {
+// Change to simple input for TYPO3 7.5-7.6.10 and 8.0-8.3.1 as internal_type=folder is broken
+// See https://forge.typo3.org/issues/72369
+// @todo Make sure 8.3.2 includes needed fix!
+if ((version_compare(TYPO3_version, '7.5.0', '>=') && version_compare(TYPO3_version, '7.6.10', '<=')) ||
+	(version_compare(TYPO3_version, '8.0', '>=') && version_compare(TYPO3_version, '8.3.1', '<='))
+) {
 	$GLOBALS['TCA']['tx_pluploadfe_config']['columns']['upload_path']['config']['type'] = 'input';
 	$GLOBALS['TCA']['tx_pluploadfe_config']['columns']['upload_path']['config']['size'] = '30';
 	$GLOBALS['TCA']['tx_pluploadfe_config']['columns']['upload_path']['config']['max'] = '255';
