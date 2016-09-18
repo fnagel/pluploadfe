@@ -27,6 +27,26 @@ Updade Guide
 
 
 
+Upgrade to 1.5.1
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Fix bug in new content element wizard TSconfig
+
+* Remove folder input wizard workaround for TYPO3 7.6.11+
+
+* Remove old changelog
+
+
+How to upgrade
+""""""""""""""
+
+You need to clear the cache.
+
+
+
 Upgrade to 1.5.0
 ^^^^^^^^^^^^^^^^
 
