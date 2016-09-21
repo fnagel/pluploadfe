@@ -86,7 +86,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 	public function main($content, $conf) {
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults();
-		$this->pi_loadLL();
+		$this->pi_loadLL('EXT:pluploadfe/Resources/Private/Language/locallang.xml');
 
 		// set (localized) UID
 		$localizedUid = $this->cObj->data['_LOCALIZED_UID'];
