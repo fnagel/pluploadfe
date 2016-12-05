@@ -24,7 +24,7 @@
             <label index="tx_pluploadfe_config.feuser_field.default"></label>
             <label index="tx_pluploadfe_config.feuser_field.username">Username</label>
             <label index="tx_pluploadfe_config.feuser_field.uid">User UID</label>
-            <label index="tx_pluploadfe_config.feuser_field.realname">Real name</label>
+            <label index="tx_pluploadfe_config.feuser_field.name">Name</label>
             <label index="tx_pluploadfe_config.feuser_field.pid">Storage folder UID</label>
             <label index="tx_pluploadfe_config.feuser_field.lastlogin">Last login day and hour</label>
             <label index="tx_pluploadfe_config.save_session">Save filepaths in user session</label>
@@ -49,7 +49,7 @@
             <label index="tx_pluploadfe_config.feuser_field">Ordner aus Benutzer-Daten erstellen</label>
             <label index="tx_pluploadfe_config.feuser_field.username">Benutzername</label>
             <label index="tx_pluploadfe_config.feuser_field.uid">Benutzer UID</label>
-            <label index="tx_pluploadfe_config.feuser_field.realname">Name des Benutzer</label>
+            <label index="tx_pluploadfe_config.feuser_field.name">Name des Benutzer</label>
             <label index="tx_pluploadfe_config.feuser_field.pid">Datensatz-Ordner UID</label>
             <label index="tx_pluploadfe_config.feuser_field.lastlogin">Datum und Stunde der letzten Anmeldung</label>
             <label index="tx_pluploadfe_config.save_session">Dateipfade in Session speichern</label>

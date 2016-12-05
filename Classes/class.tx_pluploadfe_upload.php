@@ -256,7 +256,7 @@ class tx_pluploadfe_upload {
 		$field = $this->config['feuser_field'];
 
 		switch ($field) {
-			case 'realName':
+			case 'name':
 			case 'username':
 				$directory = $record[$field];
 				break;

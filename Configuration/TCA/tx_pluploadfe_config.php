@@ -116,7 +116,7 @@ return array(
 					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.default', ''),
 					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.username', 'username'),
 					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.uid', 'uid'),
-					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.realname', 'realName'),
+					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.name', 'name'),
 					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.pid', 'pid'),
 					array('LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.lastlogin', 'lastlogin'),
 				),
