@@ -27,6 +27,24 @@ Updade Guide
 
 
 
+Upgrade to 1.5.2
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Fix bug in folder generation with user name (replaced invalid `realName` field with `name`)
+
+
+How to upgrade
+""""""""""""""
+
+You need to clear the cache.
+
+Make sure to check the `feuser_field` in your configuration records.
+
+
+
 Upgrade to 1.5.1
 ^^^^^^^^^^^^^^^^
 

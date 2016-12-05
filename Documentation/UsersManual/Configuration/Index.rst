@@ -88,7 +88,7 @@ Configuration
          string
 
    Description
-         If FE user is logged-in create a subdirectory by username or any of these: uid, pid, realname,logindate
+         If FE user is logged-in create a subdirectory by username or any of these: uid, pid, name, logindate, ...
 
    Default
          ''
