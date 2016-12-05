@@ -261,6 +261,11 @@ class tx_pluploadfe_upload {
 				$directory = $record[$field];
 				break;
 
+			case 'fullname':
+				$parts = array($record['first_name'], $record['middle_name'], $record['last_name']);
+                $directory = implode('_', array_values(array_filter($parts)));
+				break;
+
 			case 'uid':
 			case 'pid':
 				$directory = (string) $record[$field];
