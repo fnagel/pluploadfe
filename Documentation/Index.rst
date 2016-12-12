@@ -65,6 +65,7 @@ Plupload for FE
    UsersManual/Index
    Administration/Index
    Configuration/Index
+   DeveloperGuide/Index
    Faq/Index
    UpgradeGuide/Index
    KnownProblems/Index
