@@ -41,7 +41,7 @@ if (version_compare(TYPO3_branch, '7.0', '<')) {
     $iconRegistry->registerIcon(
 		'extensions-pluploadfe-wizard',
 		\TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-		['source' => 'EXT:pluploadfe/Resources/Public/Icons/ce_wiz.gif']
+		['source' => 'EXT:pluploadfe/Resources/Public/Icons/plugin.png']
 	);
 }
 
