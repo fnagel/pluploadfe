@@ -126,7 +126,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 		$select = 'extensions';
 		$table = 'tx_pluploadfe_config';
 		$where = 'uid = ' . $this->configUid;
-		$where .= $GLOBALS['TSFE']->sys_page->enableFields($table);
+		$where .= $this->getTsFeController()->sys_page->enableFields($table);
 
 		$this->config = $this->getDatabase()->exec_SELECTgetSingleRow($select, $table, $where);
 	}
@@ -206,7 +206,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 		$maxFileSizeInBytes = GeneralUtility::getMaxUploadFileSize() * 1024;
 
 		$markerArray['###UID###'] = $this->uid;
-		$markerArray['###LANGUAGE###'] = $GLOBALS['TSFE']->config['config']['language'];
+		$markerArray['###LANGUAGE###'] = $this->getTsFeController()->config['config']['language'];
 		$markerArray['###EXTDIR_PATH###'] = ExtensionManagementUtility::siteRelPath($this->extKey);
 		$markerArray['###FILE_EXTENSIONS###'] = implode(',', $extensionsArray);
 		$markerArray['###FILE_MAX_SIZE###'] = $maxFileSizeInBytes;
@@ -224,7 +224,12 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 			trim($this->conf['templateFile']) : 'EXT:pluploadfe/Resources/Private/Templates/template.html';
 
 		// Get the template
-		$this->templateHtml = $this->cObj->fileResource($templateFile);
+        if (version_compare(TYPO3_branch, '8.0', '>=')) {
+            $this->templateHtml = file_get_contents($this->getTsFeController()->tmpl->getFileName($templateFile));
+        } else {
+            // @todo Remove this when 6.2 is no longer relevant
+            $this->templateHtml = $this->cObj->fileResource($templateFile);
+        }
 
 		if (!$this->templateHtml) {
 			$this->handleError('Error while fetching the template file: ' . $templateFile);
@@ -241,7 +246,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
             return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
         } else {
             // @todo Remove this when 6.2 is no longer relevant
-            return $GLOBALS['TSFE']->getPageRenderer();
+            return self::getTsFeController()->getPageRenderer();
         }
     }
 
@@ -271,6 +276,13 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 	protected function getDatabase() {
 		return $GLOBALS['TYPO3_DB'];
 	}
+
+    /**
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected static function getTsFeController() {
+        return $GLOBALS['TSFE'];
+    }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/class.tx_pluploadfe_pi1.php']) {
