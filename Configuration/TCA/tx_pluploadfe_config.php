@@ -29,8 +29,8 @@ return array(
 	),
 	'columns' => array(
 		'hidden' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+		    'exclude' => 1,
+			'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.disable',
 			'config' => array(
 				'type' => 'check',
 				'default' => '0'

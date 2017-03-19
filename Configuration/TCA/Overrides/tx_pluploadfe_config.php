@@ -13,6 +13,16 @@ if ((version_compare(TYPO3_version, '7.5.0', '>=') && version_compare(TYPO3_vers
 	$GLOBALS['TCA']['tx_pluploadfe_config']['columns']['upload_path']['config']['max'] = '255';
 }
 
+// Compatibility for TYPO3 < 8.5
+if (version_compare(TYPO3_version, '8.5', '<')) {
+	// Use old localization path
+	$GLOBALS['TCA']['tx_pluploadfe_config']['columns']['hidden']['label'] = str_replace(
+		'Resources/Private/Language/locallang_general.xlf:LGL.disable',
+		'locallang_general.xml:LGL.hidden',
+		$GLOBALS['TCA']['tx_pluploadfe_config']['columns']['hidden']['label']
+	);
+}
+
 // Compatibility for TYPO3 6.2
 if (version_compare(TYPO3_version, '7.0', '<')) {
 	$GLOBALS['TCA']['tx_pluploadfe_config']['ctrl']['dividers2tabs'] = TRUE;
