@@ -27,6 +27,28 @@ Updade Guide
 
 
 
+Upgrade to 1.6.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* TYPO3 8.7 LTS support
+
+* Update Plupload to v2.3.1
+
+* Add new BE icons
+
+* Add integration guide in docs
+
+
+How to upgrade
+""""""""""""""
+
+You need to clear the cache.
+
+
+
 Upgrade to 1.5.2
 ^^^^^^^^^^^^^^^^
 
@@ -42,6 +64,7 @@ How to upgrade
 You need to clear the cache.
 
 Make sure to check the `feuser_field` in your configuration records.
+
 
 
 
