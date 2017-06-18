@@ -27,6 +27,21 @@ Updade Guide
 
 
 
+Upgrade to 1.6.1
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Fix path for swf (Flash) and xap (Silverlight) fallback
+
+
+How to upgrade
+""""""""""""""
+
+You might need to update your custom template. Clear the FE cache.
+
+
 Upgrade to 1.6.0
 ^^^^^^^^^^^^^^^^
 
