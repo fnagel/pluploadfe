@@ -207,7 +207,8 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
 
 		$markerArray['###UID###'] = $this->uid;
 		$markerArray['###LANGUAGE###'] = $this->getTsFeController()->config['config']['language'];
-		$markerArray['###EXTDIR_PATH###'] = ExtensionManagementUtility::siteRelPath($this->extKey);
+		$markerArray['###EXTDIR_PATH###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') .
+			ExtensionManagementUtility::siteRelPath($this->extKey);
 		$markerArray['###FILE_EXTENSIONS###'] = implode(',', $extensionsArray);
 		$markerArray['###FILE_MAX_SIZE###'] = $maxFileSizeInBytes;
 
