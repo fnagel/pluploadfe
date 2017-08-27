@@ -7,13 +7,6 @@ a highly usable and advanced upload handler.
 http://www.plupload.com/
 
 
-ToDo
-----
-
-* Reintroduce folder type for upload path for TYPO3 > 7.5
-	-> Fixed with https://forge.typo3.org/issues/72369
-
-
 Documentation
 -------------
 

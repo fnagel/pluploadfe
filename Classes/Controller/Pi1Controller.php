@@ -225,12 +225,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin
             trim($this->conf['templateFile']) : 'EXT:pluploadfe/Resources/Private/Templates/template.html';
 
         // Get the template
-        if (version_compare(TYPO3_branch, '8.0', '>=')) {
-            $this->templateHtml = file_get_contents($this->getTsFeController()->tmpl->getFileName($templateFile));
-        } else {
-            // @todo Remove this when 6.2 is no longer relevant
-            $this->templateHtml = $this->cObj->fileResource($templateFile);
-        }
+        $this->templateHtml = file_get_contents($this->getTsFeController()->tmpl->getFileName($templateFile));
 
         if (!$this->templateHtml) {
             $this->handleError('Error while fetching the template file: '.$templateFile);
@@ -244,12 +239,10 @@ class tx_pluploadfe_pi1 extends AbstractPlugin
      */
     public static function getPageRenderer()
     {
-        if (version_compare(TYPO3_branch, '8.0', '>=')) {
-            return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-        } else {
-            // @todo Remove this when 6.2 is no longer relevant
-            return self::getTsFeController()->getPageRenderer();
-        }
+        /* @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
+        $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+
+        return $pageRenderer;
     }
 
     /**
@@ -289,7 +282,9 @@ class tx_pluploadfe_pi1 extends AbstractPlugin
 }
 
 /** @noinspection PhpUndefinedVariableInspection */
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/Controller/Pi1Controller.php']) {
+if (defined('TYPO3_MODE') &&
+    $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/Controller/Pi1Controller.php']
+) {
     /** @noinspection PhpUndefinedVariableInspection */
     include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/Controller/Pi1Controller.php'];
 }
