@@ -1,6 +1,7 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
+    die('Access denied.');
 }
 
 call_user_func(function ($packageKey) {
@@ -13,7 +14,7 @@ call_user_func(function ($packageKey) {
     );
 
     $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$packageKey] =
-        'EXT:' . $packageKey . '/Classes/class.tx_pluploadfe_upload.php';
+        'EXT:'.$packageKey.'/Classes/class.tx_pluploadfe_upload.php';
 
     // add records to the search
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['pluploadfe'] = 'tx_pluploadfe_config';

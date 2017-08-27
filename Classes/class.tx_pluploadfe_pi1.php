@@ -31,200 +31,200 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * Plugin 'pluploadfe' for the 'pluploadfe' extension.
  *
  * @author    Felix Nagel <info@felixnagel.com>
- * @package    TYPO3
- * @subpackage    tx_pluploadfe
  */
-class tx_pluploadfe_pi1 extends AbstractPlugin {
+class tx_pluploadfe_pi1 extends AbstractPlugin
+{
+    /**
+     * @var string
+     */
+    public $prefixId = 'tx_pluploadfe_pi1';
 
-	/**
-	 * @var string
-	 */
-	public $prefixId = 'tx_pluploadfe_pi1';
+    /**
+     * @var string
+     */
+    public $scriptRelPath = 'Classes/class.tx_pluploadfe_pi1.php';
 
-	/**
-	 * @var string
-	 */
-	public $scriptRelPath = 'Classes/class.tx_pluploadfe_pi1.php';
+    /**
+     * @var string
+     */
+    public $extKey = 'pluploadfe';
 
-	/**
-	 * @var string
-	 */
-	public $extKey = 'pluploadfe';
+    /**
+     * @var bool
+     */
+    public $pi_checkCHash = true;
 
-	/**
-	 * @var boolean
-	 */
-	public $pi_checkCHash = TRUE;
+    /**
+     * @var int
+     */
+    protected $configUid;
 
-	/**
-	 * @var int
-	 */
-	protected $configUid;
+    /**
+     * @var int
+     */
+    protected $uid;
 
-	/**
-	 * @var int
-	 */
-	protected $uid;
+    /**
+     * @var string
+     */
+    protected $templateHtml;
 
-	/**
-	 * @var string
-	 */
-	protected $templateHtml;
+    /**
+     * @var array
+     */
+    protected $config;
 
-	/**
-	 * @var array
-	 */
-	protected $config;
+    /**
+     * The main method of the PlugIn.
+     *
+     * @param string $content : The plugin content
+     * @param array  $conf    : The plugin configuration
+     *
+     * @return string The content that is displayed on the website
+     */
+    public function main($content, $conf)
+    {
+        $this->conf = $conf;
+        $this->pi_setPiVarDefaults();
+        $this->pi_loadLL('EXT:pluploadfe/Resources/Private/Language/locallang.xml');
 
-	/**
-	 * The main method of the PlugIn
-	 *
-	 * @param string $content : The plugin content
-	 * @param array $conf : The plugin configuration
-	 * @return string    The content that is displayed on the website
-	 */
-	public function main($content, $conf) {
-		$this->conf = $conf;
-		$this->pi_setPiVarDefaults();
-		$this->pi_loadLL('EXT:pluploadfe/Resources/Private/Language/locallang.xml');
+        // set (localized) UID
+        $localizedUid = $this->cObj->data['_LOCALIZED_UID'];
+        if (strlen($this->conf['uid']) > 0) {
+            $this->uid = $this->conf['uid'];
+        } else {
+            $this->uid = intval(($localizedUid) ? $localizedUid : $this->cObj->data['uid']);
+        }
 
-		// set (localized) UID
-		$localizedUid = $this->cObj->data['_LOCALIZED_UID'];
-		if (strlen($this->conf['uid']) > 0) {
-			$this->uid = $this->conf['uid'];
-		} else {
-			$this->uid = intval(($localizedUid) ? $localizedUid : $this->cObj->data['uid']);
-		}
+        // set config record uid
+        if (strlen($this->conf['configUid']) > 0) {
+            $this->configUid = $this->conf['configUid'];
+        } else {
+            $this->configUid = intval($this->cObj->data['tx_pluploadfe_config']);
+        }
 
-		// set config record uid
-		if (strlen($this->conf['configUid']) > 0) {
-			$this->configUid = $this->conf['configUid'];
-		} else {
-			$this->configUid = intval($this->cObj->data['tx_pluploadfe_config']);
-		}
+        $this->getUploadConfig();
+        $this->getTemplateFile();
 
-		$this->getUploadConfig();
-		$this->getTemplateFile();
-
-		if ($this->checkConfig()) {
-			$this->renderCode();
-			$content = $this->getHtml();
-		} else {
-			$content = '<div style="border: 3px solid red; padding: 1em;">
+        if ($this->checkConfig()) {
+            $this->renderCode();
+            $content = $this->getHtml();
+        } else {
+            $content = '<div style="border: 3px solid red; padding: 1em;">
 			<strong>TYPO3 EXT:plupload Error</strong><br />Invalid configuration.</div>';
-		}
+        }
 
-		return $this->pi_wrapInBaseClass($content);
-	}
+        return $this->pi_wrapInBaseClass($content);
+    }
 
-	/**
-	 * Checks config
-	 *
-	 * @return void
-	 */
-	protected function getUploadConfig() {
-		$select = 'extensions';
-		$table = 'tx_pluploadfe_config';
-		$where = 'uid = ' . $this->configUid;
-		$where .= $this->getTsFeController()->sys_page->enableFields($table);
+    /**
+     * Checks config.
+     */
+    protected function getUploadConfig()
+    {
+        $select = 'extensions';
+        $table = 'tx_pluploadfe_config';
+        $where = 'uid = '.$this->configUid;
+        $where .= $this->getTsFeController()->sys_page->enableFields($table);
 
-		$this->config = $this->getDatabase()->exec_SELECTgetSingleRow($select, $table, $where);
-	}
+        $this->config = $this->getDatabase()->exec_SELECTgetSingleRow($select, $table, $where);
+    }
 
-	/**
-	 * Checks config
-	 *
-	 * @return boolean
-	 */
-	protected function checkConfig() {
-		$flag = FALSE;
+    /**
+     * Checks config.
+     *
+     * @return bool
+     */
+    protected function checkConfig()
+    {
+        $flag = false;
 
-		if (strlen($this->uid) > 0 &&
-			strlen($this->templateHtml) > 0 &&
-			intval($this->configUid) > 0 &&
-			is_array($this->config) &&
-			strlen($this->config['extensions']) > 0
-		) {
-			$flag = TRUE;
-		} else {
-			$this->handleError('Invalid configuration');
-		}
+        if (strlen($this->uid) > 0 &&
+            strlen($this->templateHtml) > 0 &&
+            intval($this->configUid) > 0 &&
+            is_array($this->config) &&
+            strlen($this->config['extensions']) > 0
+        ) {
+            $flag = true;
+        } else {
+            $this->handleError('Invalid configuration');
+        }
 
-		return $flag;
-	}
+        return $flag;
+    }
 
-	/**
-	 * Function to parse the template
-	 *
-	 * @return void
-	 */
-	protected function renderCode() {
-		// Extract subparts from the template
-		$templateMain = $this->cObj->getSubpart($this->templateHtml, '###TEMPLATE_CODE###');
+    /**
+     * Function to parse the template.
+     */
+    protected function renderCode()
+    {
+        // Extract subparts from the template
+        $templateMain = $this->cObj->getSubpart($this->templateHtml, '###TEMPLATE_CODE###');
 
-		// fill marker array
-		$markerArray = $this->getDefaultMarker();
-		$markerArray['###UPLOAD_FILE###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') .
-			'index.php?eID=pluploadfe&configUid=' . $this->configUid;
+        // fill marker array
+        $markerArray = $this->getDefaultMarker();
+        $markerArray['###UPLOAD_FILE###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').
+            'index.php?eID=pluploadfe&configUid='.$this->configUid;
 
-		// replace markers in the template
-		$content = $this->cObj->substituteMarkerArray($templateMain, $markerArray);
+        // replace markers in the template
+        $content = $this->cObj->substituteMarkerArray($templateMain, $markerArray);
 
-		$this->getPageRenderer()->addJsFooterInlineCode(
-			$this->prefixId . '_' . $this->uid, $content
-		);
-	}
+        $this->getPageRenderer()->addJsFooterInlineCode(
+            $this->prefixId.'_'.$this->uid, $content
+        );
+    }
 
-	/**
-	 * Function to parse the template
-	 *
-	 * @return string
-	 */
-	protected function getHtml() {
-		// Extract subparts from the template
-		$templateMain = $this->cObj->getSubpart($this->templateHtml, '###TEMPLATE_CONTENT###');
+    /**
+     * Function to parse the template.
+     *
+     * @return string
+     */
+    protected function getHtml()
+    {
+        // Extract subparts from the template
+        $templateMain = $this->cObj->getSubpart($this->templateHtml, '###TEMPLATE_CONTENT###');
 
-		// fill marker array
-		$markerArray = $this->getDefaultMarker();
-		$markerArray['###INFO_1###'] = $this->pi_getLL('info_1');
-		$markerArray['###INFO_2###'] = $this->pi_getLL('info_2');
+        // fill marker array
+        $markerArray = $this->getDefaultMarker();
+        $markerArray['###INFO_1###'] = $this->pi_getLL('info_1');
+        $markerArray['###INFO_2###'] = $this->pi_getLL('info_2');
 
-		// replace markers in the template
-		$content = $this->cObj->substituteMarkerArray($templateMain, $markerArray);
+        // replace markers in the template
+        $content = $this->cObj->substituteMarkerArray($templateMain, $markerArray);
 
-		return $content;
-	}
+        return $content;
+    }
 
-	/**
-	 * Function to render the default marker
-	 *
-	 * @return array
-	 */
-	protected function getDefaultMarker() {
-		$markerArray = array();
-		$extensionsArray = GeneralUtility::trimExplode(',', $this->config['extensions'], TRUE);
-		$maxFileSizeInBytes = GeneralUtility::getMaxUploadFileSize() * 1024;
+    /**
+     * Function to render the default marker.
+     *
+     * @return array
+     */
+    protected function getDefaultMarker()
+    {
+        $markerArray = array();
+        $extensionsArray = GeneralUtility::trimExplode(',', $this->config['extensions'], true);
+        $maxFileSizeInBytes = GeneralUtility::getMaxUploadFileSize() * 1024;
 
-		$markerArray['###UID###'] = $this->uid;
-		$markerArray['###LANGUAGE###'] = $this->getTsFeController()->config['config']['language'];
-		$markerArray['###EXTDIR_PATH###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') .
-			ExtensionManagementUtility::siteRelPath($this->extKey);
-		$markerArray['###FILE_EXTENSIONS###'] = implode(',', $extensionsArray);
-		$markerArray['###FILE_MAX_SIZE###'] = $maxFileSizeInBytes;
+        $markerArray['###UID###'] = $this->uid;
+        $markerArray['###LANGUAGE###'] = $this->getTsFeController()->config['config']['language'];
+        $markerArray['###EXTDIR_PATH###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').
+            ExtensionManagementUtility::siteRelPath($this->extKey);
+        $markerArray['###FILE_EXTENSIONS###'] = implode(',', $extensionsArray);
+        $markerArray['###FILE_MAX_SIZE###'] = $maxFileSizeInBytes;
 
-		return $markerArray;
-	}
+        return $markerArray;
+    }
 
-	/**
-	 * Function to fetch the template file
-	 *
-	 * @return void
-	 */
-	protected function getTemplateFile() {
-		$templateFile = (strlen(trim($this->conf['templateFile'])) > 0) ?
-			trim($this->conf['templateFile']) : 'EXT:pluploadfe/Resources/Private/Templates/template.html';
+    /**
+     * Function to fetch the template file.
+     */
+    protected function getTemplateFile()
+    {
+        $templateFile = (strlen(trim($this->conf['templateFile'])) > 0) ?
+            trim($this->conf['templateFile']) : 'EXT:pluploadfe/Resources/Private/Templates/template.html';
 
-		// Get the template
+        // Get the template
         if (version_compare(TYPO3_branch, '8.0', '>=')) {
             $this->templateHtml = file_get_contents($this->getTsFeController()->tmpl->getFileName($templateFile));
         } else {
@@ -232,17 +232,18 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
             $this->templateHtml = $this->cObj->fileResource($templateFile);
         }
 
-		if (!$this->templateHtml) {
-			$this->handleError('Error while fetching the template file: ' . $templateFile);
-		}
-	}
+        if (!$this->templateHtml) {
+            $this->handleError('Error while fetching the template file: '.$templateFile);
+        }
+    }
 
     /**
-     * Get page renderer
+     * Get page renderer.
      *
      * @return \TYPO3\CMS\Core\Page\PageRenderer
      */
-    public static function getPageRenderer() {
+    public static function getPageRenderer()
+    {
         if (version_compare(TYPO3_branch, '8.0', '>=')) {
             return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
         } else {
@@ -251,41 +252,42 @@ class tx_pluploadfe_pi1 extends AbstractPlugin {
         }
     }
 
-	/**
-	 * Handles error output for frontend and TYPO3 logging
-	 *
-	 * @param string$msg Message to output
-	 *
-	 * @return void
-	 */
-	protected function handleError($msg) {
-		// error
-		GeneralUtility::sysLog($msg, $this->extKey, 3);
+    /**
+     * Handles error output for frontend and TYPO3 logging.
+     *
+     * @param string$msg Message to output
+     */
+    protected function handleError($msg)
+    {
+        // error
+        GeneralUtility::sysLog($msg, $this->extKey, 3);
 
-		// write dev log if enabled
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
-			// fatal error
-			GeneralUtility::devLog($msg, $this->extKey, 3);
-		}
-	}
+        // write dev log if enabled
+        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
+            // fatal error
+            GeneralUtility::devLog($msg, $this->extKey, 3);
+        }
+    }
 
-	/**
-	 * Get database connection
-	 *
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabase() {
-		return $GLOBALS['TYPO3_DB'];
-	}
+    /**
+     * Get database connection.
+     *
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabase()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
 
     /**
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
-    protected static function getTsFeController() {
+    protected static function getTsFeController()
+    {
         return $GLOBALS['TSFE'];
     }
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/class.tx_pluploadfe_pi1.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/class.tx_pluploadfe_pi1.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/class.tx_pluploadfe_pi1.php'];
 }
