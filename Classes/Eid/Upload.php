@@ -260,13 +260,7 @@ class Upload
      */
     protected function checkPath($path)
     {
-        $allowedAndValid = (
-            strlen($path) > 0 &&
-            GeneralUtility::isAllowedAbsPath(PATH_site.$path) &&
-            GeneralUtility::validPathStr($path)
-        );
-
-        return $allowedAndValid;
+        return (strlen($path) > 0 && GeneralUtility::isAllowedAbsPath(PATH_site.$path));
     }
 
     /**
