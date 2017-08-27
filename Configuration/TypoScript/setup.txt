@@ -33,3 +33,15 @@ page {
 		tx_pluploadfe_css = EXT:pluploadfe/Resources/Public/JavaScript/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css
 	}
 }
+
+# Example for JS localization
+#[globalVar = GP:L = 123]
+#	page {
+#		includeJSFooter {
+#			# Make sure to add this AFTER the other plupload JS files
+#			tx_pluploadfe_plupload_i18n = EXT:pluploadfe/Resources/Public/JavaScript/plupload/js/i18n/de.js
+#			tx_pluploadfe_plupload_i18n.disableCompression = 1
+#			tx_pluploadfe_plupload_i18n.excludeFromConcatenation = 1
+#		}
+#	}
+#[end]
