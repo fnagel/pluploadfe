@@ -26,6 +26,26 @@ Updade Guide
 		:depth: 3
 
 
+Upgrade to 2.0.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Removed TYPO3 6.2 support
+
+* Refactor classes
+
+* Switch to PSR-2 CGL
+
+
+How to upgrade
+""""""""""""""
+
+You need to clear the cache.
+
+
+
 
 Upgrade to 1.6.1
 ^^^^^^^^^^^^^^^^
