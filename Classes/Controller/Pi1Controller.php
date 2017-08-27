@@ -3,7 +3,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2016 Felix Nagel <info@felixnagel.com>
+ *  (c) 2011-2017 Felix Nagel <info@felixnagel.com>
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,8 +30,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Plugin 'pluploadfe' for the 'pluploadfe' extension.
- *
- * @author    Felix Nagel <info@felixnagel.com>
  */
 class tx_pluploadfe_pi1 extends AbstractPlugin
 {
@@ -42,7 +41,7 @@ class tx_pluploadfe_pi1 extends AbstractPlugin
     /**
      * @var string
      */
-    public $scriptRelPath = 'Classes/class.tx_pluploadfe_pi1.php';
+    public $scriptRelPath = 'Classes/Controller/Pi1Controller.php';
 
     /**
      * @var string
@@ -170,7 +169,8 @@ class tx_pluploadfe_pi1 extends AbstractPlugin
         $content = $this->cObj->substituteMarkerArray($templateMain, $markerArray);
 
         $this->getPageRenderer()->addJsFooterInlineCode(
-            $this->prefixId.'_'.$this->uid, $content
+            $this->prefixId.'_'.$this->uid,
+            $content
         );
     }
 
@@ -288,6 +288,8 @@ class tx_pluploadfe_pi1 extends AbstractPlugin
     }
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/class.tx_pluploadfe_pi1.php']) {
-    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/class.tx_pluploadfe_pi1.php'];
+/** @noinspection PhpUndefinedVariableInspection */
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/Controller/Pi1Controller.php']) {
+    /** @noinspection PhpUndefinedVariableInspection */
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/Controller/Pi1Controller.php'];
 }
