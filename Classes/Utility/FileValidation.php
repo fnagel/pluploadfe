@@ -78,20 +78,20 @@ class FileValidation
     /**
      * Checks the given mime type.
      *
-     * @param string $sentExt
      * @param string $filePath
      *
      * @return bool
      */
-    public static function checkMimeType($sentExt, $filePath)
+    public static function checkMimeType($filePath)
     {
         $flag = false;
+        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
 
-        if (array_key_exists($sentExt, MimeTypes::$mimeTypes)) {
+        if (array_key_exists($extension, MimeTypes::$mimeTypes)) {
             $mimeType = explode(';', self::getMimeType($filePath));
 
             // Check if mime type fits the given file extension
-            if (in_array($mimeType[0], MimeTypes::$mimeTypes[$sentExt])) {
+            if (in_array($mimeType[0], MimeTypes::$mimeTypes[$extension])) {
                 $flag = true;
             }
         } else {

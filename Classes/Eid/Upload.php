@@ -48,11 +48,6 @@ class Upload
     private $chunkedUpload = false;
 
     /**
-     * @var string
-     */
-    private $fileExtension = '';
-
-    /**
      * @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
      */
     private $feUserObj = null;
@@ -275,19 +270,18 @@ class Upload
     }
 
     /**
-     * Checks file extension
-     * Script ends here when bad filename is given.
+     * Checks file extension.
      *
-     * @todo Check for extension via config file
+     * Script ends here when bad filename is given.
      */
     protected function checkFileExtension()
     {
         $fileName = $this->getFileName();
-        $this->fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         $extensions = GeneralUtility::trimExplode(',', $this->config['extensions'], true);
 
         // check if file extension is allowed (configuration record)
-        if (!in_array($this->fileExtension, $extensions)) {
+        if (!in_array($fileExtension, $extensions)) {
             $this->sendErrorResponse('File extension is not allowed.');
         }
 
@@ -433,6 +427,8 @@ class Upload
     /**
      * Process uploaded file.
      *
+     * @param string $filePath
+     *
      * @params string $filePath
      */
     protected function processFile($filePath)
@@ -441,7 +437,7 @@ class Upload
             // we already checked if the file extension is allowed,
             // so we need to check if the mime type is adequate.
             // if mime type is not allowed: remove file
-            if (!FileValidation::checkMimeType($this->fileExtension, $filePath)) {
+            if (!FileValidation::checkMimeType($filePath)) {
                 @unlink($filePath);
                 $this->sendErrorResponse('File mime type is not allowed.');
             }
