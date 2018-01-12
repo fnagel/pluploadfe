@@ -1,0 +1,32 @@
+{
+	"name": "typo3/pluploadfe",
+	"type": "typo3-cms-extension",
+	"description": "Provides an API and a FE plugin for using plupload, a highly usable and advanced upload handler.",
+	"keywords": [
+		"TYPO3 CMS",
+		"upload",
+		"pluploadfe"
+	],
+	"homepage": "https://github.com/fnagel/pluploadfe",
+	"support": {
+		"issues": "https://github.com/fnagel/pluploadfe/issues"
+	},
+	"authors": [
+		{
+			"name": "Felix Nagel",
+			"email": "info@felixnagel.com",
+			"homepage": "http://www.felixnagel.com",
+			"role": "Developer"
+		}
+	],
+	"license": "GPL-2.0+",
+	"require": {
+		"php": ">=5.5,<7.1",
+		"typo3/cms-core": ">=7.6.11,<=8.7.99"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\Pluploadfe\\": "Classes/"
+		}
+	}
+}
