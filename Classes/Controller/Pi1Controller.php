@@ -1,9 +1,11 @@
 <?php
 
+namespace TYPO3\Pluploadfe\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2017 Felix Nagel <info@felixnagel.com>
+ *  (c) 2011-2018 Felix Nagel <info@felixnagel.com>
  *
  *  All rights reserved
  *
@@ -29,9 +31,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
- * Plugin 'pluploadfe' for the 'pluploadfe' extension.
+ * Plugin 'pluploadfe_pi1' for the 'pluploadfe' extension.
  */
-class tx_pluploadfe_pi1 extends AbstractPlugin
+class Pi1Controller extends AbstractPlugin
 {
     /**
      * @var string

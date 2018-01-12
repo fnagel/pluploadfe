@@ -20,6 +20,12 @@ if (!defined('TYPO3_MODE')) {
     $_EXTKEY.'_pi1',
 ), 'list_type');
 
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
+    'TYPO3.Pluploadfe',
+    'setup',
+    'plugin.tx_pluploadfe_pi1.userFunc = TYPO3\\Pluploadfe\\Controller\\Pi1Controller->main'
+);
+
 // Add config record
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_pluploadfe_config');
 
