@@ -5,7 +5,7 @@ namespace TYPO3\Pluploadfe\Eid;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2017 Felix Nagel <info@felixnagel.com>
+ *  (c) 2011-2018 Felix Nagel <info@felixnagel.com>
  *  (c) 2016 Daniel Wagner
  *
  *  All rights reserved
@@ -27,12 +27,12 @@ namespace TYPO3\Pluploadfe\Eid;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-if (!defined('PATH_typo3conf')) {
-    die();
-}
-
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Utility\EidUtility;
+use TYPO3\Pluploadfe\Exception\AuthenticationException;
+use TYPO3\Pluploadfe\Exception\InvalidArgumentException;
 use TYPO3\Pluploadfe\Utility\FileValidation;
 
 /**
@@ -63,12 +63,41 @@ class Upload
     private $uploadPath = '';
 
     /**
+     * @param ServerRequestInterface $request the current request object
+     * @param ResponseInterface $response the available response
+     * @return ResponseInterface the modified response
+     */
+    public function processRequest(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $response = $response->withHeader('Content-Type', 'application/json; charset=utf-8');
+        $response = $response->withHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
+        $response = $response->withHeader('Last-Modified', gmdate('D, d M Y H:i:s').' GMT');
+        $response = $response->withHeader('Pragma', 'no-cache');
+        $response = $response->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+        $response = $response->withAddedHeader('Cache-Control', 'post-check=0, pre-check=0');
+
+        try {
+            $this->main();
+            // Return JSON-RPC response if upload process is successfully finished
+            $response->getBody()->write('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+            return $response;
+        } catch (AuthenticationException $exception) {
+            $response->getBody()->write($this->getErrorResponseContent($exception));
+            return $response->withStatus(403);
+        } catch (InvalidArgumentException $exception) {
+            $response->getBody()->write($this->getErrorResponseContent($exception));
+            return $response->withStatus(410);
+        } catch (\Exception $exception) {
+            $response->getBody()->write($this->getErrorResponseContent($exception));
+            return $response->withStatus(404);
+        }
+    }
+
+    /**
      * Handles incoming upload requests.
      */
     public function main()
     {
-        $this->setHeaderData();
-
         // get configuration record
         $this->config = $this->getUploadConfig();
         $this->processConfig();
@@ -77,7 +106,7 @@ class Upload
         // check for valid FE user
         if ($this->config['feuser_required']) {
             if ($this->getFeUser()->user['username'] == '') {
-                $this->sendErrorResponse('TYPO3 user session expired.');
+                throw new AuthenticationException('TYPO3 user session expired.');
             }
         }
 
@@ -156,35 +185,23 @@ class Upload
     }
 
     /**
-     * Set HTTP headers for no cache etc.
-     */
-    protected function setHeaderData()
-    {
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-        header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
-        header('Cache-Control: no-store, no-cache, must-revalidate');
-        header('Cache-Control: post-check=0, pre-check=0', false);
-        header('Pragma: no-cache');
-    }
-
-    /**
-     * Set HTTP headers for no cache etc.
+     * Get JSON for error messages
      *
-     * @param $message
-     * @param int $code
+     * @param \Exception $exception
+     * @return string
      */
-    protected function sendErrorResponse($message, $code = 100)
+    protected function getErrorResponseContent(\Exception $exception)
     {
         $output = array(
             'jsonrpc' => '2.0',
             'error' => array(
-                'code' => $code,
-                'message' => $message,
+                'code' => $exception->getCode(),
+                'message' => $exception->getMessage(),
             ),
             'id' => '',
         );
 
-        die(json_encode($output));
+        return json_encode($output);
     }
 
     /**
@@ -193,15 +210,15 @@ class Upload
     protected function checkUploadConfig()
     {
         if (!count($this->config)) {
-            $this->sendErrorResponse('Configuration record not found or invalid.');
+            throw new InvalidArgumentException('Configuration record not found or invalid.');
         }
 
         if (!strlen($this->config['extensions'])) {
-            $this->sendErrorResponse('Missing allowed file extension configuration.');
+            throw new InvalidArgumentException('Missing allowed file extension configuration.');
         }
 
         if (!$this->checkPath($this->config['upload_path'])) {
-            $this->sendErrorResponse('Upload directory not valid.');
+            throw new InvalidArgumentException('Upload directory not valid.');
         }
     }
 
@@ -216,7 +233,7 @@ class Upload
 
         // config id given?
         if (!$configUid) {
-            $this->sendErrorResponse('No config record ID given.');
+            throw new InvalidArgumentException('No config record ID given.');
         }
 
         $select = 'upload_path, extensions, feuser_required, feuser_field, save_session, obscure_dir, check_mime';
@@ -276,12 +293,12 @@ class Upload
 
         // check if file extension is allowed (configuration record)
         if (!in_array($fileExtension, $extensions)) {
-            $this->sendErrorResponse('File extension is not allowed.');
+            throw new InvalidArgumentException('File extension is not allowed.');
         }
 
         // check if file extension is allowed on this TYPO3 installation
         if (!GeneralUtility::verifyFilenameAgainstDenyPattern($fileName)) {
-            $this->sendErrorResponse('File extension is not allowed on this TYPO3 installation.');
+            throw new InvalidArgumentException('File extension is not allowed on this TYPO3 installation.');
         }
     }
 
@@ -353,7 +370,7 @@ class Upload
         try {
             GeneralUtility::mkdir_deep(PATH_site, $this->uploadPath);
         } catch (\Exception $e) {
-            $this->sendErrorResponse('Failed to create upload directory.');
+            throw new InvalidArgumentException('Failed to create upload directory.');
         }
     }
 
@@ -377,21 +394,21 @@ class Upload
 
         // Open temp file
         if (!$out = @fopen("{$filePath}.part", $chunks ? 'ab' : 'wb')) {
-            $this->sendErrorResponse('Failed to open output stream.', 102);
+            throw new InvalidArgumentException('Failed to open output stream.', 102);
         }
 
         if (!empty($_FILES)) {
             if ($_FILES['file']['error'] || !is_uploaded_file($_FILES['file']['tmp_name'])) {
-                $this->sendErrorResponse('Failed to move uploaded file.', 103);
+                throw new InvalidArgumentException('Failed to move uploaded file.', 103);
             }
 
             // Read binary input stream and append it to temp file
             if (!$in = @fopen($_FILES['file']['tmp_name'], 'rb')) {
-                $this->sendErrorResponse('Failed to open input stream.', 101);
+                throw new InvalidArgumentException('Failed to open input stream.', 101);
             }
         } else {
             if (!$in = @fopen('php://input', 'rb')) {
-                $this->sendErrorResponse('Failed to open input stream.', 101);
+                throw new InvalidArgumentException('Failed to open input stream.', 101);
             }
         }
 
@@ -413,9 +430,6 @@ class Upload
         if ($this->chunkedUpload) {
             $this->saveDataInSession($this->uploadPath, 'chunk_path');
         }
-
-        // Return JSON-RPC response if upload process is successfully finished
-        die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
     }
 
     /**
@@ -433,7 +447,7 @@ class Upload
             // if mime type is not allowed: remove file
             if (!FileValidation::checkMimeType($filePath)) {
                 @unlink($filePath);
-                $this->sendErrorResponse('File mime type is not allowed.');
+                throw new InvalidArgumentException('File mime type is not allowed.');
             }
         }
 
@@ -514,17 +528,4 @@ class Upload
     {
         return $GLOBALS['TYPO3_DB'];
     }
-}
-
-/** @noinspection PhpUndefinedVariableInspection */
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/Eid/Upload.php']) {
-    /** @noinspection PhpUndefinedVariableInspection */
-    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/Eid/Upload.php'];
-}
-
-if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE)) {
-    die();
-} else {
-    $upload = GeneralUtility::makeInstance(Upload::class);
-    $upload->main();
 }
