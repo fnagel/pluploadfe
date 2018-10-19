@@ -33,5 +33,15 @@
 		"psr-4": {
 			"FelixNagel\\Pluploadfe\\": "Classes/"
 		}
-	}
+	},
+	"replace": {
+		"pluploadfe": "self.version",
+		"typo3-ter/pluploadfe": "self.version"
+	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/TYPO3/TYPO3.CMS"
+		}
+	]
 }
