@@ -1,6 +1,6 @@
 <?php
 
-namespace TYPO3\Pluploadfe\Exception;
+namespace FelixNagel\Pluploadfe\Exception;
 
 /***************************************************************
  *  Copyright notice

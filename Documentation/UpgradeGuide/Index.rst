@@ -26,6 +26,23 @@ Updade Guide
 		:depth: 3
 
 
+Upgrade to 2.1.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Changed namespace to `FelixNagel`
+
+
+How to upgrade
+""""""""""""""
+
+You need to clear the cache.
+
+
+
+
 Upgrade to 2.0.0
 ^^^^^^^^^^^^^^^^
 

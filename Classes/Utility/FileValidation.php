@@ -1,6 +1,6 @@
 <?php
 
-namespace TYPO3\Pluploadfe\Utility;
+namespace FelixNagel\Pluploadfe\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -27,8 +27,8 @@ namespace TYPO3\Pluploadfe\Utility;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\Pluploadfe\Exception\InvalidArgumentException;
-use TYPO3\Pluploadfe\Statics\MimeTypes;
+use FelixNagel\Pluploadfe\Exception\InvalidArgumentException;
+use FelixNagel\Pluploadfe\Statics\MimeTypes;
 
 /**
  * FileValidation.

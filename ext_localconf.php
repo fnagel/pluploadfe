@@ -18,7 +18,7 @@ call_user_func(function ($packageKey) {
     );
 
     $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$packageKey] =
-        \TYPO3\Pluploadfe\Eid\Upload::class . '::processRequest';
+        \FelixNagel\Pluploadfe\Eid\Upload::class . '::processRequest';
 
     // add records to the search
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['pluploadfe'] = 'tx_pluploadfe_config';

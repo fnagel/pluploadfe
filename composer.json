@@ -1,5 +1,5 @@
 {
-	"name": "typo3/pluploadfe",
+	"name": "felixnagel/pluploadfe",
 	"type": "typo3-cms-extension",
 	"description": "Provides an API and a FE plugin for using plupload, a highly usable and advanced upload handler.",
 	"keywords": [
@@ -29,7 +29,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"TYPO3\\Pluploadfe\\": "Classes/"
+			"FelixNagel\\Pluploadfe\\": "Classes/"
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace TYPO3\Pluploadfe\Controller;
+namespace FelixNagel\Pluploadfe\Controller;
 
 /***************************************************************
  *  Copyright notice

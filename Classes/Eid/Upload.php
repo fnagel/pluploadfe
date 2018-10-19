@@ -1,6 +1,6 @@
 <?php
 
-namespace TYPO3\Pluploadfe\Eid;
+namespace FelixNagel\Pluploadfe\Eid;
 
 /***************************************************************
  *  Copyright notice
@@ -31,10 +31,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Utility\EidUtility;
-use TYPO3\Pluploadfe\Exception\AuthenticationException;
-use TYPO3\Pluploadfe\Exception\InvalidArgumentException;
-use TYPO3\Pluploadfe\Utility\Filesystem;
-use TYPO3\Pluploadfe\Utility\FileValidation;
+use FelixNagel\Pluploadfe\Exception\AuthenticationException;
+use FelixNagel\Pluploadfe\Exception\InvalidArgumentException;
+use FelixNagel\Pluploadfe\Utility\Filesystem;
+use FelixNagel\Pluploadfe\Utility\FileValidation;
 
 /**
  * This class uploads files.

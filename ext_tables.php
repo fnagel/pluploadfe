@@ -21,9 +21,9 @@ if (!defined('TYPO3_MODE')) {
 ), 'list_type');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
-    'TYPO3.Pluploadfe',
+    'FelixNagel.Pluploadfe',
     'setup',
-    'plugin.tx_pluploadfe_pi1.userFunc = TYPO3\\Pluploadfe\\Controller\\Pi1Controller->main'
+    'plugin.tx_pluploadfe_pi1.userFunc = FelixNagel\\Pluploadfe\\Controller\\Pi1Controller->main'
 );
 
 // Add config record

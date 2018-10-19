@@ -1,11 +1,11 @@
 <?php
 
-namespace TYPO3\Pluploadfe\Statics;
+namespace FelixNagel\Pluploadfe\Statics;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2017 Felix Nagel <info@felixnagel.com>
+ *  (c) 2011-2018 Felix Nagel <info@felixnagel.com>
  *
  *  All rights reserved
  *
