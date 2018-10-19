@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Utility\EidUtility;
 use TYPO3\Pluploadfe\Exception\AuthenticationException;
 use TYPO3\Pluploadfe\Exception\InvalidArgumentException;
+use TYPO3\Pluploadfe\Utility\Filesystem;
 use TYPO3\Pluploadfe\Utility\FileValidation;
 
 /**
@@ -98,12 +99,12 @@ class Upload
      */
     public function main()
     {
-        // get configuration record
+        // Get configuration record
         $this->config = $this->getUploadConfig();
         $this->processConfig();
         $this->checkUploadConfig();
 
-        // check for valid FE user
+        // Check for valid FE user
         if ($this->config['feuser_required']) {
             if ($this->getFeUser()->user['username'] == '') {
                 throw new AuthenticationException('TYPO3 user session expired.');
@@ -113,16 +114,16 @@ class Upload
         // One file or chunked?
         $this->chunkedUpload = (isset($_REQUEST['chunks']) && intval($_REQUEST['chunks']) > 1);
 
-        // check file extension
-        $this->checkFileExtension();
+        // Check file extension
+        FileValidation::checkFileExtension($this->getFileName(), $this->config['extensions']);
 
-        // get upload path
+        // Get upload path
         $this->uploadPath = $this->getUploadDir(
             $this->config['upload_path'],
             $this->getUserDirectory(),
             $this->config['obscure_dir']
         );
-        $this->makeSureUploadTargetExists();
+        Filesystem::createFolder($this->uploadPath);
 
         $this->uploadFile();
     }
@@ -217,7 +218,7 @@ class Upload
             throw new InvalidArgumentException('Missing allowed file extension configuration.');
         }
 
-        if (!$this->checkPath($this->config['upload_path'])) {
+        if (!Filesystem::isPathValid($this->config['upload_path'])) {
             throw new InvalidArgumentException('Upload directory not valid.');
         }
     }
@@ -269,40 +270,6 @@ class Upload
     }
 
     /**
-     * Check if path is allowed and valid.
-     *
-     * @param $path
-     *
-     * @return bool
-     */
-    protected function checkPath($path)
-    {
-        return (strlen($path) > 0 && GeneralUtility::isAllowedAbsPath(PATH_site.$path));
-    }
-
-    /**
-     * Checks file extension.
-     *
-     * Script ends here when bad filename is given.
-     */
-    protected function checkFileExtension()
-    {
-        $fileName = $this->getFileName();
-        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-        $extensions = GeneralUtility::trimExplode(',', $this->config['extensions'], true);
-
-        // check if file extension is allowed (configuration record)
-        if (!in_array($fileExtension, $extensions)) {
-            throw new InvalidArgumentException('File extension is not allowed.');
-        }
-
-        // check if file extension is allowed on this TYPO3 installation
-        if (!GeneralUtility::verifyFilenameAgainstDenyPattern($fileName)) {
-            throw new InvalidArgumentException('File extension is not allowed on this TYPO3 installation.');
-        }
-    }
-
-    /**
      * Gets the uploaded file name from request.
      *
      * @return string
@@ -336,42 +303,25 @@ class Upload
             if ($chunkedPath && file_exists($chunkedPath.DIRECTORY_SEPARATOR.$this->getFileName().'.part')) {
                 return $chunkedPath;
             } else {
-                // reset session
+                // Reset session
                 $this->saveDataInSession(null, 'chunk_path');
             }
         }
 
-        // make sure we have no trailing slash
+        // Make sure we have no trailing slash
         $path = GeneralUtility::dirname($path);
 
-        // subdirectory
+        // Subdirectory
         if ($subDirectory) {
             $path = $path.DIRECTORY_SEPARATOR.$subDirectory;
         }
 
-        // obscure directory
+        // Obscure directory
         if ($obscure) {
-            $path = $path.DIRECTORY_SEPARATOR.$this->getRandomDirName(20);
+            $path = $path.DIRECTORY_SEPARATOR.Filesystem::getRandomDirName(20);
         }
 
         return $path;
-    }
-
-    /**
-     * Checks if upload path exists.
-     */
-    protected function makeSureUploadTargetExists()
-    {
-        if (file_exists($this->uploadPath)) {
-            return;
-        }
-
-        // create target dir
-        try {
-            GeneralUtility::mkdir_deep(PATH_site, $this->uploadPath);
-        } catch (\Exception $e) {
-            throw new InvalidArgumentException('Failed to create upload directory.');
-        }
     }
 
     /**
@@ -498,25 +448,6 @@ class Upload
     protected function getSessionData($key = 'data')
     {
         return $this->getFeUser()->getSessionData('tx_pluploadfe_'.$key);
-    }
-
-    /**
-     * Generate random string.
-     *
-     * @param int $length
-     *
-     * @return string
-     */
-    protected function getRandomDirName($length = 10)
-    {
-        $set = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIKLMNPQRSTUVWXYZ0123456789';
-        $string = '';
-
-        for ($i = 1; $i <= $length; ++$i) {
-            $string .= $set[mt_rand(0, (strlen($set) - 1))];
-        }
-
-        return $string;
     }
 
     /**

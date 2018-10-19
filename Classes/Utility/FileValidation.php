@@ -5,7 +5,7 @@ namespace TYPO3\Pluploadfe\Utility;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2017 Felix Nagel <info@felixnagel.com>
+ *  (c) 2011-2018 Felix Nagel <info@felixnagel.com>
  *
  *  All rights reserved
  *
@@ -26,6 +26,8 @@ namespace TYPO3\Pluploadfe\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\Pluploadfe\Exception\InvalidArgumentException;
 use TYPO3\Pluploadfe\Statics\MimeTypes;
 
 /**
@@ -33,6 +35,28 @@ use TYPO3\Pluploadfe\Statics\MimeTypes;
  */
 class FileValidation
 {
+    /**
+     * Checks file extension.
+     *
+     * @param string $fileName Filename to check
+     * @param string $allowedExtensions CSV list of allowed file extensions
+     */
+    public static function checkFileExtension($fileName, $allowedExtensions)
+    {
+        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        $extensions = GeneralUtility::trimExplode(',', $allowedExtensions, true);
+
+        // check if file extension is allowed (configuration record)
+        if (!in_array($fileExtension, $extensions)) {
+            throw new InvalidArgumentException('File extension is not allowed.');
+        }
+
+        // check if file extension is allowed on this TYPO3 installation
+        if (!GeneralUtility::verifyFilenameAgainstDenyPattern($fileName)) {
+            throw new InvalidArgumentException('File extension is not allowed on this TYPO3 installation.');
+        }
+    }
+
     /**
      * Retrieves MIME type from given file.
      *
