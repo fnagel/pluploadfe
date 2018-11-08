@@ -32,13 +32,16 @@ Upgrade to 2.1.0
 Changelog
 """""""""
 
-* Changed namespace to `FelixNagel`
+* Some refactoring
+* Changed PHP namespace to `FelixNagel`
+* Tested in PHP 7.2
 
 
 How to upgrade
 """"""""""""""
 
-You need to clear the cache.
+* Use "Clear all caches including PHP opcode cache" and "Dump Autoload Information" in the install tool (if needed for your setup)
+* Clear all caches
 
 
 
