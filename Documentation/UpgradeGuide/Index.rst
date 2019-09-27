@@ -35,6 +35,7 @@ Changelog
 * Added TYPO3 9.5 support
 * Removed PHP 5.x support
 * Removed TYPO3 7.x support
+* Update Plupload to v2.3.6
 
 
 How to upgrade
