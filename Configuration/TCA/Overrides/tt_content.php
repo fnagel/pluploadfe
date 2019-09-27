@@ -8,6 +8,17 @@ call_user_func(function ($packageKey) {
     $extensionName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($packageKey);
     $pluginSignature = strtolower($extensionName).'_pi1';
 
+    // Add plugin
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
+        array(
+            'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tt_content.list_type_pi1',
+            $packageKey.'_pi1',
+        ),
+        'list_type',
+        $packageKey
+    );
+
+    // Add column
     $tempColumns = array(
         'tx_pluploadfe_config' => array(
             'exclude' => 1,
