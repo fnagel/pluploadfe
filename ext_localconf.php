@@ -5,6 +5,10 @@ if (!defined('TYPO3_MODE')) {
 }
 
 call_user_func(function ($packageKey) {
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$packageKey.'/Configuration/TypoScript/pageTsConfig.ts">'
+    );
+
     TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
         options.saveDocNew.tx_pluploadtest_config=1
     ');

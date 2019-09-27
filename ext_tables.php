@@ -4,16 +4,6 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-// Add static TS
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    $_EXTKEY, 'Configuration/TypoScript/', 'Plupload FE: default config'
-);
-
-// Add page TS config
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$_EXTKEY.'/Configuration/TypoScript/pageTsConfig.ts">'
-);
-
 // Add plugin
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
     'FelixNagel.Pluploadfe',
