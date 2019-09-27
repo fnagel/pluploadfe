@@ -20,25 +20,25 @@
 						quality: 100,
 
 						// Specify what files to browse for
-						filters : {
+						filters: {
 							// Remove this when using chunked uploads
-							max_file_size : '###FILE_MAX_SIZE###',
+							max_file_size: '###FILE_MAX_SIZE###',
 							mime_types: [
 								{
-									title : "Allowed files",
-									extensions : "###FILE_EXTENSIONS###"
+									title: "Allowed files",
+									extensions: "###FILE_EXTENSIONS###"
 								}
 							]
 						},
 
 						// Flash settings
-						flash_swf_url : '###EXTDIR_PATH###Resources/Public/JavaScript/plupload/js/Moxie.swf',
+						flash_swf_url: '###EXTDIR_PATH###Resources/Public/JavaScript/plupload/js/Moxie.swf',
 
 						// Silverlight settings
-						silverlight_xap_url : '###EXTDIR_PATH###Resources/Public/JavaScript/plupload/js/Moxie.xap',
+						silverlight_xap_url: '###EXTDIR_PATH###Resources/Public/JavaScript/plupload/js/Moxie.xap',
 
 						// Post init events, bound after the internal events
-						init : {
+						init: {
 							FileUploaded: function(up, file, info) {
 								json = $.parseJSON(info.response);
 								if (json.error) {
