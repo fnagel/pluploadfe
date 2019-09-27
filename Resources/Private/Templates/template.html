@@ -39,6 +39,14 @@
 
 						// Post init events, bound after the internal events
 						init: {
+							Error: function(up, error) {
+								json = $.parseJSON(error.response);
+								if (json.error) {
+									error.message += " " + json.error.message;
+								}
+
+								alert(error.message);
+							},
 							FileUploaded: function(up, file, info) {
 								json = $.parseJSON(info.response);
 								if (json.error) {
