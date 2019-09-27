@@ -5,7 +5,7 @@ namespace FelixNagel\Pluploadfe\Eid;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2018 Felix Nagel <info@felixnagel.com>
+ *  (c) 2011-2019 Felix Nagel <info@felixnagel.com>
  *  (c) 2016 Daniel Wagner
  *
  *  All rights reserved
@@ -29,6 +29,8 @@ namespace FelixNagel\Pluploadfe\Eid;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Utility\EidUtility;
 use FelixNagel\Pluploadfe\Exception\AuthenticationException;
@@ -70,6 +72,7 @@ class Upload
      */
     public function processRequest(ServerRequestInterface $request, ResponseInterface $response)
     {
+        /* @var $response HtmlResponse */
         $response = $response->withHeader('Content-Type', 'application/json; charset=utf-8');
         $response = $response->withHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
         $response = $response->withHeader('Last-Modified', gmdate('D, d M Y H:i:s').' GMT');
@@ -239,13 +242,11 @@ class Upload
 
         $select = 'upload_path, extensions, feuser_required, feuser_field, save_session, obscure_dir, check_mime';
         $table = 'tx_pluploadfe_config';
-        $where = 'uid = '.$configUid;
-        $where .= ' AND deleted = 0';
-        $where .= ' AND hidden = 0';
+        $where = 'hidden = 0';
         $where .= ' AND starttime <= '.$GLOBALS['SIM_ACCESS_TIME'];
         $where .= ' AND ( endtime = 0 OR endtime > '.$GLOBALS['SIM_ACCESS_TIME'].')';
 
-        $config = $this->getDatabase()->exec_SELECTgetSingleRow($select, $table, $where);
+        $config = BackendUtility::getRecord($table, $configUid, $select, $where, true);
 
         return $config;
     }
@@ -448,15 +449,5 @@ class Upload
     protected function getSessionData($key = 'data')
     {
         return $this->getFeUser()->getSessionData('tx_pluploadfe_'.$key);
-    }
-
-    /**
-     * Get database connection.
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabase()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

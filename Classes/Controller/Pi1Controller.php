@@ -5,7 +5,7 @@ namespace FelixNagel\Pluploadfe\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011-2018 Felix Nagel <info@felixnagel.com>
+ *  (c) 2011-2019 Felix Nagel <info@felixnagel.com>
  *
  *  All rights reserved
  *
@@ -26,6 +26,9 @@ namespace FelixNagel\Pluploadfe\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -74,6 +77,16 @@ class Pi1Controller extends AbstractPlugin
      * @var array
      */
     protected $config;
+
+    /**
+     * @var ObjectManager|null
+     */
+    protected $objectManager = null;
+
+    /**
+     * @var MarkerBasedTemplateService|null
+     */
+    protected $markerTemplateService = null;
 
     /**
      * The main method of the PlugIn.
@@ -125,10 +138,9 @@ class Pi1Controller extends AbstractPlugin
     {
         $select = 'extensions';
         $table = 'tx_pluploadfe_config';
-        $where = 'uid = '.$this->configUid;
-        $where .= $this->getTsFeController()->sys_page->enableFields($table);
+        $where = $this->getTsFeController()->sys_page->enableFields($table);
 
-        $this->config = $this->getDatabase()->exec_SELECTgetSingleRow($select, $table, $where);
+        $this->config = BackendUtility::getRecord($table, $this->configUid, $select, $where, false);
     }
 
     /**
@@ -160,7 +172,7 @@ class Pi1Controller extends AbstractPlugin
     protected function renderCode()
     {
         // Extract subparts from the template
-        $templateMain = $this->cObj->getSubpart($this->templateHtml, '###TEMPLATE_CODE###');
+        $templateMain = $this->getMarkerTemplateService()->getSubpart($this->templateHtml, '###TEMPLATE_CODE###');
 
         // fill marker array
         $markerArray = $this->getDefaultMarker();
@@ -168,7 +180,7 @@ class Pi1Controller extends AbstractPlugin
             'index.php?eID=pluploadfe&configUid='.$this->configUid;
 
         // replace markers in the template
-        $content = $this->cObj->substituteMarkerArray($templateMain, $markerArray);
+        $content = $this->getMarkerTemplateService()->substituteMarkerArray($templateMain, $markerArray);
 
         $this->getPageRenderer()->addJsFooterInlineCode(
             $this->prefixId.'_'.$this->uid,
@@ -184,7 +196,7 @@ class Pi1Controller extends AbstractPlugin
     protected function getHtml()
     {
         // Extract subparts from the template
-        $templateMain = $this->cObj->getSubpart($this->templateHtml, '###TEMPLATE_CONTENT###');
+        $templateMain = $this->getMarkerTemplateService()->getSubpart($this->templateHtml, '###TEMPLATE_CONTENT###');
 
         // fill marker array
         $markerArray = $this->getDefaultMarker();
@@ -192,7 +204,7 @@ class Pi1Controller extends AbstractPlugin
         $markerArray['###INFO_2###'] = $this->pi_getLL('info_2');
 
         // replace markers in the template
-        $content = $this->cObj->substituteMarkerArray($templateMain, $markerArray);
+        $content = $this->getMarkerTemplateService()->substituteMarkerArray($templateMain, $markerArray);
 
         return $content;
     }
@@ -239,12 +251,36 @@ class Pi1Controller extends AbstractPlugin
      *
      * @return \TYPO3\CMS\Core\Page\PageRenderer
      */
-    public static function getPageRenderer()
+    protected static function getPageRenderer()
     {
         /* @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
 
         return $pageRenderer;
+    }
+
+    /**
+     * @return MarkerBasedTemplateService
+     */
+    protected function getMarkerTemplateService()
+    {
+        if ($this->markerTemplateService === null) {
+            $this->markerTemplateService = $this->getObjectManager()->get(MarkerBasedTemplateService::class);
+        }
+
+        return $this->markerTemplateService;
+    }
+
+    /**
+     * @return ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        if ($this->objectManager === null) {
+            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        }
+
+        return $this->objectManager;
     }
 
     /**
@@ -262,16 +298,6 @@ class Pi1Controller extends AbstractPlugin
             // fatal error
             GeneralUtility::devLog($msg, $this->extKey, 3);
         }
-    }
-
-    /**
-     * Get database connection.
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabase()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
     /**
