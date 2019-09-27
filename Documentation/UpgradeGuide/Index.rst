@@ -26,6 +26,26 @@ Updade Guide
 		:depth: 3
 
 
+Upgrade to 3.0.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Added TYPO3 9.5 support
+* Removed PHP 5.x support
+* Removed TYPO3 7.x support
+
+
+How to upgrade
+""""""""""""""
+
+* Use "Clear all caches including PHP opcode cache" and "Dump Autoload Information" in the install tool (if needed for your setup)
+* Clear all caches
+
+
+
+
 Upgrade to 2.1.0
 ^^^^^^^^^^^^^^^^
 
@@ -40,7 +60,7 @@ Changelog
 How to upgrade
 """"""""""""""
 
-* Use "Clear all caches including PHP opcode cache" and "Dump Autoload Information" in the install tool (if needed for your setup)
+* Use "Clear all caches including PHP opcode cache"
 * Clear all caches
 
 
