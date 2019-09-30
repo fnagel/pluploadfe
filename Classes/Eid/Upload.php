@@ -240,11 +240,14 @@ class Upload
             throw new InvalidArgumentException('No config record ID given.');
         }
 
+        // Init TCA for record retrieval (needed for TYPO3 8.x)
+        EidUtility::initTCA();
+
         $select = 'upload_path, extensions, feuser_required, feuser_field, save_session, obscure_dir, check_mime';
         $table = 'tx_pluploadfe_config';
-        $where = 'hidden = 0';
-        $where .= ' AND starttime <= '.$GLOBALS['SIM_ACCESS_TIME'];
-        $where .= ' AND ( endtime = 0 OR endtime > '.$GLOBALS['SIM_ACCESS_TIME'].')';
+        $where = $table.'.hidden = 0';
+        $where .= ' AND '.$table.'.starttime <= '.$GLOBALS['SIM_ACCESS_TIME'];
+        $where .= ' AND ('.$table.'.endtime = 0 OR '.$table.'.endtime > '.$GLOBALS['SIM_ACCESS_TIME'].')';
 
         $config = BackendUtility::getRecord($table, $configUid, $select, $where, true);
 
