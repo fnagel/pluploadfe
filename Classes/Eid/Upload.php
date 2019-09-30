@@ -58,7 +58,7 @@ class Upload
     /**
      * @var array
      */
-    private $config = array();
+    private $config = [];
 
     /**
      * @var string
@@ -162,7 +162,7 @@ class Upload
                 break;
 
             case 'fullname':
-                $parts = array($record['first_name'], $record['middle_name'], $record['last_name']);
+                $parts = [$record['first_name'], $record['middle_name'], $record['last_name']];
                 $directory = implode('_', array_values(array_filter($parts)));
                 break;
 
@@ -196,14 +196,14 @@ class Upload
      */
     protected function getErrorResponseContent(\Exception $exception)
     {
-        $output = array(
+        $output = [
             'jsonrpc' => '2.0',
-            'error' => array(
+            'error' => [
                 'code' => $exception->getCode(),
                 'message' => $exception->getMessage(),
-            ),
+            ],
             'id' => '',
-        );
+        ];
 
         return json_encode($output);
     }
@@ -423,7 +423,7 @@ class Upload
         $currentData = $this->getSessionData($key);
 
         if (!is_array($currentData)) {
-            $currentData = array();
+            $currentData = [];
         }
 
         $currentData[] = $filePath;

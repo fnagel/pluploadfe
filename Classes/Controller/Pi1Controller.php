@@ -216,7 +216,7 @@ class Pi1Controller extends AbstractPlugin
      */
     protected function getDefaultMarker()
     {
-        $markerArray = array();
+        $markerArray = [];
         $extensionsArray = GeneralUtility::trimExplode(',', $this->config['extensions'], true);
         $maxFileSizeInBytes = GeneralUtility::getMaxUploadFileSize() * 1024;
 
