@@ -42,6 +42,7 @@ How to upgrade
 """"""""""""""
 
 * Use "Clear all caches including PHP opcode cache" and "Dump Autoload Information" in the install tool (if needed for your setup)
+* Adjust your templates (add new error handler)
 * Clear all caches
 
 
