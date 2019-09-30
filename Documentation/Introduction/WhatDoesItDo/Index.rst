@@ -1,6 +1,4 @@
-﻿
-
-.. ==================================================
+﻿.. ==================================================
 .. FOR YOUR INFORMATION
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
@@ -49,4 +47,3 @@ to either use it out of the box or write your own `custom
 implementation <http://www.plupload.com/example_custom.php>`_ .”
 
 Cite from `http://www.plupload.com/ <http://www.plupload.com/>`_ .
-

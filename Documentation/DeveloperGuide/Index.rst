@@ -1,6 +1,4 @@
-﻿
-
-.. ==================================================
+﻿.. ==================================================
 .. FOR YOUR INFORMATION
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
@@ -23,11 +21,9 @@ Developer Guide
 Target group: **Developers**
 
 
-.. only:: html
-
-	.. contents:: Within this page
-		:local:
-		:depth: 3
+.. contents:: Within this page
+   :local:
+   :depth: 3
 
 
 

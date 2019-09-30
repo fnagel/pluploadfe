@@ -17,44 +17,42 @@
 Plupload for FE
 ===============
 
-.. only:: html
+:Classification:
+  pluploadfe
 
-   :Classification:
-	  pluploadfe
+:Version:
+  2.0.0
 
-   :Version:
-	  2.0.0
+:Language:
+  en
 
-   :Language:
-	  en
+:Description:
+  Manual covering TYPO3 extension pluploadfe
 
-   :Description:
-	  Manual covering TYPO3 extension pluploadfe
+:Keywords:
+  upload, plupload, html5, flash, silverlight, files, forEditors, forDevelopers
 
-   :Keywords:
-	  upload, plupload, html5, flash, silverlight, files, forEditors, forDevelopers
+:Copyright:
+  2018
 
-   :Copyright:
-	  2018
+:Author:
+  Felix Nagel
 
-   :Author:
-	  Felix Nagel
+:Email:
+  info@felixnagel.com
 
-   :Email:
-	  info@felixnagel.com
+:License:
+  This document is published under the Open Content License
+  available from http://www.opencontent.org/opl.shtml
 
-   :License:
-	  This document is published under the Open Content License
-	  available from http://www.opencontent.org/opl.shtml
+:Rendered:
+   |today|
 
-   :Rendered:
-      |today|
-
-   The content of this document is related to TYPO3,
-   a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
+The content of this document is related to TYPO3,
+a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
 
 
-   **Table of Contents**
+**Table of Contents**
 
 .. toctree::
    :maxdepth: 5
