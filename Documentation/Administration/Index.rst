@@ -19,7 +19,7 @@ Administration
 --------------
 
 This extensions needs a configuration record, a template file and
-typoscript configuration.
+TypoScript configuration.
 
 
 .. toctree::

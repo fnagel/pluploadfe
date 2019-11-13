@@ -19,7 +19,7 @@ Users manual
 ------------
 
 You always need to add a configuration record anywhere in the
-pagetree.
+page tree.
 
 
 .. toctree::

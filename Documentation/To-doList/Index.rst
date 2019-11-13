@@ -18,7 +18,7 @@
 To-Do list
 ----------
 
-See `http://forge.typo3.org/projects/extension-pluploadfe/issues
-<http://forge.typo3.org/projects/extension-pluploadfe/issues>`_
+See `https://github.com/fnagel/pluploadfe/issues
+<https://github.com/fnagel/pluploadfe/issues>`_
 
 

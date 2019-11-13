@@ -24,7 +24,7 @@ files.
 
 The extension additionally provides a simple FE plugin to upload files
 with an nice jQuery UI widget which uses the best technology available
-on clientside.
+on client side.
 
 An API example to send big files by mail is available in TER, search
 for EXT:mailfiles.

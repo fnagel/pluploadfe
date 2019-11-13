@@ -35,12 +35,12 @@ TypoScript
 
 .. code-block:: ts
 
-   lib.examplePluploadFe < plugin.tx_pluploadfe_pi1
-   lib.examplePluploadFe {
-      templateFile = fileadmin/some/file.html
-      uid = some-unique-string
-      configUid = 123
-   }
+    lib.examplePluploadFe < plugin.tx_pluploadfe_pi1
+    lib.examplePluploadFe {
+        templateFile = fileadmin/some/file.html
+        uid = some-unique-string
+        configUid = 123
+    }
 
 
 Template integration
@@ -48,7 +48,7 @@ Template integration
 
 .. code-block:: xml
 
-   <f:cObject typoscriptObjectPath="lib.examplePluploadFe" />
+    <f:cObject typoscriptObjectPath="lib.examplePluploadFe" />
 
 
 Usage in controller
@@ -56,9 +56,9 @@ Usage in controller
 
 .. code-block:: php
 
-      // Get saved files
-		$files = $GLOBALS['TSFE']->fe_user->getKey('ses', 'tx_pluploadfe_files');
+    // Get saved files
+    $files = $GLOBALS['TSFE']->fe_user->getKey('ses', 'tx_pluploadfe_files');
 
-		// Reset files in session
-		$GLOBALS['TSFE']->fe_user->setKey('ses', 'tx_pluploadfe_files', '');
-		$GLOBALS['TSFE']->fe_user->storeSessionData();
+    // Reset files in session
+    $GLOBALS['TSFE']->fe_user->setKey('ses', 'tx_pluploadfe_files', '');
+    $GLOBALS['TSFE']->fe_user->storeSessionData();
