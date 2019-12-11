@@ -26,4 +26,4 @@ call_user_func(function ($packageKey) {
 
     // add records to the search
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['pluploadfe'] = 'tx_pluploadfe_config';
-}, $_EXTKEY);
+}, 'pluploadfe');
