@@ -222,11 +222,24 @@ class Pi1Controller extends AbstractPlugin
             trim($this->conf['templateFile']) : 'EXT:pluploadfe/Resources/Private/Templates/template.html';
 
         // Get the template
-        $this->templateHtml = file_get_contents($this->getTsFeController()->tmpl->getFileName($templateFile));
+        $this->templateHtml = file_get_contents($this->sanitizeTemplateFile($templateFile));
 
         if (!$this->templateHtml) {
             $this->handleError('Error while fetching the template file: '.$templateFile);
         }
+    }
+
+    protected function sanitizeTemplateFile($templateFile)
+    {
+        if (version_compare(TYPO3_version, '9.4', '>=')) {
+            /* @var $filePathSanitizer \TYPO3\CMS\Frontend\Resource\FilePathSanitizer */
+            $filePathSanitizer = $this->getObjectManager()->get(\TYPO3\CMS\Frontend\Resource\FilePathSanitizer::class);
+            $templateFile = $filePathSanitizer->sanitize($templateFile);
+        } else {
+            $templateFile = $this->getTsFeController()->tmpl->getFileName($templateFile);
+        }
+
+        return $templateFile;
     }
 
     /**
@@ -234,10 +247,10 @@ class Pi1Controller extends AbstractPlugin
      *
      * @return \TYPO3\CMS\Core\Page\PageRenderer
      */
-    protected static function getPageRenderer()
+    protected function getPageRenderer()
     {
         /* @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-        $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+        $pageRenderer = $this->getObjectManager()->get(\TYPO3\CMS\Core\Page\PageRenderer::class);
 
         return $pageRenderer;
     }
