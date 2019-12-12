@@ -12,7 +12,7 @@ namespace FelixNagel\Pluploadfe\Eid;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Utility\EidUtility;
 use FelixNagel\Pluploadfe\Exception\AuthenticationException;
@@ -49,32 +49,34 @@ class Upload
 
     /**
      * @param ServerRequestInterface $request the current request object
-     * @param ResponseInterface $response the available response
      * @return ResponseInterface the modified response
      */
-    public function processRequest(ServerRequestInterface $request, ResponseInterface $response)
+    public function processRequest(ServerRequestInterface $request)
     {
-        /* @var $response HtmlResponse */
-        $response = $response->withHeader('Content-Type', 'application/json; charset=utf-8');
-        $response = $response->withHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
-        $response = $response->withHeader('Last-Modified', gmdate('D, d M Y H:i:s').' GMT');
-        $response = $response->withHeader('Pragma', 'no-cache');
-        $response = $response->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-        $response = $response->withAddedHeader('Cache-Control', 'post-check=0, pre-check=0');
+        $response = new JsonResponse([], 200, [
+            'Expires' => 'Mon, 26 Jul 1997 05:00:00 GMT',
+            'Last-Modified' => gmdate('D, d M Y H:i:s').' GMT',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0',
+        ]);
 
         try {
             $this->main();
             // Return JSON-RPC response if upload process is successfully finished
-            $response->getBody()->write('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+            $response->setPayload([
+                'jsonrpc' => '2.0',
+                'result' => null,
+                'id' => 'id',
+            ]);
             return $response;
         } catch (AuthenticationException $exception) {
-            $response->getBody()->write($this->getErrorResponseContent($exception));
+            $response->setPayload($this->getErrorResponseContent($exception));
             return $response->withStatus(403);
         } catch (InvalidArgumentException $exception) {
-            $response->getBody()->write($this->getErrorResponseContent($exception));
+            $response->setPayload($this->getErrorResponseContent($exception));
             return $response->withStatus(410);
         } catch (\Exception $exception) {
-            $response->getBody()->write($this->getErrorResponseContent($exception));
+            $response->setPayload($this->getErrorResponseContent($exception));
             return $response->withStatus(404);
         }
     }
@@ -174,11 +176,11 @@ class Upload
      * Get JSON for error messages
      *
      * @param \Exception $exception
-     * @return string
+     * @return array
      */
     protected function getErrorResponseContent(\Exception $exception)
     {
-        $output = [
+        return [
             'jsonrpc' => '2.0',
             'error' => [
                 'code' => $exception->getCode(),
@@ -186,8 +188,6 @@ class Upload
             ],
             'id' => '',
         ];
-
-        return json_encode($output);
     }
 
     /**
