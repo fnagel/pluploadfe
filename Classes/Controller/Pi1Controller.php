@@ -11,6 +11,7 @@ namespace FelixNagel\Pluploadfe\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -206,7 +207,7 @@ class Pi1Controller extends AbstractPlugin
         $markerArray['###UID###'] = $this->uid;
         $markerArray['###LANGUAGE###'] = $this->getTsFeController()->config['config']['language'];
         $markerArray['###EXTDIR_PATH###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').
-            ExtensionManagementUtility::siteRelPath($this->extKey);
+            PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extKey));
         $markerArray['###FILE_EXTENSIONS###'] = implode(',', $extensionsArray);
         $markerArray['###FILE_MAX_SIZE###'] = $maxFileSizeInBytes;
 
