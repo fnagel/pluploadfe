@@ -25,7 +25,7 @@ class Filesystem
      */
     public static function isPathValid($path)
     {
-        return (strlen($path) > 0 && GeneralUtility::isAllowedAbsPath(PATH_site.$path));
+        return (strlen($path) > 0 && GeneralUtility::isAllowedAbsPath(self::getPublicPath().$path));
     }
 
     /**
@@ -41,10 +41,26 @@ class Filesystem
 
         // Create target dir
         try {
-            GeneralUtility::mkdir_deep(PATH_site, $uploadPath);
+            GeneralUtility::mkdir_deep(self::getPublicPath(), $uploadPath);
         } catch (\Exception $e) {
             throw new InvalidArgumentException('Failed to create upload directory.');
         }
+    }
+
+    /**
+     * @todo Remove this when TYPO3 8.x is no longer supported!
+     *
+     * @return string
+     */
+    public static function getPublicPath()
+    {
+        if (version_compare(TYPO3_version, '9.2', '>=')) {
+            $publicPath = \TYPO3\CMS\Core\Core\Environment::getPublicPath().'/';
+        } else {
+            $publicPath = PATH_site;
+        }
+
+        return $publicPath;
     }
 
     /**
