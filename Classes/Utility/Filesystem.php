@@ -41,7 +41,7 @@ class Filesystem
 
         // Create target dir
         try {
-            GeneralUtility::mkdir_deep(self::getPublicPath(), $uploadPath);
+            GeneralUtility::mkdir_deep(self::getPublicPath() . $uploadPath);
         } catch (\Exception $e) {
             throw new InvalidArgumentException('Failed to create upload directory.');
         }
