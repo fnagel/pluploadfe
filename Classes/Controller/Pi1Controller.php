@@ -161,7 +161,7 @@ class Pi1Controller extends AbstractPlugin
         // fill marker array
         $markerArray = $this->getDefaultMarker();
         $markerArray['###UPLOAD_FILE###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').
-            'index.php?eID=pluploadfe&configUid='.$this->configUid;
+            'index.php?tx_pluploadfe='.$this->configUid;
 
         // replace markers in the template
         $content = $this->getMarkerTemplateService()->substituteMarkerArray($templateMain, $markerArray);

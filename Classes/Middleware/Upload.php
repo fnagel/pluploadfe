@@ -1,6 +1,6 @@
 <?php
 
-namespace FelixNagel\Pluploadfe\Eid;
+namespace FelixNagel\Pluploadfe\Middleware;
 
 /**
  * This file is part of the "pluploadfe" Extension for TYPO3 CMS.
@@ -11,10 +11,11 @@ namespace FelixNagel\Pluploadfe\Eid;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Utility\EidUtility;
 use FelixNagel\Pluploadfe\Exception\AuthenticationException;
 use FelixNagel\Pluploadfe\Exception\InvalidArgumentException;
 use FelixNagel\Pluploadfe\Utility\Filesystem;
@@ -25,7 +26,7 @@ use FelixNagel\Pluploadfe\Utility\FileValidation;
  *
  * @todo translate error messages
  */
-class Upload
+class Upload implements MiddlewareInterface
 {
     /**
      * @var bool
@@ -48,11 +49,19 @@ class Upload
     private $uploadPath = '';
 
     /**
-     * @param ServerRequestInterface $request the current request object
-     * @return ResponseInterface the modified response
+     * @inheritDoc
      */
-    public function processRequest(ServerRequestInterface $request)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $configUid = $request->getParsedBody()['tx_pluploadfe'] ?? $request->getQueryParams()['tx_pluploadfe'] ?? null;
+
+        if ($configUid === null) {
+            return $handler->handle($request);
+        }
+
+        $this->feUserObj = $request->getAttribute('frontend.user', null);
+        $this->config = $this->getUploadConfig((int) $configUid);
+
         $response = new JsonResponse([], 200, [
             'Expires' => 'Mon, 26 Jul 1997 05:00:00 GMT',
             'Last-Modified' => gmdate('D, d M Y H:i:s').' GMT',
@@ -61,7 +70,7 @@ class Upload
         ]);
 
         try {
-            $this->main();
+            $this->handleUpload();
             // Return JSON-RPC response if upload process is successfully finished
             $response->setPayload([
                 'jsonrpc' => '2.0',
@@ -84,10 +93,8 @@ class Upload
     /**
      * Handles incoming upload requests.
      */
-    public function main()
+    public function handleUpload()
     {
-        // Get configuration record
-        $this->config = $this->getUploadConfig();
         $this->processConfig();
         $this->checkUploadConfig();
 
@@ -122,10 +129,6 @@ class Upload
      */
     protected function getFeUser()
     {
-        if ($this->feUserObj === null) {
-            $this->feUserObj = EidUtility::initFeUser();
-        }
-
         return $this->feUserObj;
     }
 
@@ -211,27 +214,19 @@ class Upload
     /**
      * Gets the plugin configuration.
      *
+     * @param int $configUid
+     *
      * @return array
      */
-    protected function getUploadConfig()
+    protected function getUploadConfig($configUid)
     {
-        $configUid = intval(GeneralUtility::_GP('configUid'));
-
-        // config id given?
-        if (!$configUid) {
-            throw new InvalidArgumentException('No config record ID given.');
-        }
-
-        // Init TCA for record retrieval (needed for TYPO3 8.x)
-        EidUtility::initTCA();
-
         $select = 'upload_path, extensions, feuser_required, feuser_field, save_session, obscure_dir, check_mime';
         $table = 'tx_pluploadfe_config';
         $where = $table.'.hidden = 0';
         $where .= ' AND '.$table.'.starttime <= '.$GLOBALS['SIM_ACCESS_TIME'];
         $where .= ' AND ('.$table.'.endtime = 0 OR '.$table.'.endtime > '.$GLOBALS['SIM_ACCESS_TIME'].')';
 
-        $config = BackendUtility::getRecord($table, $configUid, $select, $where, true);
+        $config = BackendUtility::getRecord($table, (int) $configUid, $select, $where, true);
 
         return $config;
     }
