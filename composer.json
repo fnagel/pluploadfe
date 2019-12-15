@@ -1,7 +1,7 @@
 {
 	"name": "felixnagel/pluploadfe",
 	"type": "typo3-cms-extension",
-	"description": "Provides an API and a FE plugin for using plupload, a highly usable and advanced upload handler.",
+	"description": "This TYPO3 CMS extension provides an API and a FE plugin for using plupload, a highly usable and advanced upload handler.",
 	"keywords": [
 		"TYPO3 CMS",
 		"upload",
