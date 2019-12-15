@@ -305,11 +305,3 @@ class Pi1Controller extends AbstractPlugin
         return $GLOBALS['TSFE'];
     }
 }
-
-/** @noinspection PhpUndefinedVariableInspection */
-if (defined('TYPO3_MODE') &&
-    $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/Controller/Pi1Controller.php']
-) {
-    /** @noinspection PhpUndefinedVariableInspection */
-    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/pluploadfe/Classes/Controller/Pi1Controller.php'];
-}
