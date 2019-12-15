@@ -9,6 +9,7 @@ namespace FelixNagel\Pluploadfe\Controller;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+use FelixNagel\Pluploadfe\Exception\Exception;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -103,16 +104,11 @@ class Pi1Controller extends AbstractPlugin
 
         $this->getUploadConfig();
         $this->getTemplateFile();
+        $this->checkConfig();
 
-        if ($this->checkConfig()) {
-            $this->renderCode();
-            $content = $this->getHtml();
-        } else {
-            $content = '<div style="border: 3px solid red; padding: 1em;">
-			<strong>TYPO3 EXT:plupload Error</strong><br />Invalid configuration.</div>';
-        }
+        $this->renderCode();
 
-        return $this->pi_wrapInBaseClass($content);
+        return $this->pi_wrapInBaseClass($this->getHtml());
     }
 
     /**
@@ -134,20 +130,16 @@ class Pi1Controller extends AbstractPlugin
      */
     protected function checkConfig()
     {
-        $flag = false;
-
         if (strlen($this->uid) > 0 &&
             strlen($this->templateHtml) > 0 &&
             intval($this->configUid) > 0 &&
             is_array($this->config) &&
             strlen($this->config['extensions']) > 0
         ) {
-            $flag = true;
-        } else {
-            $this->handleError('Invalid configuration');
+            return true;
         }
 
-        return $flag;
+        throw new Exception('Invalid configuration');
     }
 
     /**
@@ -226,7 +218,7 @@ class Pi1Controller extends AbstractPlugin
         $this->templateHtml = file_get_contents($this->sanitizeTemplateFile($templateFile));
 
         if (!$this->templateHtml) {
-            $this->handleError('Error while fetching the template file: '.$templateFile);
+            throw new Exception('Error while fetching the template file: '.$templateFile);
         }
     }
 
@@ -278,23 +270,6 @@ class Pi1Controller extends AbstractPlugin
         }
 
         return $this->objectManager;
-    }
-
-    /**
-     * Handles error output for frontend and TYPO3 logging.
-     *
-     * @param string$msg Message to output
-     */
-    protected function handleError($msg)
-    {
-        // error
-        GeneralUtility::sysLog($msg, $this->extKey, 3);
-
-        // write dev log if enabled
-        if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
-            // fatal error
-            GeneralUtility::devLog($msg, $this->extKey, 3);
-        }
     }
 
     /**
