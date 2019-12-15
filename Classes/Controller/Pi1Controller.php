@@ -230,15 +230,15 @@ class Pi1Controller extends AbstractPlugin
         }
     }
 
+    /**
+     * @param $templateFile
+     * @return string
+     */
     protected function sanitizeTemplateFile($templateFile)
     {
-        if (version_compare(TYPO3_version, '9.4', '>=')) {
-            /* @var $filePathSanitizer \TYPO3\CMS\Frontend\Resource\FilePathSanitizer */
-            $filePathSanitizer = $this->getObjectManager()->get(\TYPO3\CMS\Frontend\Resource\FilePathSanitizer::class);
-            $templateFile = $filePathSanitizer->sanitize($templateFile);
-        } else {
-            $templateFile = $this->getTsFeController()->tmpl->getFileName($templateFile);
-        }
+        /* @var $filePathSanitizer \TYPO3\CMS\Frontend\Resource\FilePathSanitizer */
+        $filePathSanitizer = $this->getObjectManager()->get(\TYPO3\CMS\Frontend\Resource\FilePathSanitizer::class);
+        $templateFile = $filePathSanitizer->sanitize($templateFile);
 
         return $templateFile;
     }
