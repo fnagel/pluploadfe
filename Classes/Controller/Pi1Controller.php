@@ -250,10 +250,10 @@ class Pi1Controller extends AbstractPlugin
      */
     protected function getPageRenderer()
     {
-        /* @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-        $pageRenderer = $this->getObjectManager()->get(\TYPO3\CMS\Core\Page\PageRenderer::class);
+        // Don't use the object manager due to core bug:
+        // https://github.com/TYPO3/TYPO3.CMS/commit/cffb6e0fc6b4664dab7bd1838da6125787fffc26
 
-        return $pageRenderer;
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
     }
 
     /**
