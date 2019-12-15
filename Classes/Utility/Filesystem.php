@@ -9,6 +9,7 @@ namespace FelixNagel\Pluploadfe\Utility;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use FelixNagel\Pluploadfe\Exception\InvalidArgumentException;
 
@@ -48,19 +49,11 @@ class Filesystem
     }
 
     /**
-     * @todo Remove this when TYPO3 8.x is no longer supported!
-     *
      * @return string
      */
     public static function getPublicPath()
     {
-        if (version_compare(TYPO3_version, '9.2', '>=')) {
-            $publicPath = \TYPO3\CMS\Core\Core\Environment::getPublicPath().'/';
-        } else {
-            $publicPath = PATH_site;
-        }
-
-        return $publicPath;
+        return Environment::getPublicPath().'/';
     }
 
     /**
