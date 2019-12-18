@@ -24,6 +24,24 @@ Updade Guide
    :depth: 3
 
 
+Upgrade to 4.0.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Added TYPO3 10.2 support
+* Removed TYPO3 8.x support
+
+
+How to upgrade
+""""""""""""""
+
+* Clear all caches
+
+
+
+
 Upgrade to 3.0.0
 ^^^^^^^^^^^^^^^^
 
