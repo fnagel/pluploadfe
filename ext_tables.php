@@ -25,5 +25,5 @@ $iconRegistry->registerIcon(
 $iconRegistry->registerIcon(
     'extensions-pluploadfe-wizard',
     \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-    ['source' => 'EXT:pluploadfe/Resources/Public/Icons/plugin.png']
+    ['source' => 'EXT:pluploadfe/Resources/Public/Icons/Extension.png']
 );
