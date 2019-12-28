@@ -32,6 +32,9 @@ Changelog
 
 * Added TYPO3 10.2 support
 * Removed TYPO3 8.x support
+* Now using PSR-15 middleware instead of eID
+* Removed custom logging, throw exceptions instead
+* Minor improvements, fixes and clean up
 
 
 How to upgrade
