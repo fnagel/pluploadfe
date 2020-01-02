@@ -4,13 +4,6 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-// Add plugin
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
-    'FelixNagel.Pluploadfe',
-    'setup',
-    'plugin.tx_pluploadfe_pi1.userFunc = FelixNagel\\Pluploadfe\\Controller\\Pi1Controller->main'
-);
-
 // Add config record
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_pluploadfe_config');
 

@@ -13,12 +13,18 @@ call_user_func(function ($packageKey) {
         options.saveDocNew.tx_pluploadtest_config=1
     ');
 
+    // Add plugin
     TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43(
         $packageKey,
         'Classes/Controller/Pi1Controller.php',
         '_pi1',
         'list_type',
         1
+    );
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
+        'FelixNagel.Pluploadfe',
+        'setup',
+        'plugin.tx_pluploadfe_pi1.userFunc = FelixNagel\\Pluploadfe\\Controller\\Pi1Controller->main'
     );
 
     // add records to the search
