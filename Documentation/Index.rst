@@ -21,7 +21,7 @@ Plupload for FE
   pluploadfe
 
 :Version:
-  3.0.0
+  4.0.3
 
 :Language:
   en
@@ -33,7 +33,7 @@ Plupload for FE
   upload, plupload, html5, flash, silverlight, files, forEditors, forDevelopers
 
 :Copyright:
-  2019
+  2020
 
 :Author:
   Felix Nagel
