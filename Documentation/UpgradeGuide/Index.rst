@@ -24,6 +24,25 @@ Updade Guide
    :depth: 3
 
 
+Upgrade to 4.1.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Tested in PHP 7.4
+* Renamed TS and TSconfig files to newer file extensions
+* Minor improvements, fixes and clean up
+
+
+How to upgrade
+""""""""""""""
+
+* Adjust your TS and TSconfig file inclusion
+
+
+
+
 Upgrade to 4.0.0
 ^^^^^^^^^^^^^^^^
 
