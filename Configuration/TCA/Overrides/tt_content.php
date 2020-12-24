@@ -11,7 +11,7 @@ call_user_func(function ($packageKey) {
     // Add plugin
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
         [
-            'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tt_content.list_type_pi1',
+            'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
             $packageKey.'_pi1',
         ],
         'list_type',
@@ -22,7 +22,7 @@ call_user_func(function ($packageKey) {
     $tempColumns = [
         'tx_pluploadfe_config' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tt_content.tx_pluploadfe_config',
+            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tt_content.tx_pluploadfe_config',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',

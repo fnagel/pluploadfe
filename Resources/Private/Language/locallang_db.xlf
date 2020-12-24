@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2020-12-23T23:24:45Z">
+		<header/>
+		<body>
+			<trans-unit id="pi1_plus_wiz_description">
+				<source>Upload files using Flash, Silverlight, Gears, BrowserPlus or HTML5.</source>
+			</trans-unit>
+			<trans-unit id="pi1_title">
+				<source>Plupload FE</source>
+			</trans-unit>
+			<trans-unit id="tt_content.list_type_pi1">
+				<source>Plupload FE</source>
+			</trans-unit>
+			<trans-unit id="tt_content.tx_pluploadfe_config">
+				<source>Configuration</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config">
+				<source>Plupload Configuration</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.check_mime">
+				<source>Check MIME type</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.extensions">
+				<source>Allowed file extensions</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field">
+				<source>Create folder from user data</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.default">
+				<source></source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.fullname">
+				<source>Full name</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.lastlogin">
+				<source>Last login day and hour</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.pid">
+				<source>Storage folder UID</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.uid">
+				<source>User UID</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.username">
+				<source>Username</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_required">
+				<source>Authenticated frontend user needed</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.obscure_dir">
+				<source>Obscure path (random directory)</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.save_session">
+				<source>Save filepaths in user session</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.tabs.general">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.tabs.path">
+				<source>Upload folder</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.tabs.security">
+				<source>File requirements</source>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.upload_path">
+				<source>Upload path</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -85,7 +85,7 @@ class Pi1Controller extends AbstractPlugin
     {
         $this->conf = $conf;
         $this->pi_setPiVarDefaults();
-        $this->pi_loadLL('EXT:pluploadfe/Resources/Private/Language/locallang.xml');
+        $this->pi_loadLL('EXT:pluploadfe/Resources/Private/Language/locallang.xlf');
 
         // set (localized) UID
         $localizedUid = $this->cObj->data['_LOCALIZED_UID'];

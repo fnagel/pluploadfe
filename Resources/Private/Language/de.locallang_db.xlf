@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-23T23:24:45Z">
+		<header/>
+		<body>
+			<trans-unit id="pi1_plus_wiz_description">
+				<target>Dateiupload mit Flash, Silverlight, Gears, BrowserPlus or HTML5</target>
+			</trans-unit>
+			<trans-unit id="pi1_title">
+				<target>Plupload FE</target>
+			</trans-unit>
+			<trans-unit id="tt_content.list_type_pi1">
+				<target>Plupload FE</target>
+			</trans-unit>
+			<trans-unit id="tt_content.tx_pluploadfe_config">
+				<target>Konfiguration</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config">
+				<target>Plupload Konfiguration</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.check_mime">
+				<target>MIME-Typ prüfen</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.extensions">
+				<target>Erlaubte Dateierweiterungen</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field">
+				<target>Ordner aus Benutzer-Daten erstellen</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.fullname">
+				<target>Vollständiger Name des Benutzer</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.lastlogin">
+				<target>Datum und Stunde der letzten Anmeldung</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.name">
+				<target>Name des Benutzer</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.pid">
+				<target>Datensatz-Ordner UID</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.uid">
+				<target>Benutzer UID</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_field.username">
+				<target>Benutzername</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.feuser_required">
+				<target>Authentifizierter Frontend Benutzer erforderlich</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.obscure_dir">
+				<target>Pfad verschleiern (zufälliger Ordner)</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.save_session">
+				<target>Dateipfade in Session speichern</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.tabs.general">
+				<target>Allgemein</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.tabs.path">
+				<target>Upload-Ordner</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.tabs.security">
+				<target>Datei-Restriktionen</target>
+			</trans-unit>
+			<trans-unit id="tx_pluploadfe_config.upload_path">
+				<target>Upload Pfad</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

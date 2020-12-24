@@ -1,8 +1,8 @@
 mod.wizards.newContentElement.wizardItems.plugins {
 	elements.pluploadfe {
 		iconIdentifier = extensions-pluploadfe-wizard
-		title = LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:pi1_title
-		description = LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:pi1_plus_wiz_description
+		title = LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_title
+		description = LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_plus_wiz_description
 		tt_content_defValues.CType = list
 		tt_content_defValues.list_type = pluploadfe_pi1
 	}

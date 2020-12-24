@@ -6,7 +6,7 @@ if (!defined('TYPO3_MODE')) {
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config',
+        'title' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config',
         'label' => 'title',
         'label_alt' => 'upload_path',
         'tstamp' => 'tstamp',
@@ -75,7 +75,7 @@ return [
         ],
         'upload_path' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.upload_path',
+            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.upload_path',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'folder',
@@ -87,7 +87,7 @@ return [
         ],
         'extensions' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.extensions',
+            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.extensions',
             'config' => [
                 'type' => 'text',
                 'rows' => 2,
@@ -97,7 +97,7 @@ return [
         ],
         'feuser_required' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_required',
+            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_required',
             'config' => [
                 'type' => 'check',
                 'default' => 1,
@@ -107,18 +107,18 @@ return [
         'feuser_field' => [
             'exclude' => 1,
             'displayCond' => 'FIELD:feuser_required:REQ:true',
-            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field',
+            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.default', ''],
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.username', 'username'],
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.uid', 'uid'],
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.name', 'name'],
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.fullname', 'fullname'],
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.pid', 'pid'],
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.feuser_field.lastlogin', 'lastlogin'],
+                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.default', ''],
+                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.username', 'username'],
+                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.uid', 'uid'],
+                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.name', 'name'],
+                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.fullname', 'fullname'],
+                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.pid', 'pid'],
+                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.lastlogin', 'lastlogin'],
                 ],
                 'size' => 1,
                 'minitems' => 0,
@@ -127,7 +127,7 @@ return [
         ],
         'save_session' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.save_session',
+            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.save_session',
             'config' => [
                 'type' => 'check',
                 'default' => 0,
@@ -135,7 +135,7 @@ return [
         ],
         'obscure_dir' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.obscure_dir',
+            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.obscure_dir',
             'config' => [
                 'type' => 'check',
                 'default' => 0,
@@ -143,7 +143,7 @@ return [
         ],
         'check_mime' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.check_mime',
+            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.check_mime',
             'config' => [
                 'type' => 'check',
                 'default' => 1,
@@ -152,13 +152,13 @@ return [
     ],
     'types' => [
         '0' => ['showitem' => '
-			--div--;LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.tabs.general,
+			--div--;LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.tabs.general,
 				title, feuser_required, save_session,
 
-			--div--;LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.tabs.path,
+			--div--;LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.tabs.path,
 				upload_path, feuser_field, obscure_dir,
 
-			--div--;LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xml:tx_pluploadfe_config.tabs.security,
+			--div--;LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.tabs.security,
 				extensions, check_mime,
 
 			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-23T23:23:53Z">
+		<header/>
+		<body>
+			<trans-unit id="info_1">
+				<target>Bitte aktivieren Sie Java-Script in Ihrem Browser!</target>
+			</trans-unit>
+			<trans-unit id="info_2" xml:space="preserve">
+				<target>Ihr Browser scheint weder Flash, Silverlight, Gears, BrowserPlus noch HTML5 zu unterstützen.</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
