@@ -7,10 +7,10 @@ plugin.tx_pluploadfe_pi1 {
 
 	## When using FE plugin via TypoScript you will need to pass the  following options.
 
-	# Any string or number as a identifier, use something like “my_upload123”
+	# Any string or number as a identifier, use something like “my_upload123” (optional)
   	# uid =
 
-	# UID of the configuration record
+	# UID of the configuration record (TypoScript enabled, so a userfunc is possible here)
 	# configUid =
 }
 

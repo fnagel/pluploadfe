@@ -42,6 +42,8 @@ TypoScript
         configUid = 123
     }
 
+Using a TypoScript Object like `USER_INT` for `configUid` is possible.
+
 
 Template integration
 ^^^^^^^^^^^^^^^^^^^^
@@ -62,3 +64,6 @@ Usage in controller
     // Reset files in session
     $GLOBALS['TSFE']->fe_user->setKey('ses', 'tx_pluploadfe_files', '');
     $GLOBALS['TSFE']->fe_user->storeSessionData();
+
+
+See EXT:mailfiles for an example.

@@ -92,14 +92,16 @@ class Pi1Controller extends AbstractPlugin
         if (strlen($this->conf['uid']) > 0) {
             $this->uid = $this->conf['uid'];
         } else {
-            $this->uid = intval(($localizedUid) ? $localizedUid : $this->cObj->data['uid']);
+            $this->uid = (int)($localizedUid) ? $localizedUid : $this->cObj->data['uid'];
         }
 
         // set config record uid
         if (strlen($this->conf['configUid']) > 0) {
-            $this->configUid = $this->conf['configUid'];
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->conf);
+            $this->configUid = $this->cObj->cObjGetSingle($this->conf['configUid'], $this->conf['configUid.']);
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->configUid);
         } else {
-            $this->configUid = intval($this->cObj->data['tx_pluploadfe_config']);
+            $this->configUid = (int)$this->cObj->data['tx_pluploadfe_config'];
         }
 
         $this->getUploadConfig();
