@@ -2,15 +2,15 @@
 # Add default TS config
 plugin.tx_pluploadfe_pi1 {
 
-	# Template file
+	# Template file (required)
 	templateFile = EXT:pluploadfe/Resources/Private/Templates/template.html
 
-	## When using FE plugin via TypoScript you will need to pass the  following options.
+	## When using FE plugin via TypoScript you will need to pass the following options.
 
 	# Any string or number as a identifier, use something like “my_upload123”
   	# uid =
 
-	# UID of the configuration record
+	# UID of the configuration record (required)
 	# configUid =
 }
 
