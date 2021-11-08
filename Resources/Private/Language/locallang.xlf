@@ -4,10 +4,10 @@
 		<header/>
 		<body>
 			<trans-unit id="info_1">
-				<source>Please enable JavaScript!</source>
+				<source>Please enable JavaScript in your browser!</source>
 			</trans-unit>
 			<trans-unit id="info_2" xml:space="preserve">
-				<source>Your browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</source>
+				<source>Your browser doesn't have Flash, Silverlight or HTML5 support.</source>
 			</trans-unit>
 		</body>
 	</file>
