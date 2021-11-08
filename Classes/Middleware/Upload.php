@@ -16,6 +16,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use FelixNagel\Pluploadfe\Exception\AuthenticationException;
 use FelixNagel\Pluploadfe\Exception\InvalidArgumentException;
 use FelixNagel\Pluploadfe\Utility\Filesystem;
@@ -28,25 +30,16 @@ use FelixNagel\Pluploadfe\Utility\FileValidation;
  */
 class Upload implements MiddlewareInterface
 {
-    /**
-     * @var bool
-     */
-    private $chunkedUpload = false;
+    private bool $chunkedUpload = false;
 
     /**
      * @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
      */
     private $feUserObj = null;
 
-    /**
-     * @var array
-     */
-    private $config = [];
+    private array $config = [];
 
-    /**
-     * @var string
-     */
-    private $uploadPath = '';
+    private string $uploadPath = '';
 
     /**
      * @inheritDoc
@@ -100,14 +93,12 @@ class Upload implements MiddlewareInterface
         $this->checkUploadConfig();
 
         // Check for valid FE user
-        if ($this->config['feuser_required']) {
-            if ($this->getFeUser()->user['username'] == '') {
-                throw new AuthenticationException('TYPO3 user session expired.');
-            }
+        if ($this->config['feuser_required'] && $this->getFeUser()->user['username'] == '') {
+            throw new AuthenticationException('TYPO3 user session expired.');
         }
 
         // One file or chunked?
-        $this->chunkedUpload = (isset($_REQUEST['chunks']) && intval($_REQUEST['chunks']) > 1);
+        $this->chunkedUpload = (isset($_REQUEST['chunks']) && (int) $_REQUEST['chunks'] > 1);
 
         // Check file extension
         FileValidation::checkFileExtension($this->getFileName(), $this->config['extensions']);
@@ -167,19 +158,19 @@ class Upload implements MiddlewareInterface
                 } catch (\Exception $exception) {
                     $directory = 'checkTimezone';
                 }
+
                 break;
 
             default:
                 $directory = '';
         }
 
-        return preg_replace('/[^0-9a-zA-Z\-\.]/', '_', $directory);
+        return preg_replace('#[^0-9a-zA-Z\-\.]#', '_', $directory);
     }
 
     /**
      * Get JSON for error messages
      *
-     * @param \Exception $exception
      * @return array
      */
     protected function getErrorResponseContent(\Exception $exception)
@@ -199,11 +190,11 @@ class Upload implements MiddlewareInterface
      */
     protected function checkUploadConfig()
     {
-        if (!count($this->config)) {
+        if (count($this->config) === 0) {
             throw new InvalidArgumentException('Configuration record not found or invalid.');
         }
 
-        if (!strlen($this->config['extensions'])) {
+        if ((string) $this->config['extensions'] === '') {
             throw new InvalidArgumentException('Missing allowed file extension configuration.');
         }
 
@@ -221,15 +212,14 @@ class Upload implements MiddlewareInterface
      */
     protected function getUploadConfig($configUid)
     {
+    	$context = GeneralUtility::makeInstance(Context::class);
         $select = 'upload_path, extensions, feuser_required, feuser_field, save_session, obscure_dir, check_mime';
         $table = 'tx_pluploadfe_config';
         $where = $table.'.hidden = 0';
-        $where .= ' AND '.$table.'.starttime <= '.$GLOBALS['SIM_ACCESS_TIME'];
-        $where .= ' AND ('.$table.'.endtime = 0 OR '.$table.'.endtime > '.$GLOBALS['SIM_ACCESS_TIME'].')';
+        $where .= ' AND '.$table.'.starttime <= '.$context->getPropertyFromAspect('date', 'timestamp');
+        $where .= ' AND ('.$table.'.endtime = 0 OR '.$table.'.endtime > '.$context->getPropertyFromAspect('date', 'timestamp').')';
 
-        $config = BackendUtility::getRecord($table, (int) $configUid, $select, $where, true);
-
-        return $config;
+        return BackendUtility::getRecord($table, (int) $configUid, $select, $where, true);
     }
 
     /**
@@ -240,7 +230,7 @@ class Upload implements MiddlewareInterface
     protected function processConfig()
     {
         // Make sure FAL references work
-        $resourceFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         $this->config['upload_path'] = $resourceFactory
             ->retrieveFileOrFolderObject($this->config['upload_path'])
             ->getPublicUrl();
@@ -266,7 +256,7 @@ class Upload implements MiddlewareInterface
             $filename = $_FILES['file']['name'];
         }
 
-        return preg_replace('/[^\w\._]+/', '_', $filename);
+        return preg_replace('#[^\w\._]+#', '_', $filename);
     }
 
     /**
@@ -294,7 +284,7 @@ class Upload implements MiddlewareInterface
         $path = GeneralUtility::dirname($path);
 
         // Subdirectory
-        if ($subDirectory) {
+        if ($subDirectory !== '') {
             $path = $path.DIRECTORY_SEPARATOR.$subDirectory;
         }
 
@@ -318,14 +308,14 @@ class Upload implements MiddlewareInterface
     protected function uploadFile()
     {
         // Get additional parameters
-        $chunk = isset($_REQUEST['chunk']) ? intval($_REQUEST['chunk']) : 0;
-        $chunks = isset($_REQUEST['chunks']) ? intval($_REQUEST['chunks']) : 0;
+        $chunk = isset($_REQUEST['chunk']) ? (int) $_REQUEST['chunk'] : 0;
+        $chunks = isset($_REQUEST['chunks']) ? (int) $_REQUEST['chunks'] : 0;
 
         // Clean the fileName for security reasons
         $filePath = $this->uploadPath.DIRECTORY_SEPARATOR.$this->getFileName();
 
         // Open temp file
-        if (!$out = @fopen("{$filePath}.part", $chunks ? 'ab' : 'wb')) {
+        if (!$out = @fopen(sprintf('%s.part', $filePath), $chunks !== 0 ? 'ab' : 'wb')) {
             throw new InvalidArgumentException('Failed to open output stream.', 102);
         }
 
@@ -333,15 +323,12 @@ class Upload implements MiddlewareInterface
             if ($_FILES['file']['error'] || !is_uploaded_file($_FILES['file']['tmp_name'])) {
                 throw new InvalidArgumentException('Failed to move uploaded file.', 103);
             }
-
             // Read binary input stream and append it to temp file
             if (!$in = @fopen($_FILES['file']['tmp_name'], 'rb')) {
                 throw new InvalidArgumentException('Failed to open input stream.', 101);
             }
-        } else {
-            if (!$in = @fopen('php://input', 'rb')) {
-                throw new InvalidArgumentException('Failed to open input stream.', 101);
-            }
+        } elseif (!$in = @fopen('php://input', 'rb')) {
+            throw new InvalidArgumentException('Failed to open input stream.', 101);
         }
 
         while ($buff = fread($in, 4096)) {

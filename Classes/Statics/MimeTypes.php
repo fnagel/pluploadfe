@@ -14,10 +14,7 @@ namespace FelixNagel\Pluploadfe\Statics;
  */
 class MimeTypes
 {
-    /**
-     * @var array
-     */
-    public static $imageTypes = [
+    public static array $imageTypes = [
         'gif',
         'jpeg',
         'jpg',
@@ -38,10 +35,7 @@ class MimeTypes
         'ico',
     ];
 
-    /**
-     * @var array
-     */
-    public static $mimeTypes = [
+    public static array $mimeTypes = [
         '3dmf' => ['x-world/x-3dmf'],
         '3dm' => ['x-world/x-3dmf'],
         '7z' => ['application/x-7z-compressed', 'application/zip'],

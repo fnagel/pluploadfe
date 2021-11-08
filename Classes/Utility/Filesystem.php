@@ -43,8 +43,8 @@ class Filesystem
         // Create target dir
         try {
             GeneralUtility::mkdir_deep(self::getPublicPath() . $uploadPath);
-        } catch (\Exception $e) {
-            throw new InvalidArgumentException('Failed to create upload directory.');
+        } catch (\Exception $exception) {
+            throw new InvalidArgumentException('Failed to create upload directory.', $exception->getCode(), $exception);
         }
     }
 
@@ -68,7 +68,7 @@ class Filesystem
         $string = '';
 
         for ($i = 1; $i <= $length; ++$i) {
-            $string .= $set[mt_rand(0, (strlen($set) - 1))];
+            $string .= $set[random_int(0, (strlen($set) - 1))];
         }
 
         return $string;
