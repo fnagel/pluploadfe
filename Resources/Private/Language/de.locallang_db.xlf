@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="pi1_plus_wiz_description">
-				<target>Dateiupload mit Flash, Silverlight, Gears, BrowserPlus or HTML5</target>
+				<target>Dateiupload mit Flash, Silverlight oder HTML5.</target>
 			</trans-unit>
 			<trans-unit id="pi1_title">
 				<target>Plupload FE</target>

@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="pi1_plus_wiz_description">
-				<source>Upload files using Flash, Silverlight, Gears, BrowserPlus or HTML5.</source>
+				<source>Upload files using Flash, Silverlight or HTML5 support.</source>
 			</trans-unit>
 			<trans-unit id="pi1_title">
 				<source>Plupload FE</source>
