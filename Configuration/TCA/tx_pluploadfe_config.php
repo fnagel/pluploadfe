@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('TYPO3_MODE')) {
+if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
@@ -24,9 +24,6 @@ return [
         ],
         'requestUpdate' => 'feuser_required',
         'searchFields' => 'title,upload_path',
-    ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,fe_group,upload_path,feuser_required',
     ],
     'columns' => [
         'hidden' => [

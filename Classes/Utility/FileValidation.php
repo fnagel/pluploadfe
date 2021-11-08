@@ -10,6 +10,7 @@ namespace FelixNagel\Pluploadfe\Utility;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use FelixNagel\Pluploadfe\Exception\InvalidArgumentException;
 use FelixNagel\Pluploadfe\Statics\MimeTypes;
 
@@ -35,7 +36,7 @@ class FileValidation
         }
 
         // check if file extension is allowed on this TYPO3 installation
-        if (!GeneralUtility::verifyFilenameAgainstDenyPattern($fileName)) {
+        if (!GeneralUtility::makeInstance(FileNameValidator::class)->isValid($fileName)) {
             throw new InvalidArgumentException('File extension is not allowed on this TYPO3 installation.');
         }
     }
@@ -64,18 +65,16 @@ class FileValidation
             return mime_content_type($filePath);
         }
 
-        if (function_exists('exec') && function_exists('escapeshellarg')) {
-            if (($tempMime = trim(@exec('file -bi '.@escapeshellarg($filePath))))) {
-                return $tempMime;
-            }
+        if (function_exists('exec') && function_exists('escapeshellarg')
+			&& ($tempMime = trim(@exec('file -bi '.@escapeshellarg($filePath))))
+		) {
+            return $tempMime;
         }
 
-        if (function_exists('pathinfo')) {
-            if (($pathinfo = @pathinfo($filePath))) {
-                if (in_array($pathinfo['extension'], MimeTypes::$imageTypes) && $size = getimagesize($filePath)) {
-                    return $size['mime'];
-                }
-            }
+        if (function_exists('pathinfo') && ($pathinfo = @pathinfo($filePath))
+			&& (in_array($pathinfo['extension'], MimeTypes::$imageTypes) && $size = getimagesize($filePath))
+		) {
+            return $size['mime'];
         }
 
         // Fallback default which is totally insecure

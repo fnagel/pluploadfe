@@ -17,6 +17,8 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
+use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
  * Plugin 'pluploadfe_pi1' for the 'pluploadfe' extension.
@@ -38,10 +40,7 @@ class Pi1Controller extends AbstractPlugin
      */
     public $extKey = 'pluploadfe';
 
-    /**
-     * @var bool
-     */
-    public $pi_checkCHash = true;
+    public bool $pi_checkCHash = true;
 
     /**
      * @var int
@@ -58,20 +57,11 @@ class Pi1Controller extends AbstractPlugin
      */
     protected $templateHtml;
 
-    /**
-     * @var array
-     */
-    protected $config;
+    protected ?array $config = [];
 
-    /**
-     * @var ObjectManager|null
-     */
-    protected $objectManager = null;
+    protected ?object $objectManager = null;
 
-    /**
-     * @var MarkerBasedTemplateService|null
-     */
-    protected $markerTemplateService = null;
+    protected ?MarkerBasedTemplateService $markerTemplateService = null;
 
     /**
      * The main method of the PlugIn.
@@ -92,14 +82,14 @@ class Pi1Controller extends AbstractPlugin
         if (strlen($this->conf['uid']) > 0) {
             $this->uid = $this->conf['uid'];
         } else {
-            $this->uid = intval(($localizedUid) ? $localizedUid : $this->cObj->data['uid']);
+            $this->uid = (int) ($localizedUid ?: $this->cObj->data['uid']);
         }
 
         // set config record uid
         if (strlen($this->conf['configUid']) > 0) {
             $this->configUid = $this->conf['configUid'];
         } else {
-            $this->configUid = intval($this->cObj->data['tx_pluploadfe_config']);
+            $this->configUid = (int) $this->cObj->data['tx_pluploadfe_config'];
         }
 
         $this->getUploadConfig();
@@ -118,7 +108,7 @@ class Pi1Controller extends AbstractPlugin
     {
         $select = 'extensions';
         $table = 'tx_pluploadfe_config';
-        $where = $this->getTsFeController()->sys_page->enableFields($table);
+        $where = static::getTsFeController()->sys_page->enableFields($table);
 
         $this->config = BackendUtility::getRecord($table, $this->configUid, $select, $where, false);
     }
@@ -132,7 +122,7 @@ class Pi1Controller extends AbstractPlugin
     {
         if (strlen($this->uid) > 0 &&
             strlen($this->templateHtml) > 0 &&
-            intval($this->configUid) > 0 &&
+            (int) $this->configUid > 0 &&
             is_array($this->config) &&
             strlen($this->config['extensions']) > 0
         ) {
@@ -197,7 +187,7 @@ class Pi1Controller extends AbstractPlugin
         $maxFileSizeInBytes = GeneralUtility::getMaxUploadFileSize() * 1024;
 
         $markerArray['###UID###'] = $this->uid;
-        $markerArray['###LANGUAGE###'] = $this->getTsFeController()->config['config']['language'];
+        $markerArray['###LANGUAGE###'] = static::getTsFeController()->config['config']['language'];
         $markerArray['###EXTDIR_PATH###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').
             PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extKey));
         $markerArray['###FILE_EXTENSIONS###'] = implode(',', $extensionsArray);
@@ -229,10 +219,9 @@ class Pi1Controller extends AbstractPlugin
     protected function sanitizeTemplateFile($templateFile)
     {
         /* @var $filePathSanitizer \TYPO3\CMS\Frontend\Resource\FilePathSanitizer */
-        $filePathSanitizer = $this->getObjectManager()->get(\TYPO3\CMS\Frontend\Resource\FilePathSanitizer::class);
-        $templateFile = $filePathSanitizer->sanitize($templateFile);
+        $filePathSanitizer = $this->getObjectManager()->get(FilePathSanitizer::class);
 
-        return $templateFile;
+        return $filePathSanitizer->sanitize($templateFile);
     }
 
     /**
@@ -245,7 +234,7 @@ class Pi1Controller extends AbstractPlugin
         // Don't use the object manager due to core bug:
         // https://github.com/TYPO3/TYPO3.CMS/commit/cffb6e0fc6b4664dab7bd1838da6125787fffc26
 
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**
