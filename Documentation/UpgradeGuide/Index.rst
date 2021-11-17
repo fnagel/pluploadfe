@@ -24,6 +24,26 @@ Updade Guide
    :depth: 3
 
 
+Upgrade to 4.2.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Improved localization (English and German)
+* Update Plupload to v2.3.7 (no actual changes, see https://github.com/moxiecode/plupload/compare/v2.3.6...v2.3.7)
+* Minor improvements, fixes and clean up (incl. some database improvements)
+
+
+How to upgrade
+""""""""""""""
+
+* Use "Analyze Database Structure" in the install tool
+* Clear all cache
+
+
+
+
 Upgrade to 4.1.0
 ^^^^^^^^^^^^^^^^
 
