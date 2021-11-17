@@ -24,6 +24,26 @@ Updade Guide
    :depth: 3
 
 
+Upgrade to 5.0.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Tested in PHP 8.0
+* Added TYPO3 11.x support
+* Removed TYPO3 9.x support
+* Minor improvements and clean up
+
+
+How to upgrade
+""""""""""""""
+
+* Clear all caches
+
+
+
+
 Upgrade to 4.2.0
 ^^^^^^^^^^^^^^^^
 
@@ -39,7 +59,7 @@ How to upgrade
 """"""""""""""
 
 * Use "Analyze Database Structure" in the install tool
-* Clear all cache
+* Clear all caches
 
 
 
