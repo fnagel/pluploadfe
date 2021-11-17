@@ -108,6 +108,7 @@ class Pi1Controller extends AbstractPlugin
     {
         $select = 'extensions';
         $table = 'tx_pluploadfe_config';
+        // @extensionScannerIgnoreLine
         $where = static::getTsFeController()->sys_page->enableFields($table);
 
         $this->config = BackendUtility::getRecord($table, $this->configUid, $select, $where, false);
@@ -138,6 +139,7 @@ class Pi1Controller extends AbstractPlugin
     protected function renderCode()
     {
         // Extract subparts from the template
+        // @extensionScannerIgnoreLine
         $templateMain = $this->getMarkerTemplateService()->getSubpart($this->templateHtml, '###TEMPLATE_CODE###');
 
         // fill marker array
@@ -146,6 +148,7 @@ class Pi1Controller extends AbstractPlugin
             'index.php?tx_pluploadfe='.$this->configUid;
 
         // replace markers in the template
+        // @extensionScannerIgnoreLine
         $content = $this->getMarkerTemplateService()->substituteMarkerArray($templateMain, $markerArray);
 
         $this->getPageRenderer()->addJsFooterInlineCode(
@@ -162,6 +165,7 @@ class Pi1Controller extends AbstractPlugin
     protected function getHtml()
     {
         // Extract subparts from the template
+        // @extensionScannerIgnoreLine
         $templateMain = $this->getMarkerTemplateService()->getSubpart($this->templateHtml, '###TEMPLATE_CONTENT###');
 
         // fill marker array
@@ -170,6 +174,7 @@ class Pi1Controller extends AbstractPlugin
         $markerArray['###INFO_2###'] = $this->pi_getLL('info_2');
 
         // replace markers in the template
+        // @extensionScannerIgnoreLine
         $content = $this->getMarkerTemplateService()->substituteMarkerArray($templateMain, $markerArray);
 
         return $content;
@@ -218,7 +223,8 @@ class Pi1Controller extends AbstractPlugin
      */
     protected function sanitizeTemplateFile($templateFile)
     {
-        /* @var $filePathSanitizer \TYPO3\CMS\Frontend\Resource\FilePathSanitizer */
+        /* @var $filePathSanitizer FilePathSanitizer */
+        // @extensionScannerIgnoreLine
         $filePathSanitizer = $this->getObjectManager()->get(FilePathSanitizer::class);
 
         return $filePathSanitizer->sanitize($templateFile);
@@ -243,6 +249,7 @@ class Pi1Controller extends AbstractPlugin
     protected function getMarkerTemplateService()
     {
         if ($this->markerTemplateService === null) {
+            // @extensionScannerIgnoreLine
             $this->markerTemplateService = $this->getObjectManager()->get(MarkerBasedTemplateService::class);
         }
 
