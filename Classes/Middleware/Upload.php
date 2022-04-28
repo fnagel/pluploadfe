@@ -52,8 +52,7 @@ class Upload implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        // @todo TSFE->fe_user is a fallback for TYPO3 9.x
-        $this->feUserObj = $request->getAttribute('frontend.user', $GLOBALS['TSFE']->fe_user);
+        $this->feUserObj = $request->getAttribute('frontend.user');
         $this->config = $this->getUploadConfig((int) $configUid);
 
         $response = new JsonResponse([], 200, [
