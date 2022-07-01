@@ -120,6 +120,7 @@ return [
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
+                'default' => '',
             ],
         ],
         'save_session' => [
