@@ -368,6 +368,9 @@ class Upload implements MiddlewareInterface
         GeneralUtility::fixPermissions($filePath);
 
         if ($this->config['save_session']) {
+            $this->saveFileInSession($filePath, $this->uid.'_files');
+
+            // @todo @deprecated Remove this in next major version! Only config based session data!
             $this->saveFileInSession($filePath);
         }
     }
