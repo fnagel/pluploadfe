@@ -30,6 +30,8 @@ use FelixNagel\Pluploadfe\Utility\FileValidation;
  */
 class Upload implements MiddlewareInterface
 {
+    public const SESSION_KEY_PREFIX = 'tx_pluploadfe_';
+
     private bool $chunkedUpload = false;
 
     /**
@@ -403,7 +405,7 @@ class Upload implements MiddlewareInterface
      */
     protected function saveDataInSession($data, $key = 'data')
     {
-        $this->getFeUser()->setAndSaveSessionData('tx_pluploadfe_'.$key, $data);
+        $this->getFeUser()->setAndSaveSessionData(self::SESSION_KEY_PREFIX.$key, $data);
     }
 
     /**
@@ -415,6 +417,6 @@ class Upload implements MiddlewareInterface
      */
     protected function getSessionData($key = 'data')
     {
-        return $this->getFeUser()->getSessionData('tx_pluploadfe_'.$key);
+        return $this->getFeUser()->getSessionData(self::SESSION_KEY_PREFIX.$key);
     }
 }
