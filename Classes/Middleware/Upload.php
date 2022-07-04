@@ -37,6 +37,8 @@ class Upload implements MiddlewareInterface
 
     private ?FrontendUserAuthentication $feUserObj = null;
 
+    private ?int $uid = null;
+
     private ?array $config = null;
 
     private string $uploadPath = '';
@@ -46,41 +48,51 @@ class Upload implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $configUid = $request->getParsedBody()['tx_pluploadfe'] ?? $request->getQueryParams()['tx_pluploadfe'] ?? null;
+        $uid = $request->getParsedBody()['tx_pluploadfe'] ?? $request->getQueryParams()['tx_pluploadfe'] ?? null;
 
-        if ($configUid === null) {
+        if ($uid === null) {
             return $handler->handle($request);
         }
 
+        $this->uid = (int)$uid;
+        $this->config = $this->getUploadConfig($this->uid);
         $this->feUserObj = $request->getAttribute('frontend.user');
-        $this->config = $this->getUploadConfig((int) $configUid);
 
-        $response = new JsonResponse([], 200, [
+        try {
+            $this->handleUpload();
+
+            // Return JSON-RPC response if upload process is successfully finished
+            return $this->getResponse([
+                'result' => null,
+                'id' => 'id',
+            ]);
+        } catch (AuthenticationException $exception) {
+            return $this->getResponse($this->getErrorResponseContent($exception), 403);
+        } catch (InvalidArgumentException $exception) {
+            return $this->getResponse($this->getErrorResponseContent($exception), 410);
+        } catch (\Exception $exception) {
+            return $this->getResponse($this->getErrorResponseContent($exception), 404);
+        }
+    }
+
+    /**
+     * Get JSON response for plupload
+     */
+    protected function getResponse(array $payload, int $status = 200): ResponseInterface
+    {
+        $response = new JsonResponse([], $status, [
             'Expires' => 'Mon, 26 Jul 1997 05:00:00 GMT',
             'Last-Modified' => gmdate('D, d M Y H:i:s').' GMT',
             'Pragma' => 'no-cache',
             'Cache-Control' => 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0',
         ]);
 
-        try {
-            $this->handleUpload();
-            // Return JSON-RPC response if upload process is successfully finished
-            $response->setPayload([
-                'jsonrpc' => '2.0',
-                'result' => null,
-                'id' => 'id',
-            ]);
-            return $response;
-        } catch (AuthenticationException $exception) {
-            $response->setPayload($this->getErrorResponseContent($exception));
-            return $response->withStatus(403);
-        } catch (InvalidArgumentException $exception) {
-            $response->setPayload($this->getErrorResponseContent($exception));
-            return $response->withStatus(410);
-        } catch (\Exception $exception) {
-            $response->setPayload($this->getErrorResponseContent($exception));
-            return $response->withStatus(404);
-        }
+        $response->setPayload(array_merge([
+            'jsonrpc' => '2.0',
+            'config' => (string)$this->uid,
+        ], $payload));
+
+        return $response;
     }
 
     /**
@@ -88,6 +100,10 @@ class Upload implements MiddlewareInterface
      */
     public function handleUpload()
     {
+        if (!count($this->config)) {
+            throw new InvalidArgumentException('Configuration record not found or invalid.');
+        }
+
         $this->processConfig();
         $this->checkUploadConfig();
 
@@ -160,14 +176,13 @@ class Upload implements MiddlewareInterface
     }
 
     /**
-     * Get JSON for error messages
+     * Get JSON payload for error responses
      *
      * @return array
      */
     protected function getErrorResponseContent(\Exception $exception)
     {
         return [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => $exception->getCode(),
                 'message' => $exception->getMessage(),
@@ -176,15 +191,8 @@ class Upload implements MiddlewareInterface
         ];
     }
 
-    /**
-     * Gets the plugin configuration.
-     */
     protected function checkUploadConfig()
     {
-        if (count($this->config) === 0) {
-            throw new InvalidArgumentException('Configuration record not found or invalid.');
-        }
-
         if ((string) $this->config['extensions'] === '') {
             throw new InvalidArgumentException('Missing allowed file extension configuration.');
         }
@@ -200,7 +208,7 @@ class Upload implements MiddlewareInterface
     protected function getUploadConfig(int $configUid): array
     {
         $context = GeneralUtility::makeInstance(Context::class);
-        $select = 'upload_path, extensions, feuser_required, feuser_field, save_session, obscure_dir, check_mime';
+        $select = 'uid, upload_path, extensions, feuser_required, feuser_field, save_session, obscure_dir, check_mime';
         $table = 'tx_pluploadfe_config';
         $where = $table.'.hidden = 0';
         $where .= ' AND '.$table.'.starttime <= '.$context->getPropertyFromAspect('date', 'timestamp');
