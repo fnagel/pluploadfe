@@ -243,7 +243,7 @@ class Upload implements MiddlewareInterface
      */
     protected function getFileName()
     {
-        $filename = uniqid('file_');
+        $filename = uniqid('file_', true);
 
         if (isset($_REQUEST['name'])) {
             $filename = $_REQUEST['name'];
