@@ -22,6 +22,7 @@ use FelixNagel\Pluploadfe\Exception\AuthenticationException;
 use FelixNagel\Pluploadfe\Exception\InvalidArgumentException;
 use FelixNagel\Pluploadfe\Utility\Filesystem;
 use FelixNagel\Pluploadfe\Utility\FileValidation;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * This class uploads files.
@@ -34,12 +35,9 @@ class Upload implements MiddlewareInterface
 
     private bool $chunkedUpload = false;
 
-    /**
-     * @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
-     */
-    private $feUserObj = null;
+    private ?FrontendUserAuthentication $feUserObj = null;
 
-    private array $config = [];
+    private ?array $config = null;
 
     private string $uploadPath = '';
 
@@ -115,22 +113,15 @@ class Upload implements MiddlewareInterface
         $this->uploadFile();
     }
 
-    /**
-     * Get FE user object.
-     *
-     * @return \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
-     */
-    protected function getFeUser()
+    protected function getFeUser(): FrontendUserAuthentication
     {
         return $this->feUserObj;
     }
 
     /**
-     * Get sub directory based upon user data.
-     *
-     * @return string
+     * Get subdirectory based upon user data.
      */
-    protected function getUserDirectory()
+    protected function getUserDirectory(): string
     {
         $record = $this->getFeUser()->user;
         $field = $this->config['feuser_field'];
@@ -159,7 +150,6 @@ class Upload implements MiddlewareInterface
                 } catch (\Exception $exception) {
                     $directory = 'checkTimezone';
                 }
-
                 break;
 
             default:
@@ -206,21 +196,17 @@ class Upload implements MiddlewareInterface
 
     /**
      * Gets the plugin configuration.
-     *
-     * @param int $configUid
-     *
-     * @return array
      */
-    protected function getUploadConfig($configUid)
+    protected function getUploadConfig(int $configUid): array
     {
-    	$context = GeneralUtility::makeInstance(Context::class);
+        $context = GeneralUtility::makeInstance(Context::class);
         $select = 'upload_path, extensions, feuser_required, feuser_field, save_session, obscure_dir, check_mime';
         $table = 'tx_pluploadfe_config';
         $where = $table.'.hidden = 0';
         $where .= ' AND '.$table.'.starttime <= '.$context->getPropertyFromAspect('date', 'timestamp');
         $where .= ' AND ('.$table.'.endtime = 0 OR '.$table.'.endtime > '.$context->getPropertyFromAspect('date', 'timestamp').')';
 
-        return BackendUtility::getRecord($table, (int) $configUid, $select, $where, true);
+        return BackendUtility::getRecord($table, $configUid, $select, $where, true);
     }
 
     /**
