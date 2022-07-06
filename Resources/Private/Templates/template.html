@@ -4,75 +4,74 @@
 	<title>plupload template file</title>
 
 	<script type="text/javascript">
-	  	// ###TEMPLATE_CODE###
-		(function($) {
-			$(function() {
-				var errorMsg = "Error: ", json,
-					uploader = $('#uploader_###UID###').pluploadQueue({
-						// General settings
-						runtimes : 'html5,flash,silverlight,html4',
-						url : '###UPLOAD_FILE###',
-						// chunk_size : '###FILE_MAX_SIZE###',
-						unique_names : false,
-						rename: true,
-						dragdrop: true,
-						multiple_queues: true,
-						quality: 100,
+	// ###TEMPLATE_CODE###
+	$(function() {
+		var message,
+			json,
+			langPrefix = "pluploadfe_error_",
+			uploader = $('#uploader_###UID###').pluploadQueue({
+				// General settings
+				runtimes : 'html5,flash,silverlight,html4',
+				url : '###UPLOAD_FILE###',
+				// chunk_size : '###FILE_MAX_SIZE###',
+				unique_names : false,
+				rename: true,
+				dragdrop: true,
+				multiple_queues: true,
+				quality: 100,
 
-						// Specify what files to browse for
-						filters: {
-							// Remove this when using chunked uploads
-							max_file_size: '###FILE_MAX_SIZE###',
-							mime_types: [
-								{
-									title: "Allowed files",
-									extensions: "###FILE_EXTENSIONS###"
-								}
-							]
-						},
+				// Specify what files to browse for
+				filters: {
+					// Remove this when using chunked uploads
+					max_file_size: '###FILE_MAX_SIZE###',
+					mime_types: [
+						{
+							title: "Allowed files",
+							extensions: "###FILE_EXTENSIONS###"
+						}
+					]
+				},
 
-						// Flash settings
-						flash_swf_url: '###EXTDIR_PATH###Resources/Public/JavaScript/plupload/js/Moxie.swf',
+				// Flash settings
+				flash_swf_url: '###EXTDIR_PATH###Resources/Public/JavaScript/plupload/js/Moxie.swf',
 
-						// Silverlight settings
-						silverlight_xap_url: '###EXTDIR_PATH###Resources/Public/JavaScript/plupload/js/Moxie.xap',
+				// Silverlight settings
+				silverlight_xap_url: '###EXTDIR_PATH###Resources/Public/JavaScript/plupload/js/Moxie.xap',
 
-						// Post init events, bound after the internal events
-						init: {
-							Error: function(up, error) {
-								var json = $.parseJSON(error.response),
-									message = error.message
-									langPrefix = "pluploadfe_error_";
+				// Post init events, bound after the internal events
+				init: {
+					Error: function(up, error) {
+						json = $.parseJSON(error.response);
+						message = error.message;
 
-								if (json.error) {
-									// Localize message if possible
-									if (json.error.messageKey && TYPO3.lang && TYPO3.lang[langPrefix + json.error.messageKey]) {
-										message = TYPO3.lang[langPrefix + json.error.messageKey];
-									} else {
-										message = json.error.message;
-									}
+						if (json.error) {
+							// Localize message if possible
+							if (json.error.messageKey && TYPO3.lang && TYPO3.lang[langPrefix + json.error.messageKey]) {
+								message = TYPO3.lang[langPrefix + json.error.messageKey];
+							} else {
+								message = json.error.message;
+							}
 
-									// Add filename if available
-									if (json.error.messageArguments.filename) {
-										message = json.error.messageArguments.filename + "\n\n" + message;
-									}
-								}
-
-								alert(message);
-							},
-							FileUploaded: function(up, file, info) {
-								var json = $.parseJSON(info.response);
-
-								if (json.error) {
-									file.status = plupload.FAILED;
-									alert(json.error.message);
-								}
+							// Add filename if available
+							if (json.error.messageArguments.filename) {
+								message = json.error.messageArguments.filename + "\n\n" + message;
 							}
 						}
-					});
+
+						alert(message);
+					},
+					FileUploaded: function(up, file, info) {
+						json = $.parseJSON(info.response);
+
+						if (json.error) {
+							file.status = plupload.FAILED;
+							alert(json.error.message);
+						}
+					}
+				}
 			});
-		})(jQuery);
-		// ###TEMPLATE_CODE###
+	});
+	// ###TEMPLATE_CODE###
 	</script>
 </head>
 <body>
