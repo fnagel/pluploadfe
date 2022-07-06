@@ -68,6 +68,7 @@ return [
                 'max' => 255,
                 'checkbox' => '',
                 'eval' => 'trim',
+                'default' => '',
             ],
         ],
         'upload_path' => [
