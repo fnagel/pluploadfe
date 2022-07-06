@@ -95,6 +95,10 @@ class Upload implements MiddlewareInterface
             ],
         ];
 
+        if ($this->config['save_session']) {
+            $this->updateDataInSession($data, $this->uid.'_messages');
+        }
+
         return [
             'error' => array_merge($data, [
                 'code' => $exception->getCode(),
