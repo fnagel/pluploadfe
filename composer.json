@@ -5,6 +5,7 @@
 	"keywords": [
 		"TYPO3 CMS",
 		"upload",
+		"plupload",
 		"pluploadfe"
 	],
 	"homepage": "https://extensions.typo3.org/extension/pluploadfe/",
@@ -17,7 +18,7 @@
 		{
 			"name": "Felix Nagel",
 			"email": "info@felixnagel.com",
-			"homepage": "http://www.felixnagel.com",
+			"homepage": "https://www.felixnagel.com",
 			"role": "Developer"
 		}
 	],
@@ -31,8 +32,8 @@
 		"friendsofphp/php-cs-fixer": "^2.19"
 	},
 	"suggest": {
-		"felixnagel/mailfiles": "Simple message form with file upload",
-		"ext-fileinfo": "*"
+		"ext-fileinfo": "Helpful for file Mime type detection",
+		"felixnagel/mailfiles": "Simple message form with file upload"
 	},
 	"autoload": {
 		"psr-4": {
