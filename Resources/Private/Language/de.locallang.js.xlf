@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2020-12-23T23:23:53Z">
+		<header/>
+		<body>
+			<trans-unit id="pluploadfe_error_invalid_argument">
+				<target>Upload fehlgeschlagen, bitte versuchen Sie es erneut!</target>
+			</trans-unit>
+			<trans-unit id="pluploadfe_error_invalid_configuration">
+				<target>Konfiguration nicht gefunden oder fehlerhaft!</target>
+			</trans-unit>
+			<trans-unit id="pluploadfe_error_authentication">
+				<target>TYPO3 Benutzeranmeldung nicht gefunden!</target>
+			</trans-unit>
+			<trans-unit id="pluploadfe_error_invalid_upload_directory">
+				<target>Ordner zum Dateiupload nicht gefunden!</target>
+			</trans-unit>
+			<trans-unit id="pluploadfe_error_invalid_file">
+				<target>Die Dateierweiterung ist nicht erlaubt!</target>
+			</trans-unit>
+			<trans-unit id="pluploadfe_error_invalid_mime_type">
+				<target>Der Dateityp ist nicht erlaubt!</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

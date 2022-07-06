@@ -40,19 +40,32 @@
 						// Post init events, bound after the internal events
 						init: {
 							Error: function(up, error) {
-								json = $.parseJSON(error.response);
+								var json = $.parseJSON(error.response),
+									message = error.message
+									langPrefix = "pluploadfe_error_";
+
 								if (json.error) {
-									error.message += " " + json.error.message;
+									// Localize message if possible
+									if (json.error.messageKey && TYPO3.lang && TYPO3.lang[langPrefix + json.error.messageKey]) {
+										message = TYPO3.lang[langPrefix + json.error.messageKey];
+									} else {
+										message = json.error.message;
+									}
+
+									// Add filename if available
+									if (json.error.messageArguments.filename) {
+										message = json.error.messageArguments.filename + "\n\n" + message;
+									}
 								}
 
-								alert(error.message);
+								alert(message);
 							},
 							FileUploaded: function(up, file, info) {
-								json = $.parseJSON(info.response);
+								var json = $.parseJSON(info.response);
+
 								if (json.error) {
 									file.status = plupload.FAILED;
-									errorMsg += json.error.message;
-									alert(errorMsg);
+									alert(json.error.message);
 								}
 							}
 						}

@@ -9,9 +9,9 @@ namespace FelixNagel\Pluploadfe\Utility;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+use FelixNagel\Pluploadfe\Exception\InvalidArgument\InvalidFileExtensionException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
-use FelixNagel\Pluploadfe\Exception\InvalidArgumentException;
 use FelixNagel\Pluploadfe\Statics\MimeTypes;
 
 /**
@@ -32,12 +32,12 @@ class FileValidation
 
         // check if file extension is allowed (configuration record)
         if (!in_array($fileExtension, $extensions)) {
-            throw new InvalidArgumentException('File extension is not allowed.');
+            throw new InvalidFileExtensionException('File extension is not allowed.');
         }
 
         // check if file extension is allowed on this TYPO3 installation
         if (!GeneralUtility::makeInstance(FileNameValidator::class)->isValid($fileName)) {
-            throw new InvalidArgumentException('File extension is not allowed on this TYPO3 installation.');
+            throw new InvalidFileExtensionException('File extension is not allowed on this TYPO3 installation.');
         }
     }
 

@@ -142,18 +142,24 @@ class Pi1Controller extends AbstractPlugin
         // @extensionScannerIgnoreLine
         $templateMain = $this->getMarkerTemplateService()->getSubpart($this->templateHtml, '###TEMPLATE_CODE###');
 
-        // fill marker array
+        // Fill marker array
         $markerArray = $this->getDefaultMarker();
         $markerArray['###UPLOAD_FILE###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').
             'index.php?tx_pluploadfe='.$this->configUid;
 
-        // replace markers in the template
+        // Replace markers in the template
         // @extensionScannerIgnoreLine
         $content = $this->getMarkerTemplateService()->substituteMarkerArray($templateMain, $markerArray);
 
+        // Add JS code
         $this->getPageRenderer()->addJsFooterInlineCode(
             $this->prefixId.'_'.$this->uid,
             $content
+        );
+
+        // Add JS localization
+        $this->getPageRenderer()->addInlineLanguageLabelFile(
+            'EXT:pluploadfe/Resources/Private/Language/locallang.js.xlf'
         );
     }
 

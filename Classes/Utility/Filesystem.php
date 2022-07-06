@@ -9,9 +9,9 @@ namespace FelixNagel\Pluploadfe\Utility;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+use FelixNagel\Pluploadfe\Exception\InvalidArgument\InvalidUploadDirectoryException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use FelixNagel\Pluploadfe\Exception\InvalidArgumentException;
 
 /**
  * Filesystem.
@@ -44,7 +44,7 @@ class Filesystem
         try {
             GeneralUtility::mkdir_deep(self::getPublicPath() . $uploadPath);
         } catch (\Exception $exception) {
-            throw new InvalidArgumentException('Failed to create upload directory.', $exception->getCode(), $exception);
+            throw new InvalidUploadDirectoryException('Failed to create upload directory.', $exception->getCode(), $exception);
         }
     }
 

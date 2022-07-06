@@ -20,14 +20,13 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use FelixNagel\Pluploadfe\Exception\AuthenticationException;
 use FelixNagel\Pluploadfe\Exception\InvalidArgumentException;
+use FelixNagel\Pluploadfe\Exception\InvalidArgument;
 use FelixNagel\Pluploadfe\Utility\Filesystem;
 use FelixNagel\Pluploadfe\Utility\FileValidation;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * This class uploads files.
- *
- * @todo translate error messages
  */
 class Upload implements MiddlewareInterface
 {
@@ -54,11 +53,15 @@ class Upload implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $this->uid = (int)$uid;
-        $this->config = $this->getUploadConfig($this->uid);
-        $this->feUserObj = $request->getAttribute('frontend.user');
-
         try {
+            if ($request->getMethod() !== 'POST') {
+                throw new InvalidArgumentException('No file submitted.');
+            }
+
+            $this->uid = (int)$uid;
+            $this->config = $this->getUploadConfig($this->uid);
+            $this->feUserObj = $request->getAttribute('frontend.user');
+
             $this->handleUpload();
 
             // Return JSON-RPC response if upload process is successfully finished
@@ -73,6 +76,31 @@ class Upload implements MiddlewareInterface
         } catch (\Exception $exception) {
             return $this->getResponse($this->getErrorResponseContent($exception), 404);
         }
+    }
+
+    /**
+     * Get JSON payload for error responses and add message to session.
+     */
+    protected function getErrorResponseContent(\Exception $exception): array
+    {
+        $className = str_replace('Exception', '', get_class($exception));
+        $classNameShort = substr($className, strrpos($className, '\\') + 1);
+        $key = GeneralUtility::camelCaseToLowerCaseUnderscored($classNameShort);
+
+        $data = [
+            'message' => $exception->getMessage(),
+            'messageKey' => $key,
+            'messageArguments' => [
+                'filename' => empty($_FILES) ? null : $this->getFileName(),
+            ],
+        ];
+
+        return [
+            'error' => array_merge($data, [
+                'code' => $exception->getCode(),
+            ]),
+            'id' => '',
+        ];
     }
 
     /**
@@ -101,7 +129,7 @@ class Upload implements MiddlewareInterface
     public function handleUpload()
     {
         if (!count($this->config)) {
-            throw new InvalidArgumentException('Configuration record not found or invalid.');
+            throw new InvalidArgument\InvalidConfigurationException('Configuration record not found or invalid.');
         }
 
         $this->processConfig();
@@ -109,7 +137,7 @@ class Upload implements MiddlewareInterface
 
         // Check for valid FE user
         if ($this->config['feuser_required'] && $this->getFeUser()->user['username'] == '') {
-            throw new AuthenticationException('TYPO3 user session expired.');
+            throw new AuthenticationException('TYPO3 user session invalid.');
         }
 
         // One file or chunked?
@@ -175,30 +203,14 @@ class Upload implements MiddlewareInterface
         return preg_replace('#[^0-9a-zA-Z\-\.]#', '_', $directory);
     }
 
-    /**
-     * Get JSON payload for error responses
-     *
-     * @return array
-     */
-    protected function getErrorResponseContent(\Exception $exception)
-    {
-        return [
-            'error' => [
-                'code' => $exception->getCode(),
-                'message' => $exception->getMessage(),
-            ],
-            'id' => '',
-        ];
-    }
-
     protected function checkUploadConfig()
     {
         if ((string) $this->config['extensions'] === '') {
-            throw new InvalidArgumentException('Missing allowed file extension configuration.');
+            throw new InvalidArgument\InvalidConfigurationException('Missing allowed file extension configuration.');
         }
 
         if (!Filesystem::isPathValid($this->config['upload_path'])) {
-            throw new InvalidArgumentException('Upload directory not valid.');
+            throw new InvalidArgument\InvalidUploadDirectoryException('Upload directory not valid.');
         }
     }
 
@@ -361,27 +373,27 @@ class Upload implements MiddlewareInterface
             // if mime type is not allowed: remove file
             if (!FileValidation::checkMimeType($filePath)) {
                 @unlink($filePath);
-                throw new InvalidArgumentException('File mime type is not allowed.');
+                throw new InvalidArgument\InvalidMimeTypeException('File mime type is not allowed.');
             }
         }
 
         GeneralUtility::fixPermissions($filePath);
 
         if ($this->config['save_session']) {
-            $this->saveFileInSession($filePath, $this->uid.'_files');
+            $this->updateDataInSession($filePath, $this->uid.'_files');
 
             // @todo @deprecated Remove this in next major version! Only config based session data!
-            $this->saveFileInSession($filePath);
+            $this->updateDataInSession($filePath);
         }
     }
 
     /**
      * Store file in session.
      *
-     * @param string $filePath
+     * @param mixed $filePath
      * @param string $key
      */
-    protected function saveFileInSession($filePath, $key = 'files')
+    protected function updateDataInSession($filePath, $key = 'files')
     {
         $currentData = $this->getSessionData($key);
 
