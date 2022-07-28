@@ -87,7 +87,7 @@ class Pi1Controller extends AbstractPlugin
 
         // set config record uid
         if (strlen($this->conf['configUid']) > 0) {
-            $this->configUid = $this->conf['configUid'];
+            $this->configUid = (int) $this->conf['configUid'];
         } else {
             $this->configUid = (int) $this->cObj->data['tx_pluploadfe_config'];
         }
