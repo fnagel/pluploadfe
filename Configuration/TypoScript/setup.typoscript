@@ -35,7 +35,7 @@ page {
 }
 
 # Example for JS localization
-#[globalVar = GP:L = 123]
+#[siteLanguage("languageId") == 123]
 #	page {
 #		includeJSFooter {
 #			# Make sure to add this AFTER the other plupload JS files
