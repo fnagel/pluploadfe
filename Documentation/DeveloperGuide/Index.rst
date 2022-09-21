@@ -30,35 +30,72 @@ Target group: **Developers**
 Integrating EXT:pluploafe in your own extensions
 ------------------------------------------------
 
+Take a look at the following extension on how to integrate EXT:plupload in your extension:
+
+* https://github.com/fnagel/mailfiles
+* https://github.com/fnagel/pluploadfe_powermail
+
+
+Using Fluid ViewHelper
+^^^^^^^^^^^^^^^^^^^^^^
+
 TypoScript
-^^^^^^^^^^
+""""""""""
 
 .. code-block:: ts
 
-    lib.examplePluploadFe < plugin.tx_pluploadfe_pi1
-    lib.examplePluploadFe {
-        templateFile = fileadmin/some/file.html
-        uid = some-unique-string
-        configUid = 123
-    }
+	settings {
+		pluploadfe < plugin.tx_pluploadfe_pi1
+		pluploadfe {
+         templateFile = EXT:example/Resources/Private/Templates/template.html
+         configUid = 123
+		}
+	}
+
+Template integration
+""""""""""""""""""""
+
+.. code-block:: xml
+   <html xmlns:plupload="http://typo3.org/ns/FelixNagel/Pluploadfe/ViewHelpers">
+   <plupload:render configUid="{settings.configUid}" settings="{settings.pluploadfe}" />
+
+
+Using TypoScript
+^^^^^^^^^^^^^^^^
+
+TypoScript
+"""""""""
+
+.. code-block:: ts
+
+   lib.examplePluploadFe < plugin.tx_pluploadfe_pi1
+   lib.examplePluploadFe {
+      templateFile = EXT:example/Resources/Private/Templates/template.html
+      configUid = 123
+   }
 
 
 Template integration
-^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""
 
 .. code-block:: xml
 
-    <f:cObject typoscriptObjectPath="lib.examplePluploadFe" />
+   <f:cObject typoscriptObjectPath="lib.examplePluploadFe" />
 
 
-Usage in controller
--------------------
+Gather data in controller
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: php
 
-    // Get saved files
-    $files = $GLOBALS['TSFE']->fe_user->getKey('ses', 'tx_pluploadfe_files');
+   // Get saved files (all files or by config record UID)
+   $files = $GLOBALS['TSFE']->fe_user->getKey('ses', 'tx_pluploadfe_files');
+   $files = $GLOBALS['TSFE']->fe_user->getKey('ses', 'tx_pluploadfe_123_files');
 
-    // Reset files in session
-    $GLOBALS['TSFE']->fe_user->setKey('ses', 'tx_pluploadfe_files', '');
-    $GLOBALS['TSFE']->fe_user->storeSessionData();
+   // Get saved messages (by config record UID only)
+   $files = $GLOBALS['TSFE']->fe_user->getKey('ses', 'tx_pluploadfe_123_messages');
+
+   // Reset files in session
+   $this->getTsFeController()->fe_user->setKey('ses', 'tx_pluploadfe_files', '');
+   $this->getTsFeController()->fe_user->setKey('ses', 'tx_pluploadfe_123_files', '');
+   $this->getTsFeController()->fe_user->storeSessionData();

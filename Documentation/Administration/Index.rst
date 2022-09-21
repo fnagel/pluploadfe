@@ -29,5 +29,4 @@ TypoScript configuration.
 
    Installation/Index
    Template/Index
-   Api/Index
 
