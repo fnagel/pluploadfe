@@ -24,6 +24,32 @@ Updade Guide
    :depth: 3
 
 
+Upgrade to 6.0.0
+^^^^^^^^^^^^^^^^
+
+This release has been sponsored by BECKER media - https://www.beckermedia.de/
+
+Changelog
+"""""""""
+
+* Removed TYPO3 10.x support
+* Error message localization
+* Changed and improved session handling
+* Add Fluid ViewHelper for rendering plugin in frontend
+* Code refactoring
+* Minor improvements and clean up
+* Fix and improve documentation
+
+
+How to upgrade
+""""""""""""""
+
+* Update your custom templates
+* Clear all caches
+
+
+
+
 Upgrade to 5.0.0
 ^^^^^^^^^^^^^^^^
 
