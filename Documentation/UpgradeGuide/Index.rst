@@ -27,7 +27,7 @@ Updade Guide
 Upgrade to 6.0.0
 ^^^^^^^^^^^^^^^^
 
-This release has been sponsored by BECKER media - https://www.beckermedia.de/
+This release has been sponsored by i-provide GmbH / BECKER media.
 
 Changelog
 """""""""
