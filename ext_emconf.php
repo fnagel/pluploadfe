@@ -27,6 +27,7 @@ $EM_CONF[$_EXTKEY] = [
         'conflicts' => [],
         'suggests' => [
             'mailfiles' => '',
+            'plupload_powermail' => '',
         ],
     ],
 ];

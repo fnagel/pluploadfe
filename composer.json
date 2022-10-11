@@ -33,7 +33,8 @@
 	},
 	"suggest": {
 		"ext-fileinfo": "Helpful for file Mime type detection",
-		"felixnagel/mailfiles": "Simple message form with file upload"
+		"felixnagel/mailfiles": "Simple message form with file upload",
+		"felixnagel/plupload_powermail": "Powermail integration"
 	},
 	"autoload": {
 		"psr-4": {
