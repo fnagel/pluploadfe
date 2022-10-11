@@ -8,7 +8,9 @@ namespace FelixNagel\Pluploadfe\Middleware;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
-
+use FelixNagel\Pluploadfe\Exception\InvalidArgument\InvalidConfigurationException;
+use FelixNagel\Pluploadfe\Exception\InvalidArgument\InvalidUploadDirectoryException;
+use FelixNagel\Pluploadfe\Exception\InvalidArgument\InvalidMimeTypeException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -30,6 +32,9 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 class Upload implements MiddlewareInterface
 {
+    /**
+     * @var string
+     */
     public const SESSION_KEY_PREFIX = 'tx_pluploadfe_';
 
     private bool $chunkedUpload = false;
@@ -198,6 +203,7 @@ class Upload implements MiddlewareInterface
                 } catch (\Exception $exception) {
                     $directory = 'checkTimezone';
                 }
+
                 break;
 
             default:
@@ -334,6 +340,7 @@ class Upload implements MiddlewareInterface
             if ($_FILES['file']['error'] || !is_uploaded_file($_FILES['file']['tmp_name'])) {
                 throw new InvalidArgumentException('Failed to move uploaded file.', 103);
             }
+
             // Read binary input stream and append it to temp file
             if (!$in = @fopen($_FILES['file']['tmp_name'], 'rb')) {
                 throw new InvalidArgumentException('Failed to open input stream.', 101);
@@ -371,14 +378,12 @@ class Upload implements MiddlewareInterface
      */
     protected function processFile($filePath)
     {
-        if ($this->config['check_mime']) {
-            // we already checked if the file extension is allowed,
-            // so we need to check if the mime type is adequate.
-            // if mime type is not allowed: remove file
-            if (!FileValidation::checkMimeType($filePath)) {
-                @unlink($filePath);
-                throw new InvalidArgument\InvalidMimeTypeException('File mime type is not allowed.');
-            }
+        // we already checked if the file extension is allowed,
+        // so we need to check if the mime type is adequate.
+        // if mime type is not allowed: remove file
+        if ($this->config['check_mime'] && !FileValidation::checkMimeType($filePath)) {
+            @unlink($filePath);
+            throw new InvalidMimeTypeException('File mime type is not allowed.');
         }
 
         GeneralUtility::fixPermissions($filePath);

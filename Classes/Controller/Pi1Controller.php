@@ -8,7 +8,7 @@ namespace FelixNagel\Pluploadfe\Controller;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
-
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use FelixNagel\Pluploadfe\Exception\Exception;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
@@ -239,7 +239,7 @@ class Pi1Controller extends AbstractPlugin
     /**
      * Get page renderer.
      *
-     * @return \TYPO3\CMS\Core\Page\PageRenderer
+     * @return PageRenderer
      */
     protected function getPageRenderer()
     {
@@ -275,7 +275,7 @@ class Pi1Controller extends AbstractPlugin
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     * @return TypoScriptFrontendController
      */
     protected static function getTsFeController()
     {
