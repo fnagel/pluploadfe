@@ -8,6 +8,8 @@ namespace FelixNagel\Pluploadfe\Controller;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
+
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use FelixNagel\Pluploadfe\Exception\Exception;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -40,22 +42,11 @@ class Pi1Controller extends AbstractPlugin
      */
     public $extKey = 'pluploadfe';
 
-    public bool $pi_checkCHash = true;
+    protected int $configUid;
 
-    /**
-     * @var int
-     */
-    protected $configUid;
+    protected string $uid;
 
-    /**
-     * @var int
-     */
-    protected $uid;
-
-    /**
-     * @var string
-     */
-    protected $templateHtml;
+    protected string $templateHtml;
 
     protected ?array $config = [];
 
@@ -77,19 +68,18 @@ class Pi1Controller extends AbstractPlugin
         $this->pi_setPiVarDefaults();
         $this->pi_loadLL('EXT:pluploadfe/Resources/Private/Language/locallang.xlf');
 
-        // set (localized) UID
-        $localizedUid = $this->cObj->data['_LOCALIZED_UID'];
-        if (strlen($this->conf['uid']) > 0) {
-            $this->uid = $this->conf['uid'];
-        } else {
-            $this->uid = (int) ($localizedUid ?: $this->cObj->data['uid']);
-        }
-
-        // set config record uid
-        if (strlen($this->conf['configUid']) > 0) {
+        // Set config record uid
+        if (isset($this->conf['configUid']) && $this->conf['configUid'] !== '') {
             $this->configUid = (int) $this->conf['configUid'];
         } else {
             $this->configUid = (int) $this->cObj->data['tx_pluploadfe_config'];
+        }
+
+        // Set identifier
+        if (isset($this->conf['uid']) && $this->conf['uid'] !== '') {
+            $this->uid = (string) $this->conf['uid'];
+        } else {
+            $this->uid = (string) $this->configUid;
         }
 
         $this->getUploadConfig();
@@ -121,11 +111,11 @@ class Pi1Controller extends AbstractPlugin
      */
     protected function checkConfig()
     {
-        if (strlen($this->uid) > 0 &&
-            strlen($this->templateHtml) > 0 &&
-            (int) $this->configUid > 0 &&
+        if ($this->uid !== '' &&
+            $this->templateHtml !== '' &&
+            $this->configUid > 0 &&
             is_array($this->config) &&
-            strlen($this->config['extensions']) > 0
+            $this->config['extensions'] !== ''
         ) {
             return true;
         }
@@ -196,9 +186,11 @@ class Pi1Controller extends AbstractPlugin
         $markerArray = [];
         $extensionsArray = GeneralUtility::trimExplode(',', $this->config['extensions'], true);
         $maxFileSizeInBytes = GeneralUtility::getMaxUploadFileSize() * 1024;
+        /* @var SiteLanguage $siteLanguage */
+        $siteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
 
         $markerArray['###UID###'] = $this->uid;
-        $markerArray['###LANGUAGE###'] = static::getTsFeController()->config['config']['language'];
+        $markerArray['###LANGUAGE###'] = $siteLanguage->getTypo3Language();
         $markerArray['###EXTDIR_PATH###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').
             PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extKey));
         $markerArray['###FILE_EXTENSIONS###'] = implode(',', $extensionsArray);
