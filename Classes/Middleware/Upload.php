@@ -145,7 +145,7 @@ class Upload implements MiddlewareInterface
         $this->checkUploadConfig();
 
         // Check for valid FE user
-        if ($this->config['feuser_required'] && $this->getFeUser()->user['username'] == '') {
+        if ($this->config['feuser_required'] && empty($this->getFeUser()->user['username'])) {
             throw new AuthenticationException('TYPO3 user session invalid.');
         }
 
