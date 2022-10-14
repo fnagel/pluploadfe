@@ -185,7 +185,7 @@ class Pi1Controller extends AbstractPlugin
     {
         $markerArray = [];
         $extensionsArray = GeneralUtility::trimExplode(',', $this->config['extensions'], true);
-        $maxFileSizeInBytes = GeneralUtility::getMaxUploadFileSize() * 1024;
+        $maxFileSizeInBytes = (GeneralUtility::getMaxUploadFileSize() * 1024) - 1024;
         /* @var SiteLanguage $siteLanguage */
         $siteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
 
