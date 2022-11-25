@@ -24,6 +24,24 @@ Updade Guide
    :depth: 3
 
 
+Upgrade to 6.1.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Add PHP 8.1 support
+* Bugfixes and improved CGL
+
+
+How to upgrade
+""""""""""""""
+
+* Clear all caches
+
+
+
+
 Upgrade to 6.0.0
 ^^^^^^^^^^^^^^^^
 
