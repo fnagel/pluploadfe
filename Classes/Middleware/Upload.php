@@ -8,9 +8,7 @@ namespace FelixNagel\Pluploadfe\Middleware;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  */
-use FelixNagel\Pluploadfe\Exception\InvalidArgument\InvalidConfigurationException;
-use FelixNagel\Pluploadfe\Exception\InvalidArgument\InvalidUploadDirectoryException;
-use FelixNagel\Pluploadfe\Exception\InvalidArgument\InvalidMimeTypeException;
+
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -88,7 +86,7 @@ class Upload implements MiddlewareInterface
      */
     protected function getErrorResponseContent(\Exception $exception): array
     {
-        $className = str_replace('Exception', '', get_class($exception));
+        $className = str_replace('Exception', '', $exception::class);
         $classNameShort = substr($className, strrpos($className, '\\') + 1);
         $key = GeneralUtility::camelCaseToLowerCaseUnderscored($classNameShort);
 
@@ -383,7 +381,7 @@ class Upload implements MiddlewareInterface
         // if mime type is not allowed: remove file
         if ($this->config['check_mime'] && !FileValidation::checkMimeType($filePath)) {
             @unlink($filePath);
-            throw new InvalidMimeTypeException('File mime type is not allowed.');
+            throw new InvalidArgument\InvalidMimeTypeException('File mime type is not allowed.');
         }
 
         GeneralUtility::fixPermissions($filePath);
@@ -399,10 +397,9 @@ class Upload implements MiddlewareInterface
     /**
      * Store file in session.
      *
-     * @param mixed $filePath
      * @param string $key
      */
-    protected function updateDataInSession($filePath, $key = 'files')
+    protected function updateDataInSession(mixed $filePath, $key = 'files')
     {
         $currentData = $this->getSessionData($key);
 
@@ -418,10 +415,9 @@ class Upload implements MiddlewareInterface
     /**
      * Store session data.
      *
-     * @param mixed  $data
      * @param string $key
      */
-    protected function saveDataInSession($data, $key = 'data')
+    protected function saveDataInSession(mixed $data, $key = 'data')
     {
         $this->getFeUser()->setAndSaveSessionData(self::SESSION_KEY_PREFIX.$key, $data);
     }

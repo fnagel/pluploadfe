@@ -48,10 +48,7 @@ class Filesystem
         }
     }
 
-    /**
-     * @return string
-     */
-    public static function getPublicPath()
+    public static function getPublicPath(): string
     {
         return Environment::getPublicPath().'/';
     }

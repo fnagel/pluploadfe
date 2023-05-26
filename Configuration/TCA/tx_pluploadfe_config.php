@@ -9,7 +9,6 @@ return [
         'label_alt' => 'upload_path',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'default_sortby' => 'ORDER BY crdate',
         'delete' => 'deleted',
         'enablecolumns' => [
@@ -20,7 +19,6 @@ return [
         'typeicon_classes' => [
             'default' => 'extensions-pluploadfe-config',
         ],
-        'requestUpdate' => 'feuser_required',
         'searchFields' => 'title,upload_path',
     ],
     'columns' => [
@@ -73,11 +71,11 @@ return [
             'exclude' => 1,
             'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.upload_path',
             'config' => [
-                'type' => 'group',
-                'internal_type' => 'folder',
+                'type' => 'folder',
                 'size' => 1,
                 'maxitems' => 1,
-                'eval' => 'required,nospace',
+                'required' => true,
+                'eval' => 'nospace',
                 'default' => 'fileadmin',
             ],
         ],
@@ -87,7 +85,8 @@ return [
             'config' => [
                 'type' => 'text',
                 'rows' => 2,
-                'eval' => 'required,trim',
+                'required' => true,
+                'eval' => 'trim',
                 'default' => 'jpeg,jpg,gif,png,zip,rar,7zip,gz',
             ],
         ],
