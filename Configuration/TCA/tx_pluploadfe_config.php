@@ -34,10 +34,7 @@ return [
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'size' => 13,
-                'eval' => 'datetime',
+                'type' => 'datetime',
                 'default' => 0,
             ],
         ],
@@ -45,10 +42,7 @@ return [
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'size' => 13,
-                'eval' => 'datetime',
+                'type' => 'datetime',
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
@@ -107,13 +101,34 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.default', ''],
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.username', 'username'],
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.uid', 'uid'],
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.name', 'name'],
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.fullname', 'fullname'],
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.pid', 'pid'],
-                    ['LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.lastlogin', 'lastlogin'],
+                    [
+                        'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.default',
+                        'value' => '',
+                    ],
+                    [
+                        'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.username',
+                        'value' => 'username',
+                    ],
+                    [
+                        'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.uid',
+                        'value' => 'uid',
+                    ],
+                    [
+                        'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.name',
+                        'value' => 'name',
+                    ],
+                    [
+                        'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.fullname',
+                        'value' => 'fullname',
+                    ],
+                    [
+                        'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.pid',
+                        'value' => 'pid',
+                    ],
+                    [
+                        'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.feuser_field.lastlogin',
+                        'value' => 'lastlogin',
+                    ],
                 ],
                 'size' => 1,
                 'minitems' => 0,
