@@ -15,11 +15,9 @@ use FelixNagel\Pluploadfe\Exception\Exception;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
@@ -49,8 +47,6 @@ class Pi1Controller extends AbstractPlugin
     protected string $templateHtml;
 
     protected ?array $config = [];
-
-    protected ?object $objectManager = null;
 
     protected ?MarkerBasedTemplateService $markerTemplateService = null;
 
@@ -106,10 +102,8 @@ class Pi1Controller extends AbstractPlugin
 
     /**
      * Checks config.
-     *
-     * @return bool
      */
-    protected function checkConfig()
+    protected function checkConfig(): bool
     {
         if ($this->uid !== '' &&
             $this->templateHtml !== '' &&
@@ -126,7 +120,7 @@ class Pi1Controller extends AbstractPlugin
     /**
      * Function to parse the template.
      */
-    protected function renderCode()
+    protected function renderCode(): void
     {
         // Extract subparts from the template
         // @extensionScannerIgnoreLine
@@ -155,10 +149,8 @@ class Pi1Controller extends AbstractPlugin
 
     /**
      * Function to parse the template.
-     *
-     * @return string
      */
-    protected function getHtml()
+    protected function getHtml(): string
     {
         // Extract subparts from the template
         // @extensionScannerIgnoreLine
@@ -178,10 +170,8 @@ class Pi1Controller extends AbstractPlugin
 
     /**
      * Function to render the default marker.
-     *
-     * @return array
      */
-    protected function getDefaultMarker()
+    protected function getDefaultMarker(): array
     {
         $markerArray = [];
         $extensionsArray = GeneralUtility::trimExplode(',', $this->config['extensions'], true);
@@ -202,7 +192,7 @@ class Pi1Controller extends AbstractPlugin
     /**
      * Function to fetch the template file.
      */
-    protected function getTemplateFile()
+    protected function getTemplateFile(): void
     {
         $templateFile = (strlen(trim($this->conf['templateFile'])) > 0) ?
             trim($this->conf['templateFile']) : 'EXT:pluploadfe/Resources/Private/Templates/template.html';
@@ -215,61 +205,32 @@ class Pi1Controller extends AbstractPlugin
         }
     }
 
-    /**
-     * @param $templateFile
-     * @return string
-     */
-    protected function sanitizeTemplateFile($templateFile)
+    protected function sanitizeTemplateFile(string $file): string
     {
-        /* @var $filePathSanitizer FilePathSanitizer */
-        // @extensionScannerIgnoreLine
-        $filePathSanitizer = $this->getObjectManager()->get(FilePathSanitizer::class);
+        $sanitizedFile = GeneralUtility::getFileAbsFileName($file);
 
-        return $filePathSanitizer->sanitize($templateFile);
+        if (empty($sanitizedFile)) {
+            throw new Exception('Invalid template file: '.$file);
+        }
+
+        return $sanitizedFile;
     }
 
-    /**
-     * Get page renderer.
-     *
-     * @return PageRenderer
-     */
-    protected function getPageRenderer()
+    protected function getPageRenderer(): PageRenderer
     {
-        // Don't use the object manager due to core bug:
-        // https://github.com/TYPO3/TYPO3.CMS/commit/cffb6e0fc6b4664dab7bd1838da6125787fffc26
-
         return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
-    /**
-     * @return MarkerBasedTemplateService
-     */
-    protected function getMarkerTemplateService()
+    protected function getMarkerTemplateService(): MarkerBasedTemplateService
     {
         if ($this->markerTemplateService === null) {
-            // @extensionScannerIgnoreLine
-            $this->markerTemplateService = $this->getObjectManager()->get(MarkerBasedTemplateService::class);
+            $this->markerTemplateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         }
 
         return $this->markerTemplateService;
     }
 
-    /**
-     * @return ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        if ($this->objectManager === null) {
-            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        }
-
-        return $this->objectManager;
-    }
-
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected static function getTsFeController()
+    protected static function getTsFeController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
     }
