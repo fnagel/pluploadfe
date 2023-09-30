@@ -12,8 +12,6 @@ return [
             'before' => [
                 'typo3/cms-frontend/base-redirect-resolver',
                 'typo3/cms-redirects/redirecthandler',
-                // @todo Remove fallback when TYPO3 10 is no longer needed
-                'typo3/cms-frontend/site-resolver',
             ],
         ],
     ],
