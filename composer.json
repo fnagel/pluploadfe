@@ -11,7 +11,7 @@
 	"homepage": "https://extensions.typo3.org/extension/pluploadfe/",
 	"support": {
 		"issues": "https://github.com/fnagel/pluploadfe/issues",
-		"docs": "https://docs.typo3.org/typo3cms/extensions/pluploadfe/",
+		"docs": "https://docs.typo3.org/p/felixnagel/pluploadfe/main/en-us",
 		"source": "https://github.com/fnagel/pluploadfe"
 	},
 	"authors": [
