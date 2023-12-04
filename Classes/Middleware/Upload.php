@@ -39,6 +39,9 @@ class Upload implements MiddlewareInterface
 
     private ?FrontendUserAuthentication $feUserObj = null;
 
+    /**
+     * The UID of the config record
+     */
     private ?int $uid = null;
 
     private ?array $config = null;
@@ -388,18 +391,13 @@ class Upload implements MiddlewareInterface
 
         if ($this->config['save_session']) {
             $this->updateDataInSession($filePath, $this->uid.'_files');
-
-            // @todo @deprecated Remove this in next major version! Only config based session data!
-            $this->updateDataInSession($filePath);
         }
     }
 
     /**
      * Store file in session.
-     *
-     * @param string $key
      */
-    protected function updateDataInSession(mixed $filePath, $key = 'files')
+    protected function updateDataInSession(mixed $filePath, string $key = 'files')
     {
         $currentData = $this->getSessionData($key);
 
@@ -414,10 +412,8 @@ class Upload implements MiddlewareInterface
 
     /**
      * Store session data.
-     *
-     * @param string $key
      */
-    protected function saveDataInSession(mixed $data, $key = 'data')
+    protected function saveDataInSession(mixed $data, string $key = 'data')
     {
         $this->getFeUser()->setAndSaveSessionData(self::SESSION_KEY_PREFIX.$key, $data);
     }
