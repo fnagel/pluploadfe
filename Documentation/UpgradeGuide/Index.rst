@@ -24,6 +24,32 @@ Updade Guide
    :depth: 3
 
 
+Upgrade to 7.0.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Added support for TYPO3 12 LTS
+* Added PHP 8.2 support
+* Removed support for TYPO3 11.x
+* Make use of new TCA types (folder, datetime)
+* File session name is now prefixed with the plugin config record UID
+* Code refactoring
+* Minor improvements and clean up
+
+
+How to upgrade
+""""""""""""""
+
+* Clear all caches
+* You might need to update the session handling in your custom extension
+   * Example: "tx_pluploadfe_123_files" instead of "tx_pluploadfe_files" (where 123 is the record of the related config record)
+   * Take a look at EXT:mailfiles or EXT:pluploadfe_powermail on how to an integration could look like
+
+
+
+
 Upgrade to 6.1.0
 ^^^^^^^^^^^^^^^^
 
