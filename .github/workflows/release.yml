@@ -50,7 +50,7 @@ jobs:
         with:
           path: ${{ env.TYPO3_EXTENSION_KEY }}
 
-      - uses: shivammathur/setup-php@v3
+      - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: intl, mbstring, json, zip, curl
