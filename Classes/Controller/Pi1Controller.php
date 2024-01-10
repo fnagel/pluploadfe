@@ -194,7 +194,7 @@ class Pi1Controller extends AbstractPlugin
      */
     protected function getTemplateFile(): void
     {
-        $templateFile = (strlen(trim($this->conf['templateFile'])) > 0) ?
+        $templateFile = (array_key_exists('templateFile', $this->conf) && strlen(trim($this->conf['templateFile'])) > 0) ?
             trim($this->conf['templateFile']) : 'EXT:pluploadfe/Resources/Private/Templates/template.html';
 
         // Get the template
