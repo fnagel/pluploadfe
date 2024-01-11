@@ -47,3 +47,13 @@ to either use it out of the box or write your own `custom
 implementation <http://www.plupload.com/example_custom.php>`_ .”
 
 Cite from `http://www.plupload.com/ <http://www.plupload.com/>`_ .
+
+
+What others say
+"""""""""""""""
+
+Installation guide by Jochen Weiland can be found here:
+https://jweiland.net/typo3-cms/showcase/pluploadfe.html and https://www.youtube.com/watch?v=VfVNMp7km70
+
+Wolfgang Wagner did an introduction of this extension in his Twitch channel, take a look here:
+https://www.twitch.tv/videos/1997781074 or https://youtu.be/uzh8jgCqI5g?si=NS1JgluKexX3Fpxi&t=873
