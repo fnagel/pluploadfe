@@ -30,3 +30,7 @@ Upload limit depends on following PHP limits:
 
 - memory\_limit
 
+
+**Notice**
+
+If you need to upload very big files, please try using the :ref:`chunked upload feature <chunked-upload-feature>`.
