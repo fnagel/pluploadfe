@@ -18,6 +18,9 @@
 Configuration
 ^^^^^^^^^^^^^
 
+Reference for the configuration record (table `tx_pluploadfe_config`).
+
+
 .. ### BEGIN~OF~TABLE ###
 
 .. container:: table-row

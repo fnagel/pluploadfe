@@ -18,6 +18,9 @@
 Reference
 ^^^^^^^^^
 
+TypoScript reference for the extension.
+
+
 .. ### BEGIN~OF~TABLE ###
 
 
@@ -34,7 +37,7 @@ Reference
          *my\_upload123* ”
 
    Default
-		-
+		   -
 
 .. container:: table-row
 
@@ -48,7 +51,7 @@ Reference
          UID of the configuration record
 
    Default
-		-
+		   -
 
 .. container:: table-row
 
