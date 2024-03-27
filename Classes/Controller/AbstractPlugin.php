@@ -18,10 +18,10 @@ namespace FelixNagel\Pluploadfe\Controller;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Old school base class of frontend plugins.
@@ -78,25 +78,14 @@ abstract class AbstractPlugin
      */
     protected array $conf = [];
 
-    /**
-     * Property for accessing TypoScriptFrontendController centrally
-     */
-    protected ?TypoScriptFrontendController $frontendController;
-
     protected ?MarkerBasedTemplateService $templateService;
 
-    /**
-     * Class Constructor (true constructor)
-     * Initializes $this->piVars if $this->prefixId is set to any value
-     * Will also set $this->LLkey based on the config.language setting.
-     *
-     * @param null $_ unused,
-     */
-    public function __construct($_ = null, TypoScriptFrontendController $frontendController = null)
+    public function __construct()
     {
-        $this->frontendController = $frontendController ?: $GLOBALS['TSFE'];
         $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        $this->LLkey = $this->frontendController->getLanguage()->getTypo3Language();
+
+        // @extensionScannerIgnoreLine
+        $this->LLkey = $this->getLanguage()->getTypo3Language();
 
         $locales = GeneralUtility::makeInstance(Locales::class);
         if ($locales->isValidLanguageKey($this->LLkey)) {
@@ -104,6 +93,11 @@ abstract class AbstractPlugin
             $alternativeLanguageKeys = array_reverse($alternativeLanguageKeys);
             $this->altLLkey = implode(',', $alternativeLanguageKeys);
         }
+    }
+
+    protected function getLanguage(): SiteLanguage
+    {
+        return $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
     }
 
     /**
