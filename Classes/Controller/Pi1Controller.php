@@ -13,7 +13,6 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use FelixNagel\Pluploadfe\Exception\Exception;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -38,8 +37,6 @@ class Pi1Controller extends AbstractPlugin
 
     protected ?array $config = [];
 
-    protected ?MarkerBasedTemplateService $markerTemplateService = null;
-
     /**
      * The main method of the PlugIn.
      */
@@ -52,6 +49,7 @@ class Pi1Controller extends AbstractPlugin
         if (isset($this->conf['configUid']) && $this->conf['configUid'] !== '') {
             $this->configUid = (int) $this->conf['configUid'];
         } else {
+            // @extensionScannerIgnoreLine
             $this->configUid = (int) $this->cObj->data['tx_pluploadfe_config'];
         }
 
@@ -108,7 +106,7 @@ class Pi1Controller extends AbstractPlugin
     {
         // Extract subparts from the template
         // @extensionScannerIgnoreLine
-        $templateMain = $this->getMarkerTemplateService()->getSubpart($this->templateHtml, '###TEMPLATE_CODE###');
+        $templateMain = $this->templateService->getSubpart($this->templateHtml, '###TEMPLATE_CODE###');
 
         // Fill marker array
         $markerArray = $this->getDefaultMarker();
@@ -117,7 +115,7 @@ class Pi1Controller extends AbstractPlugin
 
         // Replace markers in the template
         // @extensionScannerIgnoreLine
-        $content = $this->getMarkerTemplateService()->substituteMarkerArray($templateMain, $markerArray);
+        $content = $this->templateService->substituteMarkerArray($templateMain, $markerArray);
 
         // Add JS code
         $this->getPageRenderer()->addJsFooterInlineCode(
@@ -138,7 +136,7 @@ class Pi1Controller extends AbstractPlugin
     {
         // Extract subparts from the template
         // @extensionScannerIgnoreLine
-        $templateMain = $this->getMarkerTemplateService()->getSubpart($this->templateHtml, '###TEMPLATE_CONTENT###');
+        $templateMain = $this->templateService->getSubpart($this->templateHtml, '###TEMPLATE_CONTENT###');
 
         // Fill marker array
         $markerArray = $this->getDefaultMarker();
@@ -147,7 +145,7 @@ class Pi1Controller extends AbstractPlugin
 
         // Replace markers in the template
         // @extensionScannerIgnoreLine
-        return $this->getMarkerTemplateService()->substituteMarkerArray($templateMain, $markerArray);
+        return $this->templateService->substituteMarkerArray($templateMain, $markerArray);
     }
 
     /**
@@ -201,15 +199,6 @@ class Pi1Controller extends AbstractPlugin
     protected function getPageRenderer(): PageRenderer
     {
         return GeneralUtility::makeInstance(PageRenderer::class);
-    }
-
-    protected function getMarkerTemplateService(): MarkerBasedTemplateService
-    {
-        if ($this->markerTemplateService === null) {
-            $this->markerTemplateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        }
-
-        return $this->markerTemplateService;
     }
 
     protected static function getTsFeController(): TypoScriptFrontendController
