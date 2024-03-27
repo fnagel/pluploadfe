@@ -15,7 +15,6 @@ use FelixNagel\Pluploadfe\Exception\Exception;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -25,20 +24,11 @@ use TYPO3\CMS\Core\Page\PageRenderer;
  */
 class Pi1Controller extends AbstractPlugin
 {
-    /**
-     * @var string
-     */
-    public $prefixId = 'tx_pluploadfe_pi1';
+    protected string $prefixId = 'tx_pluploadfe_pi1';
 
-    /**
-     * @var string
-     */
-    public $scriptRelPath = 'Classes/Controller/Pi1Controller.php';
+    protected string $scriptRelPath = 'Classes/Controller/Pi1Controller.php';
 
-    /**
-     * @var string
-     */
-    public $extKey = 'pluploadfe';
+    protected string $extKey = 'pluploadfe';
 
     protected int $configUid;
 
@@ -52,16 +42,10 @@ class Pi1Controller extends AbstractPlugin
 
     /**
      * The main method of the PlugIn.
-     *
-     * @param string $content : The plugin content
-     * @param array  $conf    : The plugin configuration
-     *
-     * @return string The content that is displayed on the website
      */
-    public function main($content, $conf)
+    public function main(string $content, array $conf): string
     {
         $this->conf = $conf;
-        $this->pi_setPiVarDefaults();
         $this->pi_loadLL('EXT:pluploadfe/Resources/Private/Language/locallang.xlf');
 
         // Set config record uid
@@ -156,16 +140,14 @@ class Pi1Controller extends AbstractPlugin
         // @extensionScannerIgnoreLine
         $templateMain = $this->getMarkerTemplateService()->getSubpart($this->templateHtml, '###TEMPLATE_CONTENT###');
 
-        // fill marker array
+        // Fill marker array
         $markerArray = $this->getDefaultMarker();
         $markerArray['###INFO_1###'] = $this->pi_getLL('info_1');
         $markerArray['###INFO_2###'] = $this->pi_getLL('info_2');
 
-        // replace markers in the template
+        // Replace markers in the template
         // @extensionScannerIgnoreLine
-        $content = $this->getMarkerTemplateService()->substituteMarkerArray($templateMain, $markerArray);
-
-        return $content;
+        return $this->getMarkerTemplateService()->substituteMarkerArray($templateMain, $markerArray);
     }
 
     /**
