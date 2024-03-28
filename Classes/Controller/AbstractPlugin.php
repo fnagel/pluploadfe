@@ -149,6 +149,7 @@ abstract class AbstractPlugin
                 }
             }
         }
+        
         if ($word === null) {
             if (!empty($this->LOCAL_LANG['default'][$key][0]['target'])) {
                 // Get default translation (without charset conversion, english)
@@ -158,6 +159,7 @@ abstract class AbstractPlugin
                 $word = $alternativeLabel;
             }
         }
+        
         return $word;
     }
 
@@ -180,6 +182,7 @@ abstract class AbstractPlugin
         if ($languageFilePath === '' && $this->scriptRelPath) {
             $languageFilePath = 'EXT:' . $this->extKey . '/' . PathUtility::dirname($this->scriptRelPath) . '/locallang.xlf';
         }
+        
         if ($languageFilePath !== '') {
             $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
             $this->LOCAL_LANG = $languageFactory->getParsedData($languageFilePath, $this->LLkey);
@@ -190,6 +193,7 @@ abstract class AbstractPlugin
                     $this->LOCAL_LANG[$languageKey] = $tempLL[$languageKey];
                 }
             }
+            
             // Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
             if (isset($this->conf['_LOCAL_LANG.'])) {
                 foreach ($this->conf['_LOCAL_LANG.'] as $languageKey => $languageArray) {
@@ -206,6 +210,7 @@ abstract class AbstractPlugin
                 }
             }
         }
+        
         $this->LOCAL_LANG_loaded = true;
     }
 }
