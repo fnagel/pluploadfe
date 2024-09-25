@@ -35,18 +35,18 @@ class Upload implements MiddlewareInterface
      */
     public const SESSION_KEY_PREFIX = 'tx_pluploadfe_';
 
-    private bool $chunkedUpload = false;
+    protected bool $chunkedUpload = false;
 
-    private ?FrontendUserAuthentication $feUserObj = null;
+    protected ?FrontendUserAuthentication $feUserObj = null;
 
     /**
      * The UID of the config record
      */
-    private ?int $uid = null;
+    protected ?int $uid = null;
 
-    private ?array $config = null;
+    protected ?array $config = null;
 
-    private string $uploadPath = '';
+    protected string $uploadPath = '';
 
     /**
      * @inheritDoc
@@ -214,7 +214,7 @@ class Upload implements MiddlewareInterface
         return preg_replace('#[^0-9a-zA-Z\-\.]#', '_', $directory);
     }
 
-    protected function checkUploadConfig()
+    protected function checkUploadConfig(): void
     {
         if ((string) $this->config['extensions'] === '') {
             throw new InvalidArgument\InvalidConfigurationException('Missing allowed file extension configuration.');
@@ -242,10 +242,8 @@ class Upload implements MiddlewareInterface
 
     /**
      * Process the configuration.
-     *
-     * @return void
      */
-    protected function processConfig()
+    protected function processConfig(): void
     {
         // Make sure FAL references work
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
@@ -261,10 +259,8 @@ class Upload implements MiddlewareInterface
 
     /**
      * Gets the uploaded file name from request.
-     *
-     * @return string
      */
-    protected function getFileName()
+    protected function getFileName(): string
     {
         $filename = uniqid('file_', true);
 
@@ -279,14 +275,8 @@ class Upload implements MiddlewareInterface
 
     /**
      * Checks and creates the upload directory.
-     *
-     * @param string $path
-     * @param string $subDirectory
-     * @param bool   $obscure
-     *
-     * @return string
      */
-    protected function getUploadDir($path, $subDirectory = '', $obscure = false)
+    protected function getUploadDir(string $path, string $subDirectory = '', bool $obscure = false): string
     {
         if ($this->chunkedUpload) {
             $chunkedPath = $this->getSessionData('chunk_path');
@@ -323,7 +313,7 @@ class Upload implements MiddlewareInterface
      * License: http://www.plupload.com/license
      * Contributing: http://www.plupload.com/contributing
      */
-    protected function uploadFile()
+    protected function uploadFile(): void
     {
         // Get additional parameters
         $chunk = isset($_REQUEST['chunk']) ? (int) $_REQUEST['chunk'] : 0;
@@ -364,7 +354,7 @@ class Upload implements MiddlewareInterface
             $this->processFile($filePath);
         }
 
-        // save chunked upload dir
+        // Save chunked upload dir
         if ($this->chunkedUpload) {
             $this->saveDataInSession($this->uploadPath, 'chunk_path');
         }
@@ -372,16 +362,11 @@ class Upload implements MiddlewareInterface
 
     /**
      * Process uploaded file.
-     *
-     * @param string $filePath
-     *
-     * @params string $filePath
      */
-    protected function processFile($filePath)
+    protected function processFile(string $filePath): void
     {
-        // we already checked if the file extension is allowed,
-        // so we need to check if the mime type is adequate.
-        // if mime type is not allowed: remove file
+        // We already checked if the file extension is allowed, so we need to check if the mime type is adequate.
+        // If mime type is not allowed: remove file.
         if ($this->config['check_mime'] && !FileValidation::checkMimeType($filePath)) {
             @unlink($filePath);
             throw new InvalidArgument\InvalidMimeTypeException('File mime type is not allowed.');
@@ -421,11 +406,9 @@ class Upload implements MiddlewareInterface
     /**
      * Get session data.
      *
-     * @param string $key
-     *
      * @return mixed
      */
-    protected function getSessionData($key = 'data')
+    protected function getSessionData(string $key = 'data')
     {
         return $this->getFeUser()->getSessionData(self::SESSION_KEY_PREFIX.$key);
     }
