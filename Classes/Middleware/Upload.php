@@ -102,7 +102,7 @@ class Upload implements MiddlewareInterface
         ];
 
         if ($this->config['save_session']) {
-            $this->updateDataInSession($data, $this->uid.'_messages');
+            $this->updateDataInSession($data, 'messages');
         }
 
         return [
@@ -375,7 +375,7 @@ class Upload implements MiddlewareInterface
         GeneralUtility::fixPermissions($filePath);
 
         if ($this->config['save_session']) {
-            $this->updateDataInSession($filePath, $this->uid.'_files');
+            $this->updateDataInSession($filePath);
         }
     }
 
@@ -400,7 +400,7 @@ class Upload implements MiddlewareInterface
      */
     protected function saveDataInSession(mixed $data, string $key = 'data')
     {
-        $this->getFeUser()->setAndSaveSessionData(self::SESSION_KEY_PREFIX.$key, $data);
+        $this->getFeUser()->setAndSaveSessionData(self::SESSION_KEY_PREFIX.$this->uid.'_'.$key, $data);
     }
 
     /**
@@ -410,6 +410,6 @@ class Upload implements MiddlewareInterface
      */
     protected function getSessionData(string $key = 'data')
     {
-        return $this->getFeUser()->getSessionData(self::SESSION_KEY_PREFIX.$key);
+        return $this->getFeUser()->getSessionData(self::SESSION_KEY_PREFIX.$this->uid.'_'.$key);
     }
 }
