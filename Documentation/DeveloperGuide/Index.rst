@@ -86,6 +86,21 @@ Template integration
 Gather data in controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Version 7.x and up
+.. code-block:: php
+
+   // Get saved files (by config record UID)
+   $files = $GLOBALS['TSFE']->fe_user->getKey('ses', 'tx_pluploadfe_123_files');
+
+   // Get saved messages (by config record UID)
+   $files = $GLOBALS['TSFE']->fe_user->getKey('ses', 'tx_pluploadfe_123_messages');
+
+   // Reset files in session
+   $this->getTsFeController()->fe_user->setKey('ses', 'tx_pluploadfe_123_files', '');
+   $this->getTsFeController()->fe_user->storeSessionData();
+
+
+Version 6.x
 .. code-block:: php
 
    // Get saved files (all files or by config record UID)
@@ -98,4 +113,15 @@ Gather data in controller
    // Reset files in session
    $this->getTsFeController()->fe_user->setKey('ses', 'tx_pluploadfe_files', '');
    $this->getTsFeController()->fe_user->setKey('ses', 'tx_pluploadfe_123_files', '');
+   $this->getTsFeController()->fe_user->storeSessionData();
+
+
+Version 5.x and below
+.. code-block:: php
+
+   // Get saved files (all files)
+   $files = $GLOBALS['TSFE']->fe_user->getKey('ses', 'tx_pluploadfe_files');
+
+   // Reset files in session
+   $this->getTsFeController()->fe_user->setKey('ses', 'tx_pluploadfe_files', '');
    $this->getTsFeController()->fe_user->storeSessionData();
