@@ -24,6 +24,28 @@ Updade Guide
    :depth: 3
 
 
+Upgrade to 8.0.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Added support for TYPO3 13 LTS
+* Added PHP 8.3 support
+* Replaced `AbstractPlugin` PiBase controller
+* Minor improvements and clean up
+* Improved documentation
+
+
+How to upgrade
+""""""""""""""
+
+* Clear all caches
+* `_DEFAULT_PI_VARS` TypoScript configuration is no longer available,
+   see https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.0/Breaking-98281-MakeAbstractPluginInternal.html
+
+
+
 Upgrade to 7.0.0
 ^^^^^^^^^^^^^^^^
 
