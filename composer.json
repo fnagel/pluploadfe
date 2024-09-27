@@ -24,7 +24,7 @@
 	],
 	"license": "GPL-2.0-or-later",
 	"require": {
-		"php": "^8.2",
+		"php": "^8.2 || ^8.3",
 		"ext-json": "*",
 		"typo3/cms-core": "^12.4 || ^13"
 	},
