@@ -1,5 +1,6 @@
+# @todo Remove this when TYPO3 v12 is no longer relevant!
 mod.wizards.newContentElement.wizardItems.plugins {
-	elements.pluploadfe {
+	elements.pluploadfe_pi1 {
 		iconIdentifier = extensions-pluploadfe-wizard
 		title = LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_title
 		description = LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_plus_wiz_description

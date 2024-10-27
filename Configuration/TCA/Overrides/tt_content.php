@@ -12,8 +12,11 @@ call_user_func(static function ($packageKey) {
     // Add plugin
     ExtensionManagementUtility::addPlugin(
         [
-            'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tt_content.list_type_pi1',
-            $packageKey.'_pi1',
+            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_title',
+            'description' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_plus_wiz_description',
+            'value' => $packageKey.'_pi1',
+            'icon' => 'extensions-pluploadfe-wizard',
+            'group' => 'plugins',
         ],
         'list_type',
         $packageKey
