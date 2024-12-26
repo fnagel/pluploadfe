@@ -1,0 +1,10 @@
+categories:
+  Pluploadfe:
+    label: 'PluploadFe'
+
+settings:
+  plugin.pluploadfe.template:
+    label: 'Path to template file'
+    default: 'EXT:pluploadfe/Resources/Private/Templates/template.html'
+    type: string
+    category: Pluploadfe

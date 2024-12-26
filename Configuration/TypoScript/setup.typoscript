@@ -1,9 +1,8 @@
 
 # Add default TS config
 plugin.tx_pluploadfe_pi1 {
-
 	# Template file (required)
-	templateFile = EXT:pluploadfe/Resources/Private/Templates/template.html
+    templateFile = {$plugin.tx_pluploadfe_pi1.view.templateFile ?? $plugin.pluploadfe.template}
 
 	## When using FE plugin via TypoScript you will need to pass the following options.
 

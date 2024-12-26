@@ -1,0 +1,6 @@
+plugin.tx_pluploadfe_pi1 {
+    view {
+        # cat=plugin.tx_pluploadfe_pi1/file; type=string; label=Path template file
+        templateFile = EXT:pluploadfe/Resources/Private/Templates/template.html
+    }
+}
