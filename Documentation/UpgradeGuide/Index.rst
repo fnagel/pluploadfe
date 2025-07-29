@@ -24,6 +24,24 @@ Updade Guide
    :depth: 3
 
 
+
+Upgrade to 8.1.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Support for site sets
+
+
+How to upgrade
+""""""""""""""
+
+* Clear all caches
+
+
+
+
 Upgrade to 8.0.0
 ^^^^^^^^^^^^^^^^
 
