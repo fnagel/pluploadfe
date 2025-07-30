@@ -120,7 +120,8 @@ class Pi1Controller extends AbstractPlugin
         // Add JS code
         $this->getPageRenderer()->addJsFooterInlineCode(
             $this->prefixId.'_'.$this->uid,
-            $content
+            $content,
+            useNonce: true
         );
 
         // Add JS localization
