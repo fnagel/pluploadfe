@@ -1,16 +1,19 @@
 <?php
 
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 defined('TYPO3') || die();
 
 call_user_func(static function ($packageKey) {
-    ExtensionManagementUtility::addPageTSConfig(
-        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$packageKey.'/Configuration/TSconfig/page.tsconfig">'
-    );
-    ExtensionManagementUtility::addUserTSConfig('
-        options.saveDocNew.tx_pluploadtest_config=1
-    ');
+    $versionInformation = GeneralUtility::makeInstance(Typo3Version::class);
+    // Only include user.tsconfig if TYPO3 version is below 13 so that it is not imported twice.
+    if ($versionInformation->getMajorVersion() < 13) {
+        ExtensionManagementUtility::addUserTSConfig(
+            '@import "EXT:pluploadfe/Configuration/user.tsconfig"',
+        );
+    }
 
     // Add plugin
     ExtensionManagementUtility::addPItoST43(
