@@ -9,8 +9,8 @@ namespace FelixNagel\Pluploadfe\Controller;
  * LICENSE.txt file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use FelixNagel\Pluploadfe\Exception\Exception;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -76,8 +76,7 @@ class Pi1Controller extends AbstractPlugin
     {
         $select = 'extensions';
         $table = 'tx_pluploadfe_config';
-        // @extensionScannerIgnoreLine
-        $where = static::getTsFeController()->sys_page->enableFields($table);
+        $where = $this->getFeEnableFields($table);
 
         $this->config = BackendUtility::getRecord($table, $this->configUid, $select, $where, false);
     }
@@ -118,6 +117,7 @@ class Pi1Controller extends AbstractPlugin
         $content = $this->templateService->substituteMarkerArray($templateMain, $markerArray);
 
         // Add JS code
+        // @extensionScannerIgnoreLine
         $this->getPageRenderer()->addJsFooterInlineCode(
             $this->prefixId.'_'.$this->uid,
             $content,
@@ -125,6 +125,7 @@ class Pi1Controller extends AbstractPlugin
         );
 
         // Add JS localization
+        // @extensionScannerIgnoreLine
         $this->getPageRenderer()->addInlineLanguageLabelFile(
             'EXT:pluploadfe/Resources/Private/Language/locallang.js.xlf'
         );
@@ -202,8 +203,13 @@ class Pi1Controller extends AbstractPlugin
         return GeneralUtility::makeInstance(PageRenderer::class);
     }
 
-    protected static function getTsFeController(): TypoScriptFrontendController
+    protected function getFeEnableFields(string $table): string
     {
-        return $GLOBALS['TSFE'];
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($table)
+            ->expr();
+
+        return $expressionBuilder->and(...$pageRepository->getDefaultConstraints($table));
     }
 }
