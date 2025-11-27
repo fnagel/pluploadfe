@@ -27,6 +27,8 @@ class Pi1Controller extends AbstractPlugin
 
     protected string $scriptRelPath = 'Classes/Controller/Pi1Controller.php';
 
+    protected string $localizationFile = 'EXT:pluploadfe/Resources/Private/Language/locallang.xlf';
+
     protected string $extKey = 'pluploadfe';
 
     protected int $configUid;
@@ -43,7 +45,6 @@ class Pi1Controller extends AbstractPlugin
     public function main(string $content, array $conf): string
     {
         $this->conf = $conf;
-        $this->pi_loadLL('EXT:pluploadfe/Resources/Private/Language/locallang.xlf');
 
         // Set config record uid
         if (isset($this->conf['configUid']) && $this->conf['configUid'] !== '') {
@@ -155,14 +156,13 @@ class Pi1Controller extends AbstractPlugin
      */
     protected function getDefaultMarker(): array
     {
-        $markerArray = [];
         $extensionsArray = GeneralUtility::trimExplode(',', $this->config['extensions'], true);
         $maxFileSizeInBytes = (GeneralUtility::getMaxUploadFileSize() * 1024) - 1024;
-        /* @var SiteLanguage $siteLanguage */
-        $siteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
 
+        $markerArray = [];
         $markerArray['###UID###'] = $this->uid;
-        $markerArray['###LANGUAGE###'] = $siteLanguage->getTypo3Language();
+        // @extensionScannerIgnoreLine
+        $markerArray['###LANGUAGE###'] = $this->getLanguage()->getTypo3Language();
         $markerArray['###EXTDIR_PATH###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').
             PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extKey));
         $markerArray['###FILE_EXTENSIONS###'] = implode(',', $extensionsArray);
