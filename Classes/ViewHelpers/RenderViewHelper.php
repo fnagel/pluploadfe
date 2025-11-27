@@ -39,6 +39,11 @@ class RenderViewHelper extends AbstractViewHelper
 
     protected function getContentObjectRenderer(): ContentObjectRenderer
     {
-        return $GLOBALS['TSFE']->cObj;
+        return $this->getRequest()->getAttribute('currentContentObject');
+    }
+
+    protected function getRequest(): ServerRequestInterface
+    {
+        return $this->renderingContext->getAttribute(ServerRequestInterface::class);
     }
 }
