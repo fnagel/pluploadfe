@@ -9,15 +9,12 @@ namespace FelixNagel\Pluploadfe\ViewHelpers;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 class RenderViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     protected $escapeOutput = false;
 
     public function initializeArguments()
@@ -27,20 +24,20 @@ class RenderViewHelper extends AbstractViewHelper
         $this->registerArgument('uid', 'string', 'Identifier in frontend (id attribute)', false, null);
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render()
     {
-        $settings = (array)$arguments['settings'];
+        $settings = (array)$this->arguments['settings'];
 
         // Override configuration
-        $settings['configUid'] = (int)$arguments['configUid'];
-        if ($arguments['uid'] !== null) {
-            $settings['uid'] = $arguments['uid'];
+        $settings['configUid'] = (int)$this->arguments['configUid'];
+        if ($this->arguments['uid'] !== null) {
+            $settings['uid'] = $this->arguments['uid'];
         }
 
-        return static::getContentObjectRenderer()->cObjGetSingle($settings['_typoScriptNodeValue'], $settings);
+        return $this->getContentObjectRenderer()->cObjGetSingle($settings['_typoScriptNodeValue'], $settings);
     }
 
-    protected static function getContentObjectRenderer(): ContentObjectRenderer
+    protected function getContentObjectRenderer(): ContentObjectRenderer
     {
         return $GLOBALS['TSFE']->cObj;
     }
