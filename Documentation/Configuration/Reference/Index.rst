@@ -37,7 +37,7 @@ TypoScript reference for the extension.
          *my\_upload123* ”
 
    Default
-		   -
+		   `-`
 
 .. container:: table-row
 
@@ -51,7 +51,7 @@ TypoScript reference for the extension.
          UID of the configuration record
 
    Default
-		   -
+		   `-`
 
 .. container:: table-row
 
@@ -65,7 +65,7 @@ TypoScript reference for the extension.
          Path to your template file
 
    Default
-         EXT:pluploadfe/res/template.html
+         `EXT:pluploadfe/res/template.html`
 
 
 .. ###### END~OF~TABLE ######

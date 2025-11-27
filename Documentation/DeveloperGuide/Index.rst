@@ -86,7 +86,8 @@ Template integration
 Gather data in controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Version 7.x and up
+**Version 7.x and up**
+
 .. code-block:: php
 
    // Get saved files (by config record UID)
@@ -100,7 +101,8 @@ Version 7.x and up
    $this->getTsFeController()->fe_user->storeSessionData();
 
 
-Version 6.x
+**Version 6.x**
+
 .. code-block:: php
 
    // Get saved files (all files or by config record UID)
@@ -116,7 +118,8 @@ Version 6.x
    $this->getTsFeController()->fe_user->storeSessionData();
 
 
-Version 5.x and below
+**Version 5.x and below**
+
 .. code-block:: php
 
    // Get saved files (all files)

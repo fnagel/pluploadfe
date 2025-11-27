@@ -21,7 +21,7 @@ Plupload for FE
   pluploadfe
 
 :Version:
-  8.1.0
+  |release|
 
 :Language:
   en
