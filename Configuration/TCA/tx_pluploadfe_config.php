@@ -25,6 +25,8 @@ return [
         'searchFields' => 'title,upload_path',
     ],
     'columns' => [
+        // @todo Remove hidden, starttime and endtime fields when TYPO3 13.4.2 is no longer supported
+        // See https://docs.typo3.org/m/typo3/reference-tca/13.4/en-us/BestPractises/CommonFields.html#enablecolumns
         'hidden' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
