@@ -25,6 +25,27 @@ Updade Guide
 
 
 
+Upgrade to 8.2.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Add support for PHP 8.4
+* Add CSP nonce for added JS code
+* Deprecation free (in TYPO3 v13)
+* Migrated docs to PHP rendering
+* Improved code quality / CGL
+
+
+How to upgrade
+""""""""""""""
+
+* Clear all caches
+
+
+
+
 Upgrade to 8.1.0
 ^^^^^^^^^^^^^^^^
 
