@@ -9,6 +9,7 @@ namespace FelixNagel\Pluploadfe\Controller;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use FelixNagel\Pluploadfe\Exception\Exception;
@@ -42,6 +43,7 @@ class Pi1Controller extends AbstractPlugin
     /**
      * The main method of the PlugIn.
      */
+    #[AsAllowedCallable]
     public function main(string $content, array $conf): string
     {
         $this->conf = $conf;
