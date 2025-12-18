@@ -17,7 +17,7 @@ class RenderViewHelper extends AbstractViewHelper
 {
     protected $escapeOutput = false;
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('configUid', 'int', 'Pluploadfe record UID', true);
         $this->registerArgument('settings', 'array', 'Pluploadfe TypoScript object', true);
