@@ -10,8 +10,12 @@ call_user_func(static function () {
     ExtensionManagementUtility::addTypoScript(
         'FelixNagel.Pluploadfe',
         'setup',
-        'plugin.tx_pluploadfe_pi1 = USER
-        plugin.tx_pluploadfe_pi1.userFunc = '. Pi1Controller::class.'->main'
+        '# Setting PluploadFE plugin TypoScript
+		tt_content.pluploadfe_pi1 =< lib.contentElement
+		tt_content.pluploadfe_pi1.templateName = Generic
+		tt_content.pluploadfe_pi1.20 = USER
+		tt_content.pluploadfe_pi1.20.userFunc = '. Pi1Controller::class.'->main',
+        'defaultContentRendering'
     );
 
     // Add records to the search

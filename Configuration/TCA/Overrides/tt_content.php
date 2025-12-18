@@ -10,17 +10,13 @@ call_user_func(static function ($packageKey) {
     $pluginSignature = strtolower($extensionName).'_pi1';
 
     // Add plugin
-    ExtensionManagementUtility::addPlugin(
-        [
-            'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_title',
-            'description' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_plus_wiz_description',
-            'value' => $packageKey.'_pi1',
-            'icon' => 'extensions-pluploadfe-wizard',
-            'group' => 'plugins',
-        ],
-        'list_type',
-        $packageKey
-    );
+    ExtensionManagementUtility::addPlugin([
+        'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_title',
+        'description' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_plus_wiz_description',
+        'value' => $packageKey.'_pi1',
+        'icon' => 'extensions-pluploadfe-wizard',
+        'group' => 'plugins',
+    ]);
 
     // Add column
     $tempColumns = [
@@ -44,6 +40,10 @@ call_user_func(static function ($packageKey) {
     ];
 
     ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
-    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'tx_pluploadfe_config';
-    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature] = 'layout,select_key,pages,recursive';
+    ExtensionManagementUtility::addToAllTCAtypes(
+        'tt_content',
+        'tx_pluploadfe_config,',
+        $pluginSignature,
+        'after:header',
+    );
 }, 'pluploadfe');
