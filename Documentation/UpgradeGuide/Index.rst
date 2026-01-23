@@ -25,6 +25,28 @@ Updade Guide
 
 
 
+Upgrade to 9.0.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Added support for TYPO3 14
+* Removed support for TYPO3 12 and 13
+* Migrated the plugin to a custom content element type
+* Remove lots of deprecated code
+* Improved code quality / CGL
+
+
+How to upgrade
+""""""""""""""
+
+* Use provided upgrade wizard in "Upgrade" BE module to migrate existing plugins to content elements
+* Clear all caches
+
+
+
+
 Upgrade to 8.2.0
 ^^^^^^^^^^^^^^^^
 
