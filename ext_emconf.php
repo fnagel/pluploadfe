@@ -17,11 +17,11 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Felix Nagel',
     'author_email' => 'info@felixnagel.com',
     'state' => 'stable',
-    'version' => '9.0.0-dev',
+    'version' => '9.0.0',
     'constraints' => [
         'depends' => [
             'php' => '8.2.0-8.4.99',
-            'typo3' => '14.0.0-14.0.99',
+            'typo3' => '14.0.0-14.1.99',
         ],
         'conflicts' => [],
         'suggests' => [
