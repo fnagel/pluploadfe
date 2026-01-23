@@ -10,6 +10,8 @@ namespace FelixNagel\Pluploadfe\ViewHelpers;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -44,6 +46,11 @@ class RenderViewHelper extends AbstractViewHelper
 
     protected function getRequest(): ServerRequestInterface
     {
+        // @todo Remove this when TYPO3 12 is no longer relevant!
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() < 13) {
+            return $this->renderingContext->getRequest();
+        }
+
         return $this->renderingContext->getAttribute(ServerRequestInterface::class);
     }
 }
