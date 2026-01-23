@@ -13,6 +13,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use FelixNagel\Pluploadfe\Exception\Exception;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -77,7 +78,15 @@ class Pi1Controller extends AbstractPlugin
     {
         $select = 'extensions';
         $table = 'tx_pluploadfe_config';
-        $where = $this->getFeEnableFields($table);
+
+        // @todo Remove this when TYPO3 12 is no longer relevant!
+        $versionInformation = GeneralUtility::makeInstance(Typo3Version::class);
+        if ($versionInformation->getMajorVersion() < 13) {
+            // @extensionScannerIgnoreLine
+            $where = $GLOBALS['TSFE']->sys_page->enableFields($table);
+        } else {
+            $where = $this->getFeEnableFields($table);
+        }
 
         $this->config = BackendUtility::getRecord($table, $this->configUid, $select, $where, false);
     }
