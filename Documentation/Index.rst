@@ -33,7 +33,7 @@ Plupload for FE
   upload, plupload, html5, flash, silverlight, files, forEditors, forDevelopers
 
 :Copyright:
-  2025
+  2026
 
 :Author:
   Felix Nagel

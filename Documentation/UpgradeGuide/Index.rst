@@ -25,6 +25,23 @@ Updade Guide
 
 
 
+Upgrade to 8.2.1
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Bugfixes (mainly for TYPO3 v12)
+
+
+How to upgrade
+""""""""""""""
+
+* Clear all caches
+
+
+
+
 Upgrade to 8.2.0
 ^^^^^^^^^^^^^^^^
 
