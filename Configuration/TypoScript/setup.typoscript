@@ -20,8 +20,7 @@ page {
         # Make sure jQuery is included!
         # jquery = https://code.jquery.com/jquery-3.7.1.min.js
         # jquery.external = 1
-        # jquery.disableCompression = 1
-        # jquery.excludeFromConcatenation = 1
+        # jquery.forceOnTop = 1
 
 		tx_pluploadfe_plupload = EXT:pluploadfe/Resources/Public/JavaScript/plupload/js/plupload.full.min.js
 		tx_pluploadfe_plupload.disableCompression = 1
