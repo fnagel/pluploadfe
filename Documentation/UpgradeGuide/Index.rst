@@ -25,7 +25,7 @@ Updade Guide
 
 
 
-Upgrade to 9.0.0
+Upgrade to 9.0.2
 ^^^^^^^^^^^^^^^^
 
 Changelog
@@ -34,7 +34,7 @@ Changelog
 * Added support for TYPO3 14
 * Removed support for TYPO3 12 and 13
 * Migrated the plugin to a custom content element type
-* Remove lots of deprecated code
+* Removed lots of deprecated code
 * Improved code quality / CGL
 
 

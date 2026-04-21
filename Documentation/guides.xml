@@ -9,7 +9,7 @@
              project-issues="https://github.com/fnagel/pluploadfe/issues"
              edit-on-github-branch="master"
              edit-on-github="fnagel/pluploadfe"
-             typo3-core-preferred="14.1"
+             typo3-core-preferred="14.3"
              interlink-shortcode="fnagel/pluploadfe"
   />
   <project title="Plupload for FE"
