@@ -1,7 +1,7 @@
 {
 	"name": "felixnagel/pluploadfe",
 	"type": "typo3-cms-extension",
-	"description": "This TYPO3 CMS extension provides an API and a FE plugin for using plupload, a highly usable and advanced upload handler.",
+	"description": "Plupload for FE - This TYPO3 CMS extension provides an API and a FE plugin for using plupload, a highly usable and advanced upload handler.",
 	"keywords": [
 		"TYPO3 CMS",
 		"upload",
@@ -33,9 +33,9 @@
 		"ssch/typo3-rector": "^2.3"
 	},
 	"suggest": {
-		"ext-fileinfo": "Helpful for file Mime type detection",
-		"felixnagel/mailfiles": "Simple message form with file upload",
-		"felixnagel/plupload_powermail": "Powermail integration"
+		"ext-fileinfo": "Helpful for file MIME type detection.",
+		"felixnagel/mailfiles": "Simple message form with file upload.",
+		"felixnagel/plupload_powermail": "Powermail integration."
 	},
 	"autoload": {
 		"psr-4": {
@@ -53,7 +53,11 @@
 	],
 	"extra": {
 		"typo3/cms": {
-			"extension-key": "pluploadfe"
+			"extension-key": "pluploadfe",
+			"version": "9.0.3+dev",
+			"Package": {
+				"providesPackages": {}
+			}
 		}
 	}
 }
