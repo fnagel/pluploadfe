@@ -9,6 +9,7 @@ namespace FelixNagel\Pluploadfe\Controller;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+use FelixNagel\Pluploadfe\Utility\Frontend;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -112,8 +113,7 @@ class Pi1Controller extends AbstractPlugin
 
         // Fill marker array
         $markerArray = $this->getDefaultMarker();
-        $markerArray['###UPLOAD_FILE###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').
-            'index.php?tx_pluploadfe='.$this->configUid;
+        $markerArray['###UPLOAD_FILE###'] = Frontend::getSiteUrl().'index.php?tx_pluploadfe='.$this->configUid;
 
         // Replace markers in the template
         // @extensionScannerIgnoreLine
@@ -165,8 +165,9 @@ class Pi1Controller extends AbstractPlugin
         $markerArray['###UID###'] = $this->uid;
         // @extensionScannerIgnoreLine
         $markerArray['###LANGUAGE###'] = $this->getLanguage()->getTypo3Language();
-        $markerArray['###EXTDIR_PATH###'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').
-            PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extKey));
+        $markerArray['###EXTDIR_PATH###'] = Frontend::getSiteUrl().PathUtility::stripPathSitePrefix(
+            ExtensionManagementUtility::extPath($this->extKey)
+        );
         $markerArray['###FILE_EXTENSIONS###'] = implode(',', $extensionsArray);
         $markerArray['###FILE_MAX_SIZE###'] = $maxFileSizeInBytes;
 
