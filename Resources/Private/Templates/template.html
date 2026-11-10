@@ -41,7 +41,7 @@
 				// Post init events, bound after the internal events
 				init: {
 					Error: function(up, error) {
-						json = $.parseJSON(error.response);
+						json = JSON.parse(error.response);
 						message = error.message;
 
 						if (json.error) {
@@ -61,7 +61,7 @@
 						alert(message);
 					},
 					FileUploaded: function(up, file, info) {
-						json = $.parseJSON(info.response);
+						json = JSON.parse(info.response);
 
 						if (json.error) {
 							file.status = plupload.FAILED;
