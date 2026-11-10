@@ -18,7 +18,7 @@ plugin.tx_pluploadfe_pi1 {
 page {
 	includeJSFooter {
         # Make sure jQuery is included!
-        # jquery = https://code.jquery.com/jquery-3.7.1.min.js
+        # jquery = https://code.jquery.com/jquery-4.0.0.slim.min.js
         # jquery.external = 1
         # jquery.forceOnTop = 1
 
