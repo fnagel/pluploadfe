@@ -1,4 +1,4 @@
-/* 
+/*
    Plupload
 ------------------------------------------------------------------- */
 
@@ -47,7 +47,6 @@
 }
 
 .plupload_container {
-	padding: 8px;
 	background: url('../img/transp50.png');
 	/*-moz-border-radius: 5px;*/
 }
@@ -96,7 +95,7 @@
 	padding: 8px 8px;
 	color: #42454A;
 }
-.plupload_filelist_header {	
+.plupload_filelist_header {
 	border-top: 1px solid #EEE;
 	border-bottom: 1px solid #CDCDCD;
 }
@@ -173,7 +172,7 @@ li.plupload_done a {
 .plupload_clearer, .plupload_progress_bar {
 	display: block;
 	font-size: 0;
-	line-height: 0;	
+	line-height: 0;
 }
 
 li.plupload_droptext {
