@@ -119,7 +119,7 @@ class MimeTypes
         'sprite' => ['application/x-sprite'],
         'stream' => ['audio/x-qt-stream'],
         'swf' => ['application/x-shockwave-flash'],
-        'svg' => ['text/xml-svg'],
+        'svg' => ['text/xml-svg', 'image/svg+xml'],
         'sgml' => ['text/x-sgml'],
         'sgm' => ['text/x-sgml'],
         'tar' => ['application/x-tar'],
