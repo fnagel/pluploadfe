@@ -10,9 +10,9 @@ namespace FelixNagel\Pluploadfe\Utility;
  */
 
 use FelixNagel\Pluploadfe\Exception\InvalidArgument\InvalidFileExtensionException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use FelixNagel\Pluploadfe\Statics\MimeTypes;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * FileValidation.
@@ -25,13 +25,13 @@ class FileValidation
      * @param string $fileName Filename to check
      * @param string $allowedExtensions CSV list of allowed file extensions
      */
-    public static function checkFileExtension($fileName, $allowedExtensions)
+    public static function checkFileExtension(string $fileName, string $allowedExtensions): void
     {
-        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        $extension = self::getExtension($fileName);
         $extensions = GeneralUtility::trimExplode(',', $allowedExtensions, true);
 
         // check if file extension is allowed (configuration record)
-        if (!in_array($fileExtension, $extensions)) {
+        if (!in_array($extension, $extensions)) {
             throw new InvalidFileExtensionException('File extension is not allowed.');
         }
 
@@ -43,12 +43,8 @@ class FileValidation
 
     /**
      * Retrieves MIME type from given file.
-     *
-     * @param string $filePath
-     *
-     * @return string
      */
-    public static function getMimeType($filePath)
+    protected static function getMimeType(string $filePath): string
     {
         if (function_exists('finfo_open')) {
             $info = @finfo_open(FILEINFO_MIME);
@@ -83,15 +79,11 @@ class FileValidation
 
     /**
      * Checks the given mime type.
-     *
-     * @param string $filePath
-     *
-     * @return bool
      */
-    public static function checkMimeType($filePath)
+    public static function checkMimeType(string $filePath): bool
     {
         $flag = false;
-        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+        $extension = self::getExtension($filePath);
 
         if (array_key_exists($extension, MimeTypes::$mimeTypes)) {
             $mimeType = explode(';', self::getMimeType($filePath));
@@ -106,5 +98,10 @@ class FileValidation
         }
 
         return $flag;
+    }
+
+    protected static function getExtension(string $filePath): string
+    {
+        return strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
     }
 }
