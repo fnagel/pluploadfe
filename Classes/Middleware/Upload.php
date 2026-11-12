@@ -282,10 +282,9 @@ class Upload implements MiddlewareInterface
             $chunkedPath = $this->getSessionData('chunk_path');
             if ($chunkedPath && file_exists($chunkedPath.DIRECTORY_SEPARATOR.$this->getFileName().'.part')) {
                 return $chunkedPath;
-            } else {
-                // Reset session
-                $this->saveDataInSession(null, 'chunk_path');
             }
+            // Reset session
+            $this->saveDataInSession(null, 'chunk_path');
         }
 
         // Make sure we have no trailing slash
@@ -348,7 +347,7 @@ class Upload implements MiddlewareInterface
         @fclose($in);
 
         // Check if file has been uploaded
-        if (!$chunks || $chunk == $chunks - 1) {
+        if (!$chunks || $chunk === $chunks - 1) {
             // Strip the temp .part suffix off
             rename($filePath.'.part', $filePath);
             $this->processFile($filePath);

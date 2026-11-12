@@ -22,7 +22,6 @@ return [
         'typeicon_classes' => [
             'default' => 'extensions-pluploadfe-config',
         ],
-        'searchFields' => 'title,upload_path',
     ],
     'columns' => [
         'title' => [
@@ -58,6 +57,7 @@ return [
                 'required' => true,
                 'eval' => 'trim',
                 'default' => 'jpeg,jpg,gif,png,zip,rar,7zip,gz',
+                'searchable' => false,
             ],
         ],
         'feuser_required' => [
@@ -148,7 +148,7 @@ return [
 			--div--;LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:tx_pluploadfe_config.tabs.security,
 				extensions, check_mime,
 
-			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
+			--div--;core.form.tabs:access,
 				--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.visibility;visibility,
 				--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.access;access',
         ],
@@ -159,9 +159,9 @@ return [
         ],
         'access' => [
             'showitem' => '
-				starttime;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.starttime_formlabel,
-				endtime;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.endtime_formlabel,
-				--linebreak--, fe_group;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.fe_group_formlabel',
+				starttime,
+				endtime,
+				--linebreak--, fe_group',
         ],
     ],
 ];

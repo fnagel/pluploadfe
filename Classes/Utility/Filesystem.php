@@ -26,7 +26,7 @@ class Filesystem
      */
     public static function isPathValid($path)
     {
-        return (strlen($path) > 0 && GeneralUtility::isAllowedAbsPath(self::getPublicPath().$path));
+        return ((string) $path !== '' && GeneralUtility::isAllowedAbsPath(self::getPublicPath().$path));
     }
 
     /**

@@ -1,7 +1,8 @@
 <?php
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 defined('TYPO3') || die('Access denied.');
 
@@ -10,13 +11,14 @@ call_user_func(static function ($packageKey) {
     $pluginSignature = strtolower($extensionName).'_pi1';
 
     // Add plugin
-    ExtensionManagementUtility::addPlugin([
-        'label' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_title',
-        'description' => 'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_plus_wiz_description',
-        'value' => $packageKey.'_pi1',
-        'icon' => 'extensions-pluploadfe-wizard',
-        'group' => 'plugins',
-    ]);
+    ExtensionManagementUtility::addPlugin(new SelectItem(
+        'select',
+        'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_title',
+        $packageKey.'_pi1',
+        'extensions-pluploadfe-wizard',
+        'plugins',
+        'LLL:EXT:pluploadfe/Resources/Private/Language/locallang_db.xlf:pi1_plus_wiz_description',
+    ));
 
     // Add column
     $tempColumns = [

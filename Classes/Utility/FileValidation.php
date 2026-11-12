@@ -50,7 +50,6 @@ class FileValidation
             $info = @finfo_open(FILEINFO_MIME);
             if ($info) {
                 $tempMime = @finfo_file($info, $filePath);
-                finfo_close($info);
                 if ($tempMime) {
                     return $tempMime;
                 }
