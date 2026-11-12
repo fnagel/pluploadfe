@@ -9,16 +9,16 @@ namespace FelixNagel\Pluploadfe\Controller;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+use FelixNagel\Pluploadfe\Exception\Exception;
 use FelixNagel\Pluploadfe\Utility\Frontend;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use FelixNagel\Pluploadfe\Exception\Exception;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Plugin 'pluploadfe_pi1' for the 'pluploadfe' extension.
@@ -39,7 +39,7 @@ class Pi1Controller extends AbstractPlugin
 
     protected string $templateHtml;
 
-    protected ?array $config = [];
+    protected ?array $configuration = [];
 
     /**
      * The main method of the PlugIn.
@@ -82,7 +82,7 @@ class Pi1Controller extends AbstractPlugin
         $table = 'tx_pluploadfe_config';
         $where = $this->getFeEnableFields($table);
 
-        $this->config = BackendUtility::getRecord($table, $this->configUid, $select, $where, false);
+        $this->configuration = BackendUtility::getRecord($table, $this->configUid, $select, $where, false);
     }
 
     /**
@@ -93,8 +93,8 @@ class Pi1Controller extends AbstractPlugin
         if ($this->uid !== '' &&
             $this->templateHtml !== '' &&
             $this->configUid > 0 &&
-            is_array($this->config) &&
-            $this->config['extensions'] !== ''
+            is_array($this->configuration) &&
+            $this->configuration['extensions'] !== ''
         ) {
             return true;
         }
@@ -158,7 +158,7 @@ class Pi1Controller extends AbstractPlugin
      */
     protected function getDefaultMarker(): array
     {
-        $extensionsArray = GeneralUtility::trimExplode(',', $this->config['extensions'], true);
+        $extensionsArray = GeneralUtility::trimExplode(',', $this->configuration['extensions'], true);
         $maxFileSizeInBytes = (GeneralUtility::getMaxUploadFileSize() * 1024) - 1024;
 
         $markerArray = [];

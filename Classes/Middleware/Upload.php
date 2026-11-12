@@ -9,20 +9,20 @@ namespace FelixNagel\Pluploadfe\Middleware;
  * LICENSE.txt file that was distributed with this source code.
  */
 
-use Psr\Http\Message\ServerRequestInterface;
+use FelixNagel\Pluploadfe\Exception\AuthenticationException;
+use FelixNagel\Pluploadfe\Exception\InvalidArgument;
+use FelixNagel\Pluploadfe\Exception\InvalidArgumentException;
+use FelixNagel\Pluploadfe\Utility\Filesystem;
+use FelixNagel\Pluploadfe\Utility\FileValidation;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use FelixNagel\Pluploadfe\Exception\AuthenticationException;
-use FelixNagel\Pluploadfe\Exception\InvalidArgumentException;
-use FelixNagel\Pluploadfe\Exception\InvalidArgument;
-use FelixNagel\Pluploadfe\Utility\Filesystem;
-use FelixNagel\Pluploadfe\Utility\FileValidation;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
@@ -44,7 +44,7 @@ class Upload implements MiddlewareInterface
      */
     protected ?int $uid = null;
 
-    protected ?array $config = null;
+    protected ?array $configuration = null;
 
     protected string $uploadPath = '';
 
@@ -65,7 +65,7 @@ class Upload implements MiddlewareInterface
             }
 
             $this->uid = (int)$uid;
-            $this->config = $this->getUploadConfig($this->uid);
+            $this->configuration = $this->getUploadConfig($this->uid);
             $this->feUserObj = $request->getAttribute('frontend.user');
 
             $this->handleUpload();
@@ -101,7 +101,7 @@ class Upload implements MiddlewareInterface
             ],
         ];
 
-        if ($this->config['save_session']) {
+        if ($this->configuration['save_session']) {
             $this->updateDataInSession($data, 'messages');
         }
 
@@ -138,7 +138,7 @@ class Upload implements MiddlewareInterface
      */
     public function handleUpload()
     {
-        if (!count($this->config)) {
+        if (!count($this->configuration)) {
             throw new InvalidArgument\InvalidConfigurationException('Configuration record not found or invalid.');
         }
 
@@ -146,7 +146,7 @@ class Upload implements MiddlewareInterface
         $this->checkUploadConfig();
 
         // Check for valid FE user
-        if ($this->config['feuser_required'] && empty($this->getFeUser()->user['username'])) {
+        if ($this->configuration['feuser_required'] && empty($this->getFeUser()->user['username'])) {
             throw new AuthenticationException('TYPO3 user session invalid.');
         }
 
@@ -154,13 +154,13 @@ class Upload implements MiddlewareInterface
         $this->chunkedUpload = (isset($_REQUEST['chunks']) && (int) $_REQUEST['chunks'] > 1);
 
         // Check file extension
-        FileValidation::checkFileExtension($this->getFileName(), $this->config['extensions']);
+        FileValidation::checkFileExtension($this->getFileName(), $this->configuration['extensions']);
 
         // Get upload path
         $this->uploadPath = $this->getUploadDir(
-            $this->config['upload_path'],
+            $this->configuration['upload_path'],
             $this->getUserDirectory(),
-            $this->config['obscure_dir']
+            $this->configuration['obscure_dir']
         );
         Filesystem::createFolder($this->uploadPath);
 
@@ -178,7 +178,7 @@ class Upload implements MiddlewareInterface
     protected function getUserDirectory(): string
     {
         $record = $this->getFeUser()->user;
-        $field = $this->config['feuser_field'];
+        $field = $this->configuration['feuser_field'];
 
         switch ($field) {
             case 'name':
@@ -216,11 +216,11 @@ class Upload implements MiddlewareInterface
 
     protected function checkUploadConfig(): void
     {
-        if ((string) $this->config['extensions'] === '') {
+        if ((string) $this->configuration['extensions'] === '') {
             throw new InvalidArgument\InvalidConfigurationException('Missing allowed file extension configuration.');
         }
 
-        if (!Filesystem::isPathValid($this->config['upload_path'])) {
+        if (!Filesystem::isPathValid($this->configuration['upload_path'])) {
             throw new InvalidArgument\InvalidUploadDirectoryException('Upload directory not valid.');
         }
     }
@@ -247,13 +247,13 @@ class Upload implements MiddlewareInterface
     {
         // Make sure FAL references work
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $this->config['upload_path'] = $resourceFactory
-            ->retrieveFileOrFolderObject($this->config['upload_path'])
+        $this->configuration['upload_path'] = $resourceFactory
+            ->retrieveFileOrFolderObject($this->configuration['upload_path'])
             ->getPublicUrl();
 
         // Make sure no user based path is added when there is no user available
-        if (!$this->config['feuser_required']) {
-            $this->config['feuser_field'] = '';
+        if (!$this->configuration['feuser_required']) {
+            $this->configuration['feuser_field'] = '';
         }
     }
 
@@ -367,14 +367,14 @@ class Upload implements MiddlewareInterface
     {
         // We already checked if the file extension is allowed, so we need to check if the mime type is adequate.
         // If mime type is not allowed: remove file.
-        if ($this->config['check_mime'] && !FileValidation::checkMimeType($filePath)) {
+        if ($this->configuration['check_mime'] && !FileValidation::checkMimeType($filePath)) {
             @unlink($filePath);
             throw new InvalidArgument\InvalidMimeTypeException('File mime type is not allowed.');
         }
 
         GeneralUtility::fixPermissions($filePath);
 
-        if ($this->config['save_session']) {
+        if ($this->configuration['save_session']) {
             $this->updateDataInSession($filePath);
         }
     }
