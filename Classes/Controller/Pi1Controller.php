@@ -65,6 +65,7 @@ class Pi1Controller extends AbstractPlugin
         }
 
         $this->getUploadConfig();
+        // @extensionScannerIgnoreLine
         $this->getTemplateFile();
         $this->checkConfig();
 
