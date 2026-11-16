@@ -25,6 +25,26 @@ Updade Guide
 
 
 
+Upgrade to 9.1.0
+^^^^^^^^^^^^^^^^
+
+Changelog
+"""""""""
+
+* Updated Plupload to v2.3.9
+* Deprecation free (in TYPO3 v14)
+* Fix for SVG files
+* Improved code quality / CGL
+
+
+How to upgrade
+""""""""""""""
+
+* Clear all caches
+
+
+
+
 Upgrade to 9.0.2
 ^^^^^^^^^^^^^^^^
 
