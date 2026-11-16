@@ -54,7 +54,7 @@
 	"extra": {
 		"typo3/cms": {
 			"extension-key": "pluploadfe",
-			"version": "9.0.3+dev",
+			"version": "9.1.0",
 			"Package": {
 				"providesPackages": {}
 			}
